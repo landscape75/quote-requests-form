@@ -1,9 +1,8 @@
 module.exports = {
-  plugins: [
-    'tailwindcss',
-    ...(process.env.NODE_ENV === 'production'
-      ? [
-          [
+    plugins: [
+      'tailwindcss',
+      process.env.NODE_ENV === 'production'
+        ? [
             '@fullhuman/postcss-purgecss',
             {
               content: [
@@ -13,9 +12,8 @@ module.exports = {
               defaultExtractor: (content) =>
                 content.match(/[\w-/:]+(?<!:)/g) || [],
             },
-          ],
-        ]
-      : []),
-    'postcss-preset-env',
-  ],
-}
+          ]
+        : undefined,
+      'postcss-preset-env',
+    ],
+  }
