@@ -42,7 +42,7 @@ export default function Nav({ user, setUser }) {
         </div>
       </div>
       <div className="mt-6 flex flex-col justify-stretch space-y-4 space-y sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-4 md:flex-row md:space-x-3">
-        <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1>
+        {/* <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1> */}
         {!user ? (
           <>
             <button type="button" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('logIn')}>
