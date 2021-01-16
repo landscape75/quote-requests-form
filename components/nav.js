@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import LoginModal from '../modal'
+import LoginModal from './modal'
 import Image from 'next/image'
 
 import userbase from 'userbase-js'
@@ -29,7 +29,7 @@ export default function Nav({ user, setUser }) {
     <div className="md:flex md:items-center md:justify-between md:space-x-5">
       <div className="flex items-start space-x-5">
         <div className="flex-shrink-0">
-          <div classname="relative">
+          <div className="relative">
             <Image className="rounded w-50" src="/magnumstone-logo.png" alt="" width="248" height="50"/>
             
             {/* <span className="absolute inset-0 shadow-inner rounded-full" aria-hidden="true"></span> */}
@@ -41,7 +41,7 @@ export default function Nav({ user, setUser }) {
           {/* <p className="text-sm font-medium text-gray-500">Applied for <a href="#" class="text-gray-900">Front End Developer</a> on <time datetime="2020-08-25">August 25, 2020</time></p> */}
         </div>
       </div>
-      <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+      <div className="mt-6 flex flex-col justify-stretch space-y-4 space-y sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-4 md:flex-row md:space-x-3">
         <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1>
         {!user ? (
           <>
@@ -73,13 +73,10 @@ export default function Nav({ user, setUser }) {
     </div>
 
 
-
-    
-
       {open && (
         <>
 
-        <div className="w-4/5 md:w-1/2 mx-auto mt-10">
+        <div className="w-full md:w-1/2 lg:w-1/3 sm:w-full mx-auto mt-10">
           <LoginModal
             toggle={setOpen}
             modalType={modalType}

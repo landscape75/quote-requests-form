@@ -1,9 +1,9 @@
-import Nav from '../nav'
-import Footer from '../footer'
+import Nav from './nav'
+import Footer from './footer'
 function Layout({ user, setUser, children }) {
   return (
     <>
-    <div className="container mx-auto">
+    <div className="mx-auto max-w-7xl">
       <Nav user={user} setUser={setUser} />
       {children}
       <Footer />
