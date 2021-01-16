@@ -6,6 +6,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/forms'),
 
   ],
   theme: {
@@ -16,8 +17,8 @@ module.exports = {
         'accent-7': '#333',
         success: '#0070f3',
         cyan: '#79FFE1',
-        'lc-green': {
-          DEFAULT: '#056639',
+        'mag-blue': {
+          DEFAULT: '#029BDF',
           '100': '#41F6A2',
           '200': '#10F48A',
           '300': '#09C86F',
