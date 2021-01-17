@@ -74,15 +74,15 @@ export default function Nav({ user, setUser }) {
                 <span class="text-sm font-medium text-white">Dark Mode </span>
               </span>
               <div>
-              <button type="button" aria-pressed="false" className="bg-gray-300 dark:bg-mag-blue relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" onClick={toggleDark}>
-                <span className="sr-only">Dark</span>
-                {theme == 'dark' ? (
-                    <span aria-hidden="true" className="translate-x-5 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
-                  ) : (
-                    <span aria-hidden="true" className="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
-                  )
-                }
-              </button>
+                <button type="button" aria-pressed="false" className="bg-gray-300 dark:bg-mag-blue relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" onClick={toggleDark}>
+                  <span className="sr-only">Dark</span>
+                  {theme == 'dark' ? (
+                      <span aria-hidden="true" className="translate-x-5 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                    ) : (
+                      <span aria-hidden="true" className="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                    )
+                  }
+                </button>
               </div>
              
             </div>
@@ -97,19 +97,28 @@ export default function Nav({ user, setUser }) {
           </>
         ) : (
           <>
-          <button type="button" aria-pressed="false" className="bg-gray-300 dark:bg-mag-blue relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" onClick={toggleDark}>
-          <span className="sr-only">Dark</span>
-          {theme == 'dark' ? (
-              <span aria-hidden="true" className="translate-x-5 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
-            ) : (
-              <span aria-hidden="true" className="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
-            )
-          }
-        </button>
+          <div className="flex-row">
+            <span class="ml-0 mr-3 pb-2" id="toggleLabel">
+              <span class="text-sm font-medium text-white">Dark Mode </span>
+            </span>
+            <div>
+              <button type="button" aria-pressed="false" className="bg-gray-300 dark:bg-mag-blue relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" onClick={toggleDark}>
+                <span className="sr-only">Dark</span>
+                {theme == 'dark' ? (
+                    <span aria-hidden="true" className="translate-x-5 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                  ) : (
+                    <span aria-hidden="true" className="translate-x-0 inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                  )
+                }
+              </button>
+            </div>
+          </div>
           <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
             Log Out
           </button>
+          
           </>
+
         )
         }
       </div>
