@@ -10,10 +10,10 @@ export default function Footer() {
 
     return (
 
-    <footer className="bg-white mx-auto p-4">
-        <div className="relative pt-28 pb-0">
+    <footer className="bg-white dark:bg-gray-800 mx-auto p-4">
+        <div className="relative pt-20 pb-0">
             <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                <div className="w-full border-t border-gray-300"></div>
+                <div className="w-full border-t border-gray-300 dark:border-gray-400"></div>
             </div>
             <div className="relative flex justify-center">
                 <span className="px-2 bg-white text-sm text-gray-500">
@@ -22,7 +22,7 @@ export default function Footer() {
             </div>
         </div>
 
-        <div className="max-w-7xl mx-auto py-5 pt-0 px-0 sm:px-0 md:flex md:items-center md:justify-between lg:px-0">
+        <div className="max-w-8xl mx-auto py-5 pt-0 px-0 sm:px-0 md:flex md:items-center md:justify-between lg:px-0">
 
             <div className="flex justify-center space-x-6 md:order-2">
             <a href="#" className="text-gray-400 hover:text-gray-500">

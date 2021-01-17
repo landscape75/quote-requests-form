@@ -5,7 +5,7 @@ function Todo({ name, done, toggleComplete, deleteTodo }) {
   return (
     <li className="my-4">
       <div className="flex items-center">
-        <span className={done ? 'text-gray-500' : ''}>{name}</span>
+        <span className={done ? 'text-gray-400' : 'text-gray=800 dark:text-white'}>{name}</span>
         <button
           type="button"
           className="mx-4 p-1 rounded bg-purple-400 text-white font-bold"
@@ -14,7 +14,7 @@ function Todo({ name, done, toggleComplete, deleteTodo }) {
             toggleComplete()
           }}
         >
-          {done ? 'not done' : 'done'}
+          {done ? 'Not done' : 'Done'}
         </button>
         <button
           type="button"
@@ -24,7 +24,7 @@ function Todo({ name, done, toggleComplete, deleteTodo }) {
           }}
           className=" p-1 bg-red-500 text-white rounded font-bold"
         >
-          delete
+          Delete
         </button>
       </div>
     </li>
@@ -102,7 +102,7 @@ function TodoForm() {
   }
 
   return (
-    <form className="bg-white shadow-md rounded p-8" onSubmit={addTodo}>
+    <form className="bg-white dark:bg-gray-700 shadow-lg rounded-lg p-8 mt-10" onSubmit={addTodo}>
       <ul>
         {todos.map((todo) => (
           <Todo
@@ -121,8 +121,8 @@ function TodoForm() {
           value={newTodo}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-        <button disabled={disabled} className="btn-yellow mx-4" type="submit">
-          add
+        <button disabled={disabled} className="bg-mag-blue mx-4 px-4 rounded text-white" type="submit">
+          Add
         </button>
       </div>
     </form>

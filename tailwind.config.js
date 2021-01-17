@@ -4,6 +4,7 @@ module.exports = {
       opacity: ['disabled']
     }
   },
+  darkMode: 'class',
   plugins: [
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/forms'),
@@ -19,15 +20,16 @@ module.exports = {
         cyan: '#79FFE1',
         'mag-blue': {
           DEFAULT: '#029BDF',
-          '100': '#41F6A2',
-          '200': '#10F48A',
-          '300': '#09C86F',
-          '400': '#079754',
-          '500': '#056639',
-          '600': '#03361E',
-          '700': '#000503',
-          '800': '#000000',
-          '900': '#000000'
+          "50": "#34cdff",
+          "100": "#2ac3ff",
+          "200": "#20b9fd",
+          "300": "#16aff3",
+          "400": "#0ca5e9",
+          "500": "#029bdf",
+          "600": "#0091d5",
+          "700": "#0087cb",
+          "800": "#007dc1",
+          "900": "#0073b7"
         },
         'lc-yellow': {
           DEFAULT: '#edb211',
