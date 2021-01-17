@@ -146,6 +146,7 @@ function LoginModal({ toggle, modalType, setUser }) {
               </button>
             )}
           </div>
+          <p className="text-red-500 font-bold">{error}</p>
         </form>
       </div>
     </div>
