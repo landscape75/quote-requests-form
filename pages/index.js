@@ -11,7 +11,9 @@ function Index({ user }) {
         <TodoForm />
       </div>
     )
-  } else {
+  } 
+  else 
+  {
     return (
       <>
 
