@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="flex justify-center space-x-6 md:order-2">
 
             <Link href="https://magnumstone.com/">
-                <a>Magnumstone Website</a>
+                <a className="text-gray-400 hover:text-gray-500">Magnumstone Website</a>
             </Link>
 
             <a href="#" className="text-gray-400 hover:text-gray-500">
