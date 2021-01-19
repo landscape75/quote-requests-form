@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 
 export default function Footer() {
@@ -25,6 +26,11 @@ export default function Footer() {
         <div className="max-w-8xl mx-auto py-5 pt-0 px-0 sm:px-0 md:flex md:items-center md:justify-between lg:px-0">
 
             <div className="flex justify-center space-x-6 md:order-2">
+
+            <Link href="https://magnumstone.com/">
+                <a>Magnumstone Website</a>
+            </Link>
+
             <a href="#" className="text-gray-400 hover:text-gray-500">
                 <span className="sr-only">Facebook</span>
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

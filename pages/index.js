@@ -5,7 +5,7 @@ function Index({ user }) {
   if (user) {
     return (
       <div className="bg-white dark:bg-gray-800 w-4/5 md:w-1/2 mx-auto mt-10 mb-10">
-        <h3 className="font-bold text-4xl text-gray-800 dark:text-white">
+        <h3 className="font-bold text-4xl text-gray-800 dark:text-white ">
           Welcome, <span>{user.username}</span>
         </h3>
         <TodoForm />
