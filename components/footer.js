@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 export default function Footer() {
     const [curYear, setYear] = useState('')
+    const [version] = useState('2021.01.19.a')
 
     useEffect(() => {
         setYear(new Date().getFullYear().toString())
@@ -28,7 +29,7 @@ export default function Footer() {
             <div className="flex justify-center space-x-6 md:order-2">
 
             <Link href="https://magnumstone.com/">
-                <a className="text-gray-400 hover:text-gray-500">Magnumstone Website</a>
+                <a className="text-gray-400 hover:text-gray-500">MagnumStone Website</a>
             </Link>
 
             <a href="#" className="text-gray-400 hover:text-gray-500">
@@ -54,7 +55,7 @@ export default function Footer() {
             </div>
             <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400">
-                &copy; {curYear} Cornerstone Wall Solutions. All rights reserved.
+                &copy; {curYear} Cornerstone Wall Solutions. All rights reserved. - { version }
             </p>
             </div>
         </div>

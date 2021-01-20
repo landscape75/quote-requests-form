@@ -15,6 +15,7 @@
     "postcss": "^8.2.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-tooltip": "^4.2.13",
     "userbase-js": "^1.4.1"
   },
   "devDependencies": {
