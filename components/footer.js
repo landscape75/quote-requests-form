@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function Footer() {
     const [curYear, setYear] = useState('')
-    const [version] = useState('2021.01.19.a')
+    const [version] = useState('2021.01.19.b')
 
     useEffect(() => {
         setYear(new Date().getFullYear().toString())
@@ -49,16 +49,17 @@ export default function Footer() {
                 </svg>
             </a>
             </div>
-            <div className="mt-8 md:mt-0 md:order-1">
-            <p className="text-center text-base text-gray-400">
-                &copy; {curYear} Cornerstone Wall Solutions. All rights reserved. - { version }
-            </p>
-            </div>
-            <div className="text-center mt-8 md:mt-0 md:order-2">
+            <div className="text-center mt-8 md:mt-0 md:order-1">
                 <Link href="https://magnumstone.com/">
                     <a className="text-gray-400 hover:text-gray-500">MagnumStone Website</a>
                 </Link>
             </div>
+            <div className="mt-8 md:mt-0 md:order-2">
+            <p className="text-center text-base text-gray-400">
+                &copy; {curYear} Cornerstone Wall Solutions. All rights reserved. - { version }
+            </p>
+            </div>
+
         </div>
         </footer>
     )

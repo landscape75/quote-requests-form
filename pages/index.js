@@ -28,7 +28,7 @@ function Index({ user }) {
               <span className="block xl:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline"> Wall Calculator</span>
             </h1>
-            <article class="text-center mx-auto mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-500">
+            <article class="text-center mx-auto mt-10 sm:mt-5 md:mt-5 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-500">
               <p>
                 These preliminary details are intended soley to act as an aid when designing a wall. These drawings should not be used for final design or construction.
                 Each site-specific wall should be certified and signed by a registered geotechnical engineer in the Sate or Province where it is being built. the accuarcy 
