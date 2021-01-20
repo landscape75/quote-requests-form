@@ -54,7 +54,7 @@ export default function Nav({ user, setUser }) {
     <div className="sticky top-0 z-50 shadow-lg border border-b-4 border-t-0 border-l-0 border-r-0 border-black bg-cover" style={{backgroundImage: 'url("/siteheader2.jpg")'}}>
     <nav className="mx-auto p-4 ">
 
-    {isTooltipVisible && <ReactTooltip textColor="white" delayShow={200}/>}
+    {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150}/>}
       
     
     <div className="md:flex md:justify-between md:space-x-5">

@@ -26,11 +26,7 @@ export default function Footer() {
 
         <div className="max-w-8xl mx-auto py-5 pt-0 px-0 sm:px-0 md:flex md:items-center md:justify-between lg:px-0">
 
-            <div className="flex justify-center space-x-6 md:order-2">
-
-            <Link href="https://magnumstone.com/">
-                <a className="text-gray-400 hover:text-gray-500">MagnumStone Website</a>
-            </Link>
+            <div className="flex justify-center space-x-6 md:order-3">
 
             <a href="#" className="text-gray-400 hover:text-gray-500">
                 <span className="sr-only">Facebook</span>
@@ -57,6 +53,11 @@ export default function Footer() {
             <p className="text-center text-base text-gray-400">
                 &copy; {curYear} Cornerstone Wall Solutions. All rights reserved. - { version }
             </p>
+            </div>
+            <div className="text-center mt-8 md:mt-0 md:order-2">
+                <Link href="https://magnumstone.com/">
+                    <a className="text-gray-400 hover:text-gray-500">MagnumStone Website</a>
+                </Link>
             </div>
         </div>
         </footer>
