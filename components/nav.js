@@ -57,8 +57,8 @@ export default function Nav({ user, setUser }) {
     {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150}/>}
       
     
-    <div className="md:flex md:justify-between md:space-x-5">
-      <div className="flex items-start">
+    <div className="flex md:justify-between md:space-x-5">
+      <div className="w-200 sm:w-60 lg:w-200 flex md:inline-flex items-start mr-5">
 {/*         <div className="flex-shrink-0">
           <div className="relative"> */}
             {/* <img className="w-50" src="https://magnumstone.com/wp-content/themes/bulletpress/src/assets/images/logo/magnumstone-logo-white.svg" alt="" width="248" height="50" onClick={logOut}/> */}
@@ -66,11 +66,11 @@ export default function Nav({ user, setUser }) {
 {/*           </div>
         </div> */}
       </div>
-      <div className="mt- items-end inline-flex space-y-2 space-x-3 sm:justify-end sm:space-x sm:space-y-2 sm:space-x-3 md:mt-0 sm:mt-0 md:space-x-3">
+      <div className="items-end inline-flex space-y-2 space-x-3 sm:justify-end sm:space-x sm:space-y-2 sm:space-x-3 md:mt-0 sm:mt-0 md:space-x-3">
         {/* <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1> */}
         {!user ? (
           <>
-            <button type="button" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('logIn')}>
+            <button type="button" className="truncate inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('logIn')}>
               Sign In
             </button>
             <button type="button" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('signUp')}>
@@ -79,7 +79,7 @@ export default function Nav({ user, setUser }) {
           </>
         ) : (
         
-          <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
+          <button className="truncate inline-flex items-center justify-center px-4 py-2 sm:px-2 lg:px-4 md:px-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
             Log Out
           </button>
 

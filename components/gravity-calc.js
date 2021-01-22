@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import userbase from 'userbase-js'
+import Image from 'next/image'
 
 function Todo({ name, done, toggleComplete, deleteTodo }) {
   return (
@@ -102,18 +103,18 @@ function GravityCalc() {
   }
 
   return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 p-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 p-3">
         <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-gray-900 bg-white dark:bg-gray-900 px-6 py-5 flex space-x-3">
           <div className="flex-1 min-w-0">
               <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                 Wall Details
               </p>
               <form className="space-y-4 md:space-y-2 lg:space-y-2 divide-gray-200 dark:divide-gray-700">
-                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
                   <label for="height" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
                     Soil Type
                   </label>
-                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
                     <select id="height" name="country" autocomplete="height" className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md">
                       <option>United States</option>
                       <option>Canada</option>
@@ -121,11 +122,11 @@ function GravityCalc() {
                     </select>
                   </div>
                 </div>
-                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
                   <label for="height" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
                     Wall Height
                   </label>
-                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                  <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
                     <select id="height" name="country" autocomplete="height" className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md">
                       <option>United States</option>
                       <option>Canada</option>
@@ -162,7 +163,7 @@ function GravityCalc() {
                             <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
                               Wall height
                             </td>
-                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-500">
+                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
                               8 ft.
                             </td>
                           </tr>                          
@@ -170,15 +171,15 @@ function GravityCalc() {
                             <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
                               Soil Type
                             </td>
-                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-500">
+                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
                               28
                             </td>
                           </tr>
                           <tr>
-                            <td className="px-4 py-4 whitespace-wrap text-sm font-medium text-gray-900">
+                            <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
                               Total Sq.Ft.
                             </td>
-                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-500">
+                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
                               550
                             </td>
                           </tr>
@@ -197,9 +198,7 @@ function GravityCalc() {
               <p className="text-lg font-medium text-gray-900 dark:text-white mb-3">
                 Cross-section
               </p>
-              <p className="text-sm text-gray-500 dark:text-white">
-                
-              </p>
+              <Image src="/test.png" alt="" width="451" height="541"/>
           </div>
         </div>
 
