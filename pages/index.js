@@ -1,15 +1,22 @@
-import TodoForm from '../components/todo-form'
+import GravityCalc from '../components/gravity-calc'
 import Head from 'next/head'
 
 function Index({ user }) {
   if (user) {
     return (
-      <div className="bg-white dark:bg-gray-800 w-4/5 md:w-1/2 mx-auto mt-10 mb-10">
-        <h3 className="font-bold text-4xl text-gray-800 dark:text-white ">
-          Welcome, <span>{user.username}</span>
-        </h3>
-        <TodoForm />
+      <>
+      <Head>
+        <title>Magnumstone Calculator</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <div className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-4 sm:mt-10">
+            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl mb-6 ml-4">
+              <span className="block xl:inline md:inline">MagnumStone</span>
+              <span className="block text-mag-blue xl:inline md:inline"> Wall Calculator</span>
+            </h1>
+        <GravityCalc />
       </div>
+      </>
     )
   } 
   else 
@@ -17,7 +24,7 @@ function Index({ user }) {
     return (
       <>
       <Head>
-        <title>Magnumstone Calculator</title>
+        <title>Sign in to Magnumstone Calculator</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <main className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-4 sm:mt-10">
@@ -25,10 +32,10 @@ function Index({ user }) {
         {/* <div className="text-center"> */}
           
             <h1 className="text-center text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">MagnumStone</span>
-              <span className="block text-mag-blue xl:inline"> Wall Calculator</span>
+              <span className="block xl:inline md:inline">MagnumStone</span>
+              <span className="block text-mag-blue xl:inline md:inline"> Wall Calculator</span>
             </h1>
-            <article class="text-center mx-auto mt-10 sm:mt-5 md:mt-5 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-500">
+            <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-500">
               <p>
                 These preliminary details are intended soley to act as an aid when designing a wall. These drawings should not be used for final design or construction.
                 Each site-specific wall should be certified and signed by a registered geotechnical engineer in the Sate or Province where it is being built. the accuarcy 

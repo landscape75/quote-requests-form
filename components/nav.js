@@ -70,17 +70,16 @@ export default function Nav({ user, setUser }) {
         {/* <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1> */}
         {!user ? (
           <>
-            <button type="button" className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('logIn')}>
+            <button type="button" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('logIn')}>
               Sign In
             </button>
-            <button type="button" className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('signUp')}>
+            <button type="button" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={() => openModal('signUp')}>
               Sign Up
             </button>
-  
           </>
         ) : (
         
-          <button className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
+          <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
             Log Out
           </button>
 
@@ -90,25 +89,25 @@ export default function Nav({ user, setUser }) {
         {theme == 'dark' ? (
           <>
           <div className="inline-flex">
-            <svg data-tip="Switch To light mode" className="h-8 w-8 text-mag-blue cursor-pointer"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" onClick={() => toggleDark('light')}>  
+            <svg data-tip="Switch To light mode" className="h-9 w-9 text-mag-blue cursor-pointer"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" onClick={() => toggleDark('light')}>  
                 <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="4" />  
                 <path d="M3 12h1M12 3v1M20 12h1M12 20v1M5.6 5.6l.7 .7M18.4 5.6l-.7 .7M17.7 17.7l.7 .7M6.3 17.7l-.7 .7" />
             </svg>
-
-            <svg data-tip="Currently using dark mode" className="h-8 w-8 text-white cursor-pointer"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round" onClick={() => toggleDark('dark')}>  
+{/* 
+            <svg data-tip="Currently using dark mode" className="h-9 w-9 text-white cursor-pointer"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round" onClick={() => toggleDark('dark')}>  
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
+            </svg> */}
           </div>
           </>
         ) : (
           <>
           <div className="inline-flex">
-            <svg data-tip="Currently using light mode" className="h-8 w-8 text-white cursor-pointer"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" onClick={() => toggleDark('light')}>  
+{/*             <svg data-tip="Currently using light mode" className="h-9 w-9 text-white cursor-pointer"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" onClick={() => toggleDark('light')}>  
                 <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="4" />  
                 <path d="M3 12h1M12 3v1M20 12h1M12 20v1M5.6 5.6l.7 .7M18.4 5.6l-.7 .7M17.7 17.7l.7 .7M6.3 17.7l-.7 .7" />
-            </svg>
+            </svg> */}
 
-            <svg data-tip="switch to dark mode" className="h-8 w-8 text-mag-blue cursor-pointer"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round" onClick={() => toggleDark('dark')}>  
+            <svg data-tip="switch to dark mode" className="h-9 w-9 text-mag-blue cursor-pointer"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round" onClick={() => toggleDark('dark')}>  
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </div>

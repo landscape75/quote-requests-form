@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 
 export default function Footer() {
     const [curYear, setYear] = useState('')
-    const [version] = useState('2021.01.19.b')
+    const [version] = useState('2021.01.21.a')
 
     useEffect(() => {
         setYear(new Date().getFullYear().toString())
@@ -59,6 +60,8 @@ export default function Footer() {
                 &copy; {curYear} Cornerstone Wall Solutions. All rights reserved. - { version }
             </p>
             </div>
+
+            {/* <Image src="/canada.svg" alt="" width="32" height="24"/> */}
 
         </div>
         </footer>
