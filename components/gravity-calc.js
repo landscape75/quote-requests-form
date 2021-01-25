@@ -1,50 +1,28 @@
 import { useState, useEffect } from 'react'
 import userbase from 'userbase-js'
 import Image from 'next/image'
+import {wallData} from '../public/walldata'
 
-function Todo({ name, done, toggleComplete, deleteTodo }) {
-  return (
-    <li className="my-4">
-      <div className="flex items-center">
-        <span className={done ? 'text-gray-400' : 'text-gray=800 dark:text-white'}>{name}</span>
-        <button
-          type="button"
-          className="mx-4 p-1 rounded bg-purple-400 text-white font-bold"
-          onClick={(e) => {
-            e.preventDefault()
-            toggleComplete()
-          }}
-        >
-          {done ? 'Not done' : 'Done'}
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault()
-            deleteTodo()
-          }}
-          className=" p-1 bg-red-500 text-white rounded font-bold"
-        >
-          Delete
-        </button>
-      </div>
-    </li>
-  )
-}
+function GravityCalc(user) {
+  const [share, setShareToken] = useState('')
+  const [heights, setHeights] = useState([])
+  const [selectedCase, setSelectedCase] = useState(0)
+  const [selectedHeight, setSelectedHeight] = useState(0)
 
-function GravityCalc() {
-  const [newTodo, setNewTodo] = useState('')
-  const [todos, setTodos] = useState([])
-  const [disabled, setDisabled] = useState()
+  const [baseWidth, setBaseWidth] = useState(0)
+  const [soilType, setSoilType] = useState('')
+  const [wallHeight, setWallHeight] = useState('')
+
 
   useEffect(() => {
     async function openDatabase() {
       try {
         console.log('opening db...')
+        console.log(user.user.profile.name)
         await userbase.openDatabase({
-          databaseName: 'next-userbase-todos',
+          databaseName: user.user.profile.dbName,
           changeHandler: function (items) {
-            setTodos(items)
+            //setTodos(items)
           },
         })
       } catch (e) {
@@ -52,14 +30,32 @@ function GravityCalc() {
       }
     }
     openDatabase()
+    console.log(wallData)
   }, [])
+
+  useEffect(() => {
+    calcWall()
+  }, [selectedCase, selectedHeight, heights]);
+  
+
+  async function shareDatabase() {
+    try {
+      await userbase.shareDatabase({
+        databaseName: user.user.profile.dbName,
+      }).then(({ shareToken }) => {
+        setShareToken(shareToken)
+      })
+    } catch (e) {
+      console.error(e.message)
+    }
+  }
 
   async function addTodo(e) {
     e.preventDefault()
     setDisabled(true)
     try {
       await userbase.insertItem({
-        databaseName: 'next-userbase-todos',
+        databaseName: user.user.profile.dbName,
         item: { name: newTodo, done: false },
       })
       setNewTodo('')
@@ -73,7 +69,7 @@ function GravityCalc() {
   async function toggleComplete(itemId, currentValue) {
     try {
       await userbase.updateItem({
-        databaseName: 'next-userbase-todos',
+        databaseName: user.user.profile.dbName,
         item: { ...currentValue, done: !currentValue.done },
         itemId,
       })
@@ -91,7 +87,7 @@ function GravityCalc() {
     setDisabled(true)
     try {
       await userbase.deleteItem({
-        databaseName: 'next-userbase-todos',
+        databaseName: user.user.profile.dbName,
         itemId,
       })
       setNewTodo('')
@@ -102,35 +98,74 @@ function GravityCalc() {
     }
   }
 
+  async function handleCaseSelect(e) {
+    await setSelectedCase(e)
+    
+    //await handleHeightSelect(selectedHeight - 1)
+    //await calcWall()
+    
+
+  }
+
+  async function handleHeightSelect(e) {
+    await setSelectedHeight(e)
+    //await setBaseWidth(heights[e - 1].baseWidth)
+    //await calcWall()
+  }
+
+  async function calcWall() {
+    await setHeights(wallData.cases[selectedCase - 1].heights)
+    await setWallHeight(heights[selectedHeight - 1].description)
+    await setBaseWidth(heights[selectedHeight - 1].baseWidth)
+    await setSoilType(wallData.cases[selectedCase - 1].description)
+
+  }
+
   return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 p-3">
         <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-gray-900 bg-white dark:bg-gray-900 px-6 py-5 flex space-x-3">
           <div className="flex-1 min-w-0">
               <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                Wall Details
+                Wall Details {selectedCase} - {selectedHeight} - {baseWidth}
               </p>
               <form className="space-y-4 md:space-y-2 lg:space-y-2 divide-gray-200 dark:divide-gray-700">
                 <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
-                  <label for="height" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
-                    Soil Type
+                  <label htmlFor="case" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                    Soil Type / Load
                   </label>
                   <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
-                    <select id="height" name="country" autocomplete="height" className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md">
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
+                    <select 
+                      id="case" 
+                      name="case" 
+                      autoComplete="case" 
+                      value={selectedCase}
+                      onChange={(e) => handleCaseSelect(e.target.value)}
+                      className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
+                    >
+                      <option value="0">Select Soil Type / Load</option>
+                      {wallData.cases.map((option, index) => (
+                        <option key={index} value={option.id}>{option.description}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
                 <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
-                  <label for="height" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                  <label htmlFor="height" className="block text-sm font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
                     Wall Height
                   </label>
                   <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
-                    <select id="height" name="country" autocomplete="height" className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md">
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
+                    <select 
+                      id="height" 
+                      name="height" 
+                      autoComplete="height" 
+                      value={selectedHeight}
+                      className="max-w-lg block bg-white dark:bg-gray-300 focus:ring-indigo-500 focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
+                      onChange={(e) => handleHeightSelect(e.target.value)}
+                    >
+                      <option value="0">Select Height</option>
+                      {heights.map((option, index) => (
+                        <option key={index} value={option.id}>{option.description}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -164,7 +199,7 @@ function GravityCalc() {
                               Wall height
                             </td>
                             <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                              8 ft.
+                              { wallHeight }
                             </td>
                           </tr>                          
                           <tr>
@@ -172,7 +207,7 @@ function GravityCalc() {
                               Soil Type
                             </td>
                             <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                              28
+                              { soilType }
                             </td>
                           </tr>
                           <tr>
@@ -214,7 +249,17 @@ function GravityCalc() {
               </p>
           </div>
         </div>
+        <div>
+          <button className="truncate inline-flex items-center justify-center px-4 py-2 sm:px-2 lg:px-4 md:px-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={shareDatabase}>
+            Share Database
+          </button>
+          <div className="mt-3 text-gray-700 dark:text-gray-100">
+            {share}
+          </div>
+        </div>
+
       </div>
+      
   )
 }
 

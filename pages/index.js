@@ -9,12 +9,12 @@ function Index({ user }) {
         <title>Magnumstone Calculator</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-1 sm:mt-10 md:px-1">
+      <div className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-1 sm:mt-10">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl mb-6 ml-4">
               <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
             </h1>
-        <GravityCalc />
+        <GravityCalc user={user}/>
       </div>
       </>
     )
@@ -27,7 +27,7 @@ function Index({ user }) {
         <title>Sign in to Magnumstone Calculator</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <main className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-4 sm:mt-10">
+      <div className="mt-10 pt-5 bg-white dark:bg-gray-800 mx-auto max-w-7xl px-4 sm:mt-10">
 
         {/* <div className="text-center"> */}
           
@@ -35,7 +35,7 @@ function Index({ user }) {
               <span className="block xl:inline md:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline"> Wall Calculator</span>
             </h1>
-            <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-500">
+            <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-700 dark:text-gray-200">
               <p>
                 These preliminary details are intended soley to act as an aid when designing a wall. These drawings should not be used for final design or construction.
                 Each site-specific wall should be certified and signed by a registered geotechnical engineer in the Sate or Province where it is being built. the accuarcy 
@@ -59,7 +59,7 @@ function Index({ user }) {
             </div>
           </div> */}
         {/* </div> */}
-      </main>
+      </div>
       </>
     )
   }

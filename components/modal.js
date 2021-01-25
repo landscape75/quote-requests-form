@@ -4,8 +4,14 @@ import userbase from 'userbase-js'
 function LoginModal({ toggle, modalType, setUser }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [city, setCity] = useState('')
+  const [dbName, setDBname] = useState('magnumstone')
   const [loading, setLoading] = useState()
+  const [rememberMe, setRememberMe] = useState('none')
   const [error, setError] = useState()
+  
 
   useEffect(() => {
     setError('')
@@ -18,7 +24,10 @@ function LoginModal({ toggle, modalType, setUser }) {
       const user = await userbase.signUp({
         username,
         password,
-        rememberMe: 'none',
+        email: email,
+        profile: {dbName: dbName, name: name, city: city},
+        rememberMe: rememberMe,
+        sessionLenght: 8760,
       })
       setUser(user)
       setLoading(false)
@@ -36,7 +45,8 @@ function LoginModal({ toggle, modalType, setUser }) {
       const user = await userbase.signIn({
         username,
         password,
-        rememberMe: 'none',
+        rememberMe: rememberMe,
+        sessionLenght: 8760,
       })
       setUser(user)
       setLoading(false)
@@ -44,6 +54,15 @@ function LoginModal({ toggle, modalType, setUser }) {
     } catch (e) {
       setLoading(false)
       setError(e.message)
+    }
+  }
+
+  function handleCheck(e) {
+    if (e) {
+      setRememberMe('local')
+    }
+    else {
+      setRememberMe('none')
     }
   }
 
@@ -69,22 +88,73 @@ function LoginModal({ toggle, modalType, setUser }) {
           
         </div>
         <form className="mt-8 space-y-6">
-          {/* <input type="hidden" name="remember" value="true"> */}
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
-              <input id="email-address" 
-                name="email" 
-                type="email" 
-                autoComplete="email" 
+              <label htmlFor="username" className="sr-only">Username</label>
+              <input id="username" 
+                name="username" 
+                type="text" 
                 required 
                 className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
-                placeholder="Email address" 
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
+            {modalType != 'logIn' &&
+              <>
+                <div>
+                  <label htmlFor="email-address" className="sr-only">Email Address</label>
+                  <input id="email-address" 
+                    name="email" 
+                    type="email" 
+                    autoComplete="email" 
+                    required 
+                    className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
+                    placeholder="Email Address" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="name" className="sr-only">Name</label>
+                  <input id="name" 
+                    name="name" 
+                    type="text" 
+                    required 
+                    className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
+                    placeholder="Full Name" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="city" className="sr-only">City</label>
+                  <input id="city" 
+                    name="city" 
+                    type="text" 
+                    required 
+                    className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
+                    placeholder="City" 
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="dbname" className="sr-only">Database Name</label>
+                  <input id="dbname" 
+                    name="dbname" 
+                    type="text" 
+                    required 
+                    className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
+                    placeholder="Database Name" 
+                    value={dbName}
+                    onChange={(e) => setDBname(e.target.value)}
+                  />
+                </div>
+              </>
+            }
+
             <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <input id="password" 
@@ -98,11 +168,19 @@ function LoginModal({ toggle, modalType, setUser }) {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <input id="remember_me" name="remember_me" type="checkbox" className="h-4 w-4 text-mag-blue focus:ring-mag-blue border-gray-300 rounded" />
+              <input id="remember_me" 
+                name="remember_me" 
+                type="checkbox" 
+                // value={rememberMe} 
+                //isChecked={rememberMe}
+                className="h-4 w-4 text-mag-blue focus:ring-mag-blue border-gray-300 rounded" 
+                onChange={(e) => handleCheck(e.target.checked)}
+              />
               <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900 dark:text-white">
                 Remember me
               </label>
