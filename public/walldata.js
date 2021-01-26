@@ -1,7 +1,7 @@
 export const wallData = {cases: [
         {
             id: '1',
-            description: 'Select Fill 28 - No Load',
+            description: 'Select Fill 28° - No Load',
             heights: [
                 {
                     id: '1',
@@ -47,7 +47,7 @@ export const wallData = {cases: [
         },
         {
             id: '2',
-            description: 'Retaining Soil 30 - No Load',
+            description: 'Retaining Soil 30° - No Load',
             heights: [
                 {
                     id: '1',
@@ -93,7 +93,7 @@ export const wallData = {cases: [
         },
         {
             id: '3',
-            description: 'Retaining Soil 28 - No Load',
+            description: 'Retaining Soil 28° - No Load',
             heights: [
                 {
                     id: '1',
@@ -139,7 +139,7 @@ export const wallData = {cases: [
         },
         {
             id: '4',
-            description: 'Select Fill 28 - 3:1 Slope',
+            description: 'Select Fill 28° - 3:1 Slope',
             heights: [
                 {
                     id: '1',
@@ -185,7 +185,7 @@ export const wallData = {cases: [
         },
         {
             id: '5',
-            description: 'Retaining Soil 30 - 3:1 Slope',
+            description: 'Retaining Soil 30° - 3:1 Slope',
             heights: [
                 {
                     id: '1',
@@ -231,7 +231,7 @@ export const wallData = {cases: [
         },
         {
             id: '6',
-            description: 'Retaining Soil 28 - 3:1 Slope',
+            description: 'Retaining Soil 28° - 3:1 Slope',
             heights: [
                 {
                     id: '1',
@@ -277,7 +277,7 @@ export const wallData = {cases: [
         },
         {
             id: '7',
-            description: 'Select Fill 28 - 250 PSF',
+            description: 'Select Fill 28° - 250 PSF',
             heights: [
                 {
                     id: '1',
@@ -323,7 +323,7 @@ export const wallData = {cases: [
         },
         {
             id: '8',
-            description: 'Retaining Soil 30 - 250 PSF',
+            description: 'Retaining Soil 30° - 250 PSF',
             heights: [
                 {
                     id: '1',
@@ -369,7 +369,7 @@ export const wallData = {cases: [
         },
         {
             id: '9',
-            description: 'Retaining Soil 28 - 250 PSF',
+            description: 'Retaining Soil 28° - 250 PSF',
             heights: [
                 {
                     id: '1',

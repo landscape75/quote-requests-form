@@ -68,7 +68,7 @@ function LoginModal({ toggle, modalType, setUser }) {
 
   return (
 
-    <div className="flex items-center rounded-lg  shadow-lg justify-center bg-white dark:bg-gray-700 pt-3 pb-4 px-4 mb-4 sm:px-6 lg:px-8">
+    <div className="flex items-center rounded-lg  shadow-lg justify-center bg-white dark:bg-mag-grey-600 pt-3 pb-4 px-4 mb-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6">
         <div>
           {/* <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt=""/> */}

@@ -13,7 +13,7 @@ export default function Footer() {
 
     return (
 
-    <footer className="bg-white dark:bg-gray-800 mx-auto p-4">
+    <footer className="bg-white dark:bg-mag-grey mx-auto p-4">
         <div className="relative pt-20 pb-0">
             <div className="absolute inset-0 flex items-center" aria-hidden="true">
                 <div className="w-full border-t border-gray-300 dark:border-gray-400"></div>
