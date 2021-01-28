@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function Footer() {
     const [curYear, setYear] = useState('')
-    const [version] = useState('2021.01.21.b')
+    const [version] = useState('2021.01.26.a')
 
     useEffect(() => {
         setYear(new Date().getFullYear().toString())
