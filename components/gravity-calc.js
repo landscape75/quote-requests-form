@@ -30,7 +30,7 @@ function GravityCalc(user) {
   const [totalBlocks, setTotalBlocks] = useState(0)
   const [totalExt24, setTotalExt24] = useState(0)
   const [totalExt48, setTotalExt48] = useState(0)
-  const [blockCrush, setBlockCrush] = useState(9)
+  const [blockCrush, setBlockCrush] = useState(6.35)
   const [ext24Crush, setExt24Crush] = useState(16)
   const [ext48Crush, setExt48Crush] = useState(32)
 
@@ -105,7 +105,7 @@ function GravityCalc(user) {
       }).then((item) => {
         setEditWall(true)
         setEditItemId(id)
-        toast.success('Wall saved to the cloud.', {duration: 5000, id: toastId})
+        toast.success('Wall saved to the cloud.', {duration: 4000, id: toastId})
       })
     } catch (e) {
       console.error(e.message)
@@ -120,17 +120,26 @@ function GravityCalc(user) {
   async function updateWall() {
     
     setShowMenu(false)
-    const toastId = toast.loading('Saving...');
+    const toastId = toast.loading('Updating...');
     try {
       await userbase.updateItem({
         databaseName: user.user.profile.dbName,
         item: { description: wallDescription, case: selectedCase, height: selectedHeight, length: wallLength },
         itemId: editItemId,
       })
-      toast.success('Changes have been saved.', {duration: 5000, id: toastId})
+      toast.success('Changes have been saved.', {duration: 4000, id: toastId})
+/*       toast.success(
+        (t) => (
+          <span>
+            Custom and <b>bold! </b>
+            <button onClick={() => toast.dismiss(t.id)}> Dismiss</button>
+          </span>
+        ),
+      ); */
     } catch (e) {
       console.error(e.message)
       toast.error('Failed to save changes. - ' + e.message, {duration: 5000})
+
     }
 
   }
@@ -287,7 +296,7 @@ function GravityCalc(user) {
     doc.autoTable({startY: 39, html: "#order-details", useCss: true, theme: 'grid', includeHiddenHtml: true});
     let finalY = doc.previousAutoTable.finalY;
     
-    //doc.addImage(printimage, 'png', 13.5, finalY)
+    doc.addImage('crosssection.png', 'png', 13.5, finalY, 50, 45)
 
     doc.setDrawColor('#009ade')
     doc.line(14, finalY + 128, 202, finalY + 128)
@@ -641,7 +650,9 @@ function GravityCalc(user) {
               <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
                 Cross-section
               </p>
-              {/* <Image src="/test.png" alt="" width="451" height="541"/> */}
+              <div className="p-3 rounded-md bg-white">
+                <Image src="/crosssection.png" alt="" width="287" height="224"/>
+              </div>
           </div>
         </div>
 
