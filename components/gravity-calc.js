@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import userbase from 'userbase-js'
 import Image from 'next/image'
 import {wallData} from '../public/walldata'
@@ -30,15 +30,16 @@ function GravityCalc(user) {
   const [totalBlocks, setTotalBlocks] = useState(0)
   const [totalExt24, setTotalExt24] = useState(0)
   const [totalExt48, setTotalExt48] = useState(0)
-  const [blockCrush, setBlockCrush] = useState(6.35)
-  const [ext24Crush, setExt24Crush] = useState(16)
-  const [ext48Crush, setExt48Crush] = useState(32)
+  const [blockCrush] = useState(6.35)
+  const [ext24Crush] = useState(16)
+  const [ext48Crush] = useState(32)
 
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
 
     async function openDatabase() {
+      const toastId = toast.loading('Loading saved walls...');
       try {
         console.log('opening db...')
         console.log(user.user.profile.name)
@@ -48,16 +49,20 @@ function GravityCalc(user) {
           changeHandler: function (items) {
             setSavedWalls(items)
           },
+          
         })
+        toast.success('Saved walls loaded.', {duration: 2000, id: toastId})
       } catch (e) {
         console.error(e.message)
+        toast.remove(toastId)
+        //toast.error('Failed to open database. - ' + e.message, {duration: 5000})
       }
       
     }
 
     openDatabase()
 
-  }, [])
+  }, [user])
 
   /////////////////////////////////////////////////////////////
 
@@ -138,6 +143,7 @@ function GravityCalc(user) {
       ); */
     } catch (e) {
       console.error(e.message)
+      toast.dismiss(toastId)
       toast.error('Failed to save changes. - ' + e.message, {duration: 5000})
 
     }
@@ -240,8 +246,8 @@ function GravityCalc(user) {
 
     setEditWall(false)
     setEditItemId('')
-    setSelectedCase('o')
-    setSelectedHeight('0')
+    setSelectedCase(-1)
+    setSelectedHeight(-1)
     setWallLength(12)
     setWallDescription('New wall')
     setWallHeight('')
@@ -461,36 +467,29 @@ function GravityCalc(user) {
 
                         {editWall == false ? (
                           <a href="#" className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" onClick={() => saveWall()}>
-                            
-                            <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
-                              <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                            <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
                             Save
                           </a>
                         ) : (
                           <a href="#" className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" onClick={() => updateWall()}>
-                          
-                            <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
-                              <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                            <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
                             Update
                           </a>
                         )
                         }
                         <a href="#" className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" onClick={() => printQuote('print')}>
-                          
-                          <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
-                            <path fillRule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clipRule="evenodd" />
+                          <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                           </svg>
                           Print
                         </a>
                         <a href="#" className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" onClick={() => printQuote('save')}>
-                          
-                          <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
+                          <svg className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                           PDF
                         </a>

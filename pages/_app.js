@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
     }).then((session) => {
       if (session.user) {
         setUser(session.user)
+        console.log(session.user)
       }
       else {
         console.log('No session')
