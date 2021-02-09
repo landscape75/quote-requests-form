@@ -3,7 +3,7 @@ import userbase from 'userbase-js'
 import Link from 'next/link'
 
 function UserInfo({ user }) {
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState(user.user.username)
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -199,7 +199,7 @@ function UserInfo({ user }) {
             
           </div>
 
-          <div class="inline-flex w-full space-x-4 justify-right">
+          <div className="inline-flex w-full space-x-4 justify-right">
               <Link href="/">
                 <button 
                   className="group relative w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 

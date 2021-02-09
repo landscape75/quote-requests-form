@@ -9,7 +9,7 @@ import 'jspdf-autotable'
 
 function GravityCalc(user) {
   const [fullYear, setYear] = useState(new Date().getFullYear().toString())
-  const [version] = useState('2021.01.26.a')
+  const [version] = useState('2021.02.28.a')
   const [showMenu, setShowMenu] = useState(false)
 
   const [savedWalls, setSavedWalls] = useState([]) 
@@ -27,6 +27,7 @@ function GravityCalc(user) {
   const [totalCrush, setTotalCrush] = useState(0)
   const [soilType, setSoilType] = useState('')
   const [wallHeight, setWallHeight] = useState('')
+  const [totalBaseBlocks, setTotalBaseBlocks] = useState(0)
   const [totalBlocks, setTotalBlocks] = useState(0)
   const [totalExt24, setTotalExt24] = useState(0)
   const [totalExt48, setTotalExt48] = useState(0)
@@ -208,7 +209,8 @@ function GravityCalc(user) {
     await setWallHeight(heights[selectedHeight - 1].description)
     await setBaseWidth(heights[selectedHeight - 1].baseWidth)
     await setSoilType(wallData.cases[selectedCase - 1].description)
-    await setTotalBlocks(Math.ceil(heights[selectedHeight - 1].blocks * (Math.ceil(wallLength / 4))))
+    await setTotalBaseBlocks(Math.ceil(wallLength / 4))
+    await setTotalBlocks((Math.ceil(heights[selectedHeight - 1].blocks * (Math.ceil(wallLength / 4)))) - totalBaseBlocks)
     await setTotalExt24(Math.ceil(heights[selectedHeight - 1].ext24 * (Math.ceil(wallLength / 4))))
     await setTotalExt48(Math.ceil(heights[selectedHeight - 1].ext48 * (Math.ceil(wallLength / 4))))
 
@@ -561,7 +563,15 @@ function GravityCalc(user) {
                           </tr>
                           <tr className="divide-x divide-gray-200">
                             <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                              Total Blocks
+                              Total Base Blocks
+                            </td>
+                            <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
+                              { totalBaseBlocks } pieces
+                            </td>
+                          </tr>
+                          <tr className="divide-x divide-gray-200">
+                            <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
+                              Total Standard Blocks
                             </td>
                             <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
                               { totalBlocks } pieces
