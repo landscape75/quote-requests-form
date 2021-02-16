@@ -14,10 +14,12 @@ import sendgrid from '@sendgrid/mail';
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
+//to: ['alain@cornerstonewallsolutions.com', 'dave@cornerstonewallsolutions.com'],
+
 export default async (req, res) => {
   try {
     await sendgrid.send({
-      to: ['alain@cornerstonewallsolutions.com', 'dave@cornerstonewallsolutions.com'],
+      to: ['dermot@clarasolutions.com'],
       bcc: 'tomredf@gmail.com',
       from: 'dermot@claraprojects.com',
       subject: 'New MagnumStone Wall Calculator Signup',

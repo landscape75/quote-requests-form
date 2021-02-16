@@ -6,7 +6,7 @@ function EditUser({ user }) {
     return (
       <>
       <Head>
-        <title>Edit user Information</title>
+        <title>Edit User Information</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="mt-10 pt-5 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-1 sm:mt-10">
@@ -14,7 +14,7 @@ function EditUser({ user }) {
               <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
             </h1> */}
-        <UserInfo user={user}/>
+        <UserInfo user={user} />
       </div>
       </>
     )

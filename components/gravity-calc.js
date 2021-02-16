@@ -507,14 +507,39 @@ function GravityCalc(user) {
                           </div>
                         }
                       </div>
+
                     </div>
 }
                   </div>
-                  
+
+                </div>
+
+
+                <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5 border border-gray-200 dark:border-mag-grey-200 border-b-0 border-l-0 border-r-0 mt-5">
+                  <label htmlFor="saved" className="block text-smd font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                    Saved Walls
+                  </label>
+                  <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
+                    <select 
+                      id="saved" 
+                      name="saved" 
+                      autoComplete="saved" 
+                      className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
+                      onChange={(e) => loadSavedWall(e.target.value)}
+
+                    >
+                      <option value="-1">- Select saved wall to open -</option>
+                      {savedWalls.map((option, index) => (
+                        <option key={index} value={index}>{option.item.description}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               
           </div>
         </div>
+
+        {/* //////////// Results Section ////////////// */}
 
         <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3">
           <div className="flex-1 min-w-0">
@@ -523,7 +548,7 @@ function GravityCalc(user) {
               </p>
               <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="py-3 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden border border-gray-200 rounded-md">
                       <table className="min-w-full divide-y divide-gray-200" id="order-details">
 {/*                         <thead className="bg-gray-50">
@@ -630,26 +655,7 @@ function GravityCalc(user) {
                 </div>
               </div>
 
-              <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
-                  <label htmlFor="saved" className="block text-smd font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
-                    Saved Walls
-                  </label>
-                  <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
-                    <select 
-                      id="saved" 
-                      name="saved" 
-                      autoComplete="saved" 
-                      className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                      onChange={(e) => loadSavedWall(e.target.value)}
 
-                    >
-                      <option value="-1">- Select saved wall to open -</option>
-                      {savedWalls.map((option, index) => (
-                        <option key={index} value={index}>{option.item.description}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
 
           </div>
         </div>

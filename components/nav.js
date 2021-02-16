@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import LoginModal from './modal'
 import Image from 'next/image'
 import ReactTooltip from 'react-tooltip';
+import Link from 'next/link'
 
 import userbase from 'userbase-js'
 
@@ -78,11 +79,20 @@ export default function Nav({ user, setUser }) {
             </button>
           </>
         ) : (
-        
+          
+          <>
           <button className="truncate inline-flex items-center justify-center px-4 py-2 sm:px-2 lg:px-4 md:px-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={logOut}>
             Sign Out
           </button>
 
+          <Link href="edit-user">
+            <button 
+              className="group relative w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+            >
+              Profile
+            </button>
+          </Link>
+          </>
         )
 
         }

@@ -1,6 +1,6 @@
 import GravityCalc from '../components/gravity-calc'
 import Head from 'next/head'
-import Link from 'next/link'
+//import Link from 'next/link'
 
 function Index({ user }) {
   if (user) {
@@ -15,9 +15,9 @@ function Index({ user }) {
               <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
             </h1>
-            <Link href="edit-user">
+{/*             <Link href="edit-user">
                 <a className="text-gray-400 hover:text-gray-500">Edit User</a>
-            </Link>
+            </Link> */}
         <GravityCalc user={user}/>
       </div>
       </>

@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import userbase from 'userbase-js'
 import Link from 'next/link'
+import toast from 'react-hot-toast';
 
 function UserInfo({ user }) {
-  const [username, setUsername] = useState(user.user.username)
-  const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [city, setCity] = useState('')
+  const [username, setUsername] = useState(user.username)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [email, setEmail] = useState(user.email)
+  const [name, setName] = useState(user.profile.name)
+  const [city, setCity] = useState(user.profile.city)
+  const [state, setState] = useState(user.profile.state)
   const [dbName, setDBname] = useState('magnumstone')
   const [loading, setLoading] = useState()
   const [rememberMe, setRememberMe] = useState('none')
@@ -18,75 +21,50 @@ function UserInfo({ user }) {
     setError('')
   }, [])
 
-  async function handleSignUp(e) {
+  async function handleUpdate(e) {
+    //const toastId = toast.loading('Saving...');
     e.preventDefault()
     setLoading(true)
-    try {
-      const user = await userbase.signUp({
-        username,
-        password,
-        email: email,
-        profile: {dbName: dbName, name: name, city: city},
-        rememberMe: rememberMe,
-        sessionLenght: 8760,
-      })
-      setUser(user)
-      setLoading(false)
-      toggle(false)
-    } catch (e) {
-      setLoading(false)
-      setError(e.message)
-    }
-  }
-
-  async function handleLogIn(e) {
-    e.preventDefault()
-    setLoading(true)
-    try {
-      const user = await userbase.signIn({
-        username,
-        password,
-        rememberMe: rememberMe,
-        sessionLenght: 8760,
-      })
-      setUser(user)
-      await sendMail()
-      setLoading(false)
-      toggle(false)
-    } catch (e) {
-      setLoading(false)
-      setError(e.message)
-    }
-  }
-
-  function handleCheck(e) {
-    if (e) {
-      setRememberMe('local')
+    setError('')
+    if (newPassword === '') {
+      try {
+        const user = await userbase.updateUser({
+          username: username,
+          //currentPassword: currentPassword,
+          //newPassword: newPassword,
+          email: email,
+          profile: {dbName: dbName, name: name, city: city, state: state},
+        })
+        //setUser(user)
+        setLoading(false)
+        toast.success('Profile saved.', {duration: 4000})
+      } catch (e) {
+        setLoading(false)
+        setError(e.message)
+        toast.remove(toastId)
+        toast.error('Failed to save profile. - ' + e.message, {duration: 5000})
+      }
     }
     else {
-      setRememberMe('none')
-    }
-  }
-
-  async function sendMail() {
-
-    let response = await fetch(`https://wallcalculator.com/api/email` , {
-      method: 'POST',
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        city: city,
-        //state: state
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+      try {
+        const user = await userbase.updateUser({
+          username: username,
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+          email: email,
+          profile: {dbName: dbName, name: name, city: city, state: state},
+        })
+        //setUser(user)
+        setLoading(false)
+        toast.success('Profile saved.', {duration: 4000})
+      } catch (e) {
+        setLoading(false)
+        setError(e.message)
+        toast.remove(toastId)
+        toast.error('Failed to save profile. - ' + e.message, {duration: 5000})
       }
-    })
+    }
 
-    let data = await response.json();
-    
-    console.log(data);
-    return data
   }
 
   function goBack() {
@@ -98,9 +76,12 @@ function UserInfo({ user }) {
     <div className="flex items-center rounded-lg max-w-lg  mx-auto shadow-lg justify-center bg-white dark:bg-mag-grey-600 pt-3 pb-4 px-4 mb-4 sm:px-6 lg:px-8">
       <div className="max-w-lg w-full space-y-6">
         <div>
-          {/* <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt=""/> */}
-          <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+{/*           <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+          </svg> */}
+
+          <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
 
           <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
@@ -147,19 +128,38 @@ function UserInfo({ user }) {
             </div>
 
             <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
-              <label htmlFor="password" className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
-                Password
+              <label htmlFor="current-password" className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                Current Password
               </label>
               <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-3 lg:col-span-2">
                 <input 
-                  id="password" 
-                  name="password" 
+                  id="current-password" 
+                  name="current-password" 
                   type="password" 
-                  autoComplete="current-password" 
-                  value={password}
-                  placeholder="Username"
+                  autoComplete="secure-password" 
+                  value={currentPassword}
+                  placeholder="Leave blank if not changing password"
                   className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                >
+                </input>
+              </div>
+            </div>
+
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+              <label htmlFor="new-password" className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                New Password
+              </label>
+              <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-3 lg:col-span-2">
+                <input 
+                  id="new-password" 
+                  name="new-password" 
+                  type="password" 
+                  autoComplete="new-password" 
+                  value={newPassword}
+                  placeholder="Leave blank if not changing password"
+                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setNewPassword(e.target.value)}
                 >
                 </input>
               </div>
@@ -218,35 +218,53 @@ function UserInfo({ user }) {
                 </input>
               </div>
             </div>
+
+
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+              <label htmlFor="state" className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2">
+                State
+              </label>
+              <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-3 lg:col-span-2">
+                <input 
+                  id="state" 
+                  name="state" 
+                  type="text"
+                  value={state}
+                  placeholder="State"
+                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setState(e.target.value)}
+                >
+                </input>
+              </div>
+            </div>
             
           </div>
 
-          <div className="inline-flex w-full space-x-4 justify-right">
+          <div className="inline-flex w-full space-x-4 justify-center">
               <Link href="/">
                 <button 
-                  className="group relative w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+                  className="group relative w-1/5 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
                   disabled={loading} 
-                  //onClick={goBack}
                 >
-                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+{/*                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <svg className="h-5 w-5 text-mag-blue group-hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                     </svg>
-                  </span>
+                  </span> */}
                      Cancel
                 </button>
               </Link>
  
               <button 
-                className="group relative w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+                className="group relative w-1/5 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
                 disabled={loading} 
-                onClick={handleSignUp}
+                onClick={handleUpdate}
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+{/*                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg className="h-5 w-5 text-mag-blue group-hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
-                </span>
+                </span> */}
                 {loading ? 'Saving ...' : 'Save'}
               </button>
        

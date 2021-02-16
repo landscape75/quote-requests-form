@@ -7,6 +7,7 @@ function LoginModal({ toggle, modalType, setUser }) {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [city, setCity] = useState('')
+  const [state, setState] = useState('')
   const [dbName, setDBname] = useState('magnumstone')
   const [loading, setLoading] = useState()
   const [rememberMe, setRememberMe] = useState('none')
@@ -25,7 +26,7 @@ function LoginModal({ toggle, modalType, setUser }) {
         username,
         password,
         email: email,
-        profile: {dbName: dbName, name: name, city: city},
+        profile: {dbName: dbName, name: name, city: city, state: state},
         rememberMe: rememberMe,
         sessionLenght: 8760,
       })
@@ -138,6 +139,18 @@ function LoginModal({ toggle, modalType, setUser }) {
                     placeholder="City" 
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="state" className="sr-only">State / Province</label>
+                  <input id="state" 
+                    name="state" 
+                    type="text" 
+                    required 
+                    className="appearance-none rounded-none relative block w-full bg-white dark:bg-gray-100 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-mag-blue focus:border-mag-blue focus:z-10 sm:text-sm" 
+                    placeholder="State" 
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
                   />
                 </div>
                 <div>
