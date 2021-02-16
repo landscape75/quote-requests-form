@@ -9,7 +9,7 @@ function UserInfo({ user }) {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [email, setEmail] = useState(user.email)
-  const [name, setName] = useState(user.profile.name)
+  const [name, setName] = useState('')
   const [city, setCity] = useState(user.profile.city)
   const [state, setState] = useState(user.profile.state)
   const [dbName, setDBname] = useState('magnumstone')
