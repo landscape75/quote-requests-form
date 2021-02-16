@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect } from 'react'
 import userbase from 'userbase-js'
 import Image from 'next/image'
 import {wallData} from '../public/walldata'
@@ -7,9 +7,9 @@ import toast from 'react-hot-toast';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
-function GravityCalc(user) {
+function GravityCalc({ user }) {
   const [fullYear, setYear] = useState(new Date().getFullYear().toString())
-  const [version] = useState('2021.02.28.a')
+  const [version] = useState('2021.02.16.a')
   const [showMenu, setShowMenu] = useState(false)
 
   const [savedWalls, setSavedWalls] = useState([]) 
@@ -43,10 +43,10 @@ function GravityCalc(user) {
       const toastId = toast.loading('Loading saved walls...');
       try {
         console.log('opening db...')
-        console.log(user.user.profile.name)
+        console.log(user.profile.name)
         
         await userbase.openDatabase({
-          databaseName: user.user.profile.dbName,
+          databaseName: user.profile.dbName,
           changeHandler: function (items) {
             setSavedWalls(items)
           },
