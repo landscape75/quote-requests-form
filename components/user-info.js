@@ -50,6 +50,7 @@ function UserInfo({ user }) {
         sessionLenght: 8760,
       })
       setUser(user)
+      await sendMail()
       setLoading(false)
       toggle(false)
     } catch (e) {
@@ -65,6 +66,27 @@ function UserInfo({ user }) {
     else {
       setRememberMe('none')
     }
+  }
+
+  async function sendMail() {
+
+    let response = await fetch(`https://wallcalculator.com/api/email` , {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        city: city,
+        //state: state
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    })
+
+    let data = await response.json();
+    
+    console.log(data);
+    return data
   }
 
   function goBack() {
