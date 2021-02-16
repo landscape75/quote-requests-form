@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
-function GravityCalc({ user }) {
+function GravityCalc(user) {
   const [fullYear, setYear] = useState(new Date().getFullYear().toString())
   const [version] = useState('2021.02.28.a')
   const [showMenu, setShowMenu] = useState(false)
@@ -43,10 +43,10 @@ function GravityCalc({ user }) {
       const toastId = toast.loading('Loading saved walls...');
       try {
         console.log('opening db...')
-        console.log(user.profile.name)
+        console.log(user.user.profile.name)
         
         await userbase.openDatabase({
-          databaseName: user.profile.dbName,
+          databaseName: user.user.profile.dbName,
           changeHandler: function (items) {
             setSavedWalls(items)
           },

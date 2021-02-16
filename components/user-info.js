@@ -3,15 +3,15 @@ import userbase from 'userbase-js'
 import Link from 'next/link'
 import toast from 'react-hot-toast';
 
-function UserInfo({ user }) {
+function UserInfo(user) {
   console.log(user)
-  const [username, setUsername] = useState(user.username)
+  const [username, setUsername] = useState(user.user.username)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [email, setEmail] = useState(user.email)
-  const [name, setName] = useState(user.profile.name)
-  const [city, setCity] = useState(user.profile.city)
-  const [state, setState] = useState(user.profile.state)
+  const [email, setEmail] = useState(user.user.email)
+  const [name, setName] = useState(user.user.profile.name)
+  const [city, setCity] = useState(user.user.profile.city)
+  const [state, setState] = useState(user.user.profile.state)
   const [dbName, setDBname] = useState('magnumstone')
   const [loading, setLoading] = useState()
   const [rememberMe, setRememberMe] = useState('none')
