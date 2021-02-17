@@ -2,6 +2,7 @@ import UserInfo from '../components/user-info'
 import Head from 'next/head'
 
 function EditUser({ user }) {
+  //console.log(user)
   if (user) {
     return (
       <>
@@ -14,7 +15,13 @@ function EditUser({ user }) {
               <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
             </h1> */}
-        <UserInfo user={user} />
+        <UserInfo 
+          currentUsername={user.username}
+          currentEmail={user.email}
+          currentName={user.profile.name} 
+          currentCity={user.profile.city} 
+          currentState={user.profile.state} 
+        />
       </div>
       </>
     )

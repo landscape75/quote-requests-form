@@ -9,14 +9,18 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
       userbase.init({ appId: process.env.NEXT_PUBLIC_USERBASE_APP_ID, 
       allowServerSideEncryption: true, 
-      sessionLength: 8760 
+      sessionLength: 8760,
+      updateUserHandler: function ({ user }) {
+        setUser(user)
+      }
     }).then((session) => {
       if (session.user) {
         setUser(session.user)
-        console.log(session.user)
+        //console.log(session.user)
       }
       else {
         console.log('No session')
+        setUser(null)
       }
     }).catch((e) => console.error(e))
   }, [])

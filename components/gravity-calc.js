@@ -43,7 +43,7 @@ function GravityCalc({ user }) {
       const toastId = toast.loading('Loading saved walls...');
       try {
         console.log('opening db...')
-        console.log(user.profile.name)
+        console.log(user.profile.dbName)
         
         await userbase.openDatabase({
           databaseName: user.profile.dbName,
@@ -56,7 +56,7 @@ function GravityCalc({ user }) {
       } catch (e) {
         console.error(e.message)
         toast.remove(toastId)
-        //toast.error('Failed to open database. - ' + e.message, {duration: 5000})
+        toast.error('Failed to open database. - ' + e.message, {duration: 5000})
       }
       
     }
@@ -86,7 +86,7 @@ function GravityCalc({ user }) {
   async function shareDatabase() {
     try {
       await userbase.shareDatabase({
-        databaseName: user.user.profile.dbName,
+        databaseName: user.profile.dbName,
       }).then(({ shareToken }) => {
         setShareToken(shareToken)
       })
@@ -105,7 +105,7 @@ function GravityCalc({ user }) {
 
     try {
       const p = await userbase.insertItem({
-        databaseName: user.user.profile.dbName,
+        databaseName: user.profile.dbName,
         item: { description: wallDescription, case: selectedCase, height: selectedHeight, length: wallLength },
         itemId: id
       }).then((item) => {
@@ -129,7 +129,7 @@ function GravityCalc({ user }) {
     const toastId = toast.loading('Updating...');
     try {
       await userbase.updateItem({
-        databaseName: user.user.profile.dbName,
+        databaseName: user.profile.dbName,
         item: { description: wallDescription, case: selectedCase, height: selectedHeight, length: wallLength },
         itemId: editItemId,
       })
@@ -158,7 +158,7 @@ function GravityCalc({ user }) {
     setShowMenu(false)
     try {
       await userbase.deleteItem({
-        databaseName: user.user.profile.dbName,
+        databaseName: user.profile.dbName,
         itemId: editItemId,
       })
       reset()

@@ -3,18 +3,18 @@ import userbase from 'userbase-js'
 import Link from 'next/link'
 import toast from 'react-hot-toast';
 
-function UserInfo({ user }) {
-  console.log(user)
-  const [username, setUsername] = useState(user.username)
+function UserInfo({ currentUsername, currentEmail, currentName, currentCity, currentState }) {
+  //console.log(currentUsername)
+  const [username, setUsername] = useState(currentUsername)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [email, setEmail] = useState(user.email)
-  const [name, setName] = useState('')
-  const [city, setCity] = useState(user.profile.city)
-  const [state, setState] = useState(user.profile.state)
+  const [email, setEmail] = useState(currentEmail)
+  const [name, setName] = useState(currentName)
+  const [city, setCity] = useState(currentCity)
+  const [state, setState] = useState(currentState)
   const [dbName, setDBname] = useState('magnumstone')
   const [loading, setLoading] = useState()
-  const [rememberMe, setRememberMe] = useState('none')
+  //const [rememberMe, setRememberMe] = useState('none')
   const [error, setError] = useState()
 
   
@@ -246,7 +246,7 @@ function UserInfo({ user }) {
           <div className="inline-flex w-full space-x-4 justify-center">
               <Link href="/">
                 <button 
-                  className="group relative w-1/5 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+                  className="group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
                   disabled={loading} 
                 >
 {/*                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -254,12 +254,12 @@ function UserInfo({ user }) {
                       <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                     </svg>
                   </span> */}
-                     Cancel
+                     Close
                 </button>
               </Link>
  
               <button 
-                className="group relative w-1/5 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+                className="group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
                 disabled={loading} 
                 onClick={handleUpdate}
               >
