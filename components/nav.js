@@ -157,7 +157,7 @@ export default function Nav({ user, setUser }) {
 
             {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-none rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="inline-block align-bottom bg-none rounded-lg px-0 pt-0 pb-0 text-left overflow-hidden shadow-xl transform transition-all sm:my-0 sm:align-middle sm:max-w-xl sm:w-full sm:p-0" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             {/* <div className="w-full md:w-1/2 lg:w-1/3 sm:w-full mx-auto mt-10"> */}
               <UserInfo
                 toggle={setEdit}
