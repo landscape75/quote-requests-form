@@ -40,7 +40,7 @@ function GravityCalc({ user }) {
   useEffect(() => {
 
     async function openDatabase() {
-      const toastId = toast.loading('Loading saved walls...');
+      //const toastId = toast.loading('Loading saved walls...');
       try {
         console.log('opening db...')
         console.log(user.profile.dbName)
@@ -52,10 +52,10 @@ function GravityCalc({ user }) {
           },
           
         })
-        toast.success('Saved walls loaded.', {duration: 2000, id: toastId})
+        //toast.success('Saved walls loaded.', {duration: 2000, id: toastId})
       } catch (e) {
         console.error(e.message)
-        toast.remove(toastId)
+        //toast.remove(toastId)
         toast.error('Failed to open database. - ' + e.message, {duration: 5000})
       }
       

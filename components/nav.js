@@ -3,11 +3,13 @@ import LoginModal from './modal'
 import Image from 'next/image'
 import ReactTooltip from 'react-tooltip';
 import Link from 'next/link'
+import UserInfo from '../components/user-info'
 
 import userbase from 'userbase-js'
 
 export default function Nav({ user, setUser }) {
   const [open, setOpen] = useState()
+  const [edit, setEdit] = useState()
   const [modalType, setModalType] = useState()
   const [theme, setTheme] = useState('light')
   const [isTooltipVisible, setTooltipVisibility] = useState(false);
@@ -27,6 +29,11 @@ export default function Nav({ user, setUser }) {
   function openModal(type) {
     setOpen(true)
     setModalType(type)
+  }
+
+  function openEdit() {
+    setEdit(true)
+
   }
 
   function toggleDark(mode) {
@@ -85,13 +92,13 @@ export default function Nav({ user, setUser }) {
             Sign Out
           </button>
 
-          <Link href="edit-user">
             <button 
               className="group relative w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
+              onClick={() => setEdit(true)}
             >
               Profile
             </button>
-          </Link>
+
           </>
         )
 
@@ -134,6 +141,19 @@ export default function Nav({ user, setUser }) {
             toggle={setOpen}
             modalType={modalType}
             setUser={setUser}
+          />
+        </div>
+        </>
+      )}
+
+      {edit && (
+        <>
+
+        <div className="w-full md:w-1/2 lg:w-1/3 sm:w-full mx-auto mt-10">
+          <UserInfo
+            toggle={setEdit}
+            setUser={setUser}
+            user={user}
           />
         </div>
         </>

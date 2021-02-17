@@ -15,13 +15,13 @@ function EditUser({ user }) {
               <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
               <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
             </h1> */}
-        <UserInfo 
+{/*         <UserInfo 
           currentUsername={user.username}
           currentEmail={user.email}
           currentName={user.profile.name} 
           currentCity={user.profile.city} 
           currentState={user.profile.state} 
-        />
+        /> */}
       </div>
       </>
     )
