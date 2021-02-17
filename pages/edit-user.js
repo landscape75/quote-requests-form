@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 function EditUser({ user }) {
   //console.log(user)
-  if (user.profile.name) {
+  if (user) {
     return (
       <>
       <Head>
