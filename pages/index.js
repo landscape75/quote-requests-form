@@ -10,10 +10,10 @@ function Index({ user }) {
         <title>Magnumstone Calculator</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="mt-10 pt-5 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-1 sm:mt-10">
+      <div className="mt-5 pt-5 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-1 sm:mt-5">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl mb-6 ml-4">
-              <span className="block xl:inline md:inline lg:inline sm:inline">MagnumStone</span>
-              <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Wall Calculator</span>
+              <span className="block xl:inline md:inline lg:inline sm:inline">Gravity Wall</span>
+              <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline"> Calculator</span>
             </h1>
 {/*             <Link href="edit-user">
                 <a className="text-gray-400 hover:text-gray-500">Edit User</a>

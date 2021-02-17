@@ -79,7 +79,7 @@ function UserInfo({ user, toggle, setUser }) {
   return (
 
     <div className="flex items-center rounded-lg max-w-lg  mx-auto shadow-lg justify-center bg-white dark:bg-mag-grey-600 pt-3 pb-4 px-4 mb-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-6">
+      <div className="max-w-lg w-full space-y-6 sm:space-y-3">
         <div>
 {/*           <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -89,12 +89,12 @@ function UserInfo({ user, toggle, setUser }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
 
-          <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900 dark:text-white border border-gray-200 dark:border-mag-grey-200 border-t-0 border-l-0 border-r-0 pb-4">
             Edit User Information
           </h2>
           
         </div>
-        <form className="mt-8 space-y-6">
+        <form className="mt-5 space-y-6">
           <div className="rounded-md shadow-sm -space-y-px">
 
 

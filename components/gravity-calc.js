@@ -100,7 +100,7 @@ function GravityCalc({ user }) {
   async function saveWall() {
 
     setShowMenu(false)
-    const toastId = toast.loading('Saving...');
+    //const toastId = toast.loading('Saving...');
     const id = uuid()
 
     try {
@@ -111,11 +111,11 @@ function GravityCalc({ user }) {
       }).then((item) => {
         setEditWall(true)
         setEditItemId(id)
-        toast.success('Wall saved to the cloud.', {duration: 4000, id: toastId})
+        toast.success('Wall saved to the cloud.', {duration: 4000})
       })
     } catch (e) {
-      console.error(e.message)
-      toast.remove(toastId)
+      //console.error(e.message)
+      //toast.remove(toastId)
       toast.error('Failed to save wall. - ' + e.message, {duration: 5000})
     }
 
@@ -126,14 +126,14 @@ function GravityCalc({ user }) {
   async function updateWall() {
     
     setShowMenu(false)
-    const toastId = toast.loading('Updating...');
+    //const toastId = toast.loading('Updating...');
     try {
       await userbase.updateItem({
         databaseName: user.profile.dbName,
         item: { description: wallDescription, case: selectedCase, height: selectedHeight, length: wallLength },
         itemId: editItemId,
       })
-      toast.success('Changes have been saved.', {duration: 4000, id: toastId})
+      toast.success('Changes have been saved.', {duration: 4000})
 /*       toast.success(
         (t) => (
           <span>
@@ -143,8 +143,8 @@ function GravityCalc({ user }) {
         ),
       ); */
     } catch (e) {
-      console.error(e.message)
-      toast.dismiss(toastId)
+      //console.error(e.message)
+      //toast.dismiss(toastId)
       toast.error('Failed to save changes. - ' + e.message, {duration: 5000})
 
     }
@@ -564,18 +564,18 @@ function GravityCalc({ user }) {
                         <tbody className="bg-white divide-y divide-gray-200">
                           <tr className="divide-x divide-gray-200">
                             <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                              Wall Height
+                              Soil Type / Load
                             </td>
                             <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                              { wallHeight }
+                              { soilType }
                             </td>
                           </tr>                          
                           <tr className="divide-x divide-gray-200">
                             <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                              Soil Type / Load
+                              Wall Height
                             </td>
                             <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                              { soilType }
+                              { wallHeight }
                             </td>
                           </tr>
                           <tr className="divide-x divide-gray-200">
