@@ -244,7 +244,8 @@ function UserInfo({ user, toggle, setUser }) {
             </div>
             
           </div>
-
+        </form>
+        
         <div className="inline-flex w-full space-x-4 justify-center pt-3"> 
             <button 
               className="group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue" 
@@ -264,7 +265,7 @@ function UserInfo({ user, toggle, setUser }) {
         
           </div>
           <p className="text-red-500 font-bold">{error}</p>
-        </form>
+        
       </div>
     </div>
    

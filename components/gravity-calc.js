@@ -134,14 +134,6 @@ function GravityCalc({ user }) {
         itemId: editItemId,
       })
       toast.success('Changes have been saved.', {duration: 4000})
-/*       toast.success(
-        (t) => (
-          <span>
-            Custom and <b>bold! </b>
-            <button onClick={() => toast.dismiss(t.id)}> Dismiss</button>
-          </span>
-        ),
-      ); */
     } catch (e) {
       //console.error(e.message)
       //toast.dismiss(toastId)
@@ -551,17 +543,19 @@ function GravityCalc({ user }) {
                   <div className="py-3 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden border border-gray-200 rounded-md">
                       <table className="min-w-full divide-y divide-gray-200" id="order-details">
-{/*                         <thead className="bg-gray-50">
+                        <thead className="bg-gray-100">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Name
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Title
+                            <th scope="col" colspan="2" className="px-4 py-2 text-left text-md font-bold text-gray-900 tracking-wider">
+                              Gravity Wall
                             </th>
                           </tr>
-                        </thead> */}
+                        </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
+{/*                           <tr className="divide-x divide-gray-200">
+                            <td className="w-1/2 px-4 py-2 whitespace-wrap text-md font-bold text-gray-900" colspan="2">
+                              Gravity Wall
+                            </td>
+                          </tr>  */}
                           <tr className="divide-x divide-gray-200">
                             <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
                               Soil Type / Load
