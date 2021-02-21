@@ -77,7 +77,7 @@ function UserInfo({ user, toggle, setUser }) {
 
   return (
     <div className="flex items-center rounded-xl max-w-lg w-full mx-auto shadow-xl justify-center bg-white dark:bg-mag-grey-600 pt-4 pb-4 px-4 mb-0 sm:px-3 lg:px-6">
-      <div className="max-w-lg w-full space-y-6 sm:space-y-3 md:space-y-3">
+      <div className="max-w-lg w-full space-y-2 sm:space-y-2 md:space-y-2">
         <div>
           {/*           <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -102,7 +102,7 @@ function UserInfo({ user, toggle, setUser }) {
             Edit User Information
           </h2>
         </div>
-        <form className="mt-5 space-y-6 md:space-y-3">
+        <form className="mt-3 space-y-6 md:space-y-3">
           <div className="rounded-md shadow-sm -space-y-px">
             <>
               {/*                 <div>
@@ -119,7 +119,7 @@ function UserInfo({ user, toggle, setUser }) {
                 </div> */}
             </>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-2">
               <label
                 htmlFor="username"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -139,7 +139,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="current-password"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -160,7 +160,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="new-password"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -181,7 +181,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="email"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -201,7 +201,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="full-name"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -221,7 +221,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="city"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -241,7 +241,7 @@ function UserInfo({ user, toggle, setUser }) {
               </div>
             </div>
 
-            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:items-start sm:pt-3">
               <label
                 htmlFor="state"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
