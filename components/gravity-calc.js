@@ -432,11 +432,12 @@ function GravityCalc({ user }) {
               </div>
             </div>
           </form>
+
           <div className="mt-6">
             {/* <div className="items-end inline-flex mt-6 space-y-0 space-x-3 sm:justify-end sm:space-x sm:space-y-0 sm:space-x-3 md:space-x-3"> */}
 
             <div className="relative inline-block text-left">
-              <Menu>
+              <Menu as="div">
                 {({ open }) => (
                   <>
                     <Menu.Button className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 border-transparent text-sm font-medium text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-bluee">
@@ -457,30 +458,30 @@ function GravityCalc({ user }) {
                     </Menu.Button>
                     <Transition
                       show={open}
-                      /*                       enter="transition ease-out duration-500"
+                      /* enter="transition ease-out duration-500"
                       enterFrom="opacity-0"
                       enterTo="opacity-100"
                       leave="transition ease-in duration-300"
                       leaveFrom="opacity-100"
                       leaveTo="opacity-0" */
                     >
-                      <Menu.Items>
+                      <Menu.Items as="ul">
                         <div
-                          className="origin-top-left z-40 absolute left-0 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
+                          className="origin-top-left z-40 absolute left-0 mt-1 w-32 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
                         >
                           <div className="py-1">
-                            <Menu.Item>
+                            <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => reset()}
                               >
                                 <svg
-                                  className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                  className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                   xmlns="http://www.w3.org/2000/svg"
                                   viewBox="0 0 20 20"
                                   fill="currentColor"
@@ -496,16 +497,16 @@ function GravityCalc({ user }) {
                                 New
                               </a>
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Item as="li">
                               {editWall == false ? (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => saveWall()}
                                 >
                                   <svg
-                                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                    className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -523,12 +524,12 @@ function GravityCalc({ user }) {
                               ) : (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => updateWall()}
                                 >
                                   <svg
-                                    className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                    className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -545,15 +546,15 @@ function GravityCalc({ user }) {
                                 </a>
                               )}
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => printQuote("print")}
                               >
                                 <svg
-                                  className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                  className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 24 24"
@@ -569,15 +570,15 @@ function GravityCalc({ user }) {
                                 Print
                               </a>
                             </Menu.Item>
-                            <Menu.Item>
+                            <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => printQuote("save")}
                               >
                                 <svg
-                                  className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                  className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 24 24"
@@ -594,17 +595,17 @@ function GravityCalc({ user }) {
                               </a>
                             </Menu.Item>
 
-                            <Menu.Item>
+                            <Menu.Item as="li">
                               <div className="py-1">
                                 {editWall == true && (
                                   <a
                                     href="#"
-                                    className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                     role="menuitem"
                                     onClick={() => deleteWall()}
                                   >
                                     <svg
-                                      className="mr-3 h-5 w-5 text-gray-400 group-hover:text-mag-blue"
+                                      className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 20 20"
                                       fill="currentColor"
@@ -678,7 +679,7 @@ function GravityCalc({ user }) {
                       <tr>
                         <th
                           scope="col"
-                          colspan="2"
+                          colSpan="2"
                           className="px-4 py-2 text-left text-md font-bold text-gray-900 tracking-wider"
                         >
                           Gravity Wall

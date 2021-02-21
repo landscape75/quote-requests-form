@@ -76,7 +76,7 @@ function UserInfo({ user, toggle, setUser }) {
   }
 
   return (
-    <div className="flex items-center rounded-lg max-w-lg w-full mx-auto shadow-xl justify-center bg-white dark:bg-mag-grey-600 pt-4 pb-4 px-4 mb-4 sm:px-3 lg:px-6">
+    <div className="flex items-center rounded-xl max-w-lg w-full mx-auto shadow-xl justify-center bg-white dark:bg-mag-grey-600 pt-4 pb-4 px-4 mb-0 sm:px-3 lg:px-6">
       <div className="max-w-lg w-full space-y-6 sm:space-y-3 md:space-y-3">
         <div>
           {/*           <svg className="mx-auto h-12 w-12 text-mag-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
