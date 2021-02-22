@@ -265,7 +265,7 @@ function UserInfo({ user, toggle, setUser }) {
 
         <div className="inline-flex w-full space-x-2 justify-center pt-3">
           <button
-            className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
+            className="flex justify-center w-full rounded-md border border-transparent shadow-md px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
             disabled={loading}
             onClick={(e) => toggle(false)}
           >
@@ -273,7 +273,7 @@ function UserInfo({ user, toggle, setUser }) {
           </button>
 
           <button
-            className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm"
+            className="flex justify-center w-full rounded-md border border-transparent shadow-md px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm"
             disabled={loading}
             onClick={handleUpdate}
           >

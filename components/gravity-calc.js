@@ -259,6 +259,7 @@ function GravityCalc({ user }) {
     setTotalExt24(0);
     setTotalBlocks(0);
     setTotalExt48(0);
+    setTotalBaseBlocks(0)
     setTotalBase(0);
   }
 
@@ -440,7 +441,7 @@ function GravityCalc({ user }) {
               <Menu as="div">
                 {({ open }) => (
                   <>
-                    <Menu.Button className="inline-flex justify-center w-full rounded-md border flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm">
+                    <Menu.Button className="inline-flex justify-center w-full rounded-md border border-transparent shadow-md px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm">
                       Options
                       <svg
                         className="-mr-1 ml-2 h-5 w-5"
