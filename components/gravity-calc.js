@@ -253,8 +253,8 @@ function GravityCalc({ user }) {
     setSelectedWall(-1);
     setWallLength(12);
     setWallDescription("New wall");
-    setWallHeight("");
-    setSoilType("");
+    setWallHeight("-");
+    setSoilType("-");
     setTotalCrush(0);
     setTotalExt24(0);
     setTotalBlocks(0);
