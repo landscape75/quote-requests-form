@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import LoginModal from "./modal";
 import Image from "next/image";
-import ReactTooltip from "react-tooltip";
-import Link from "next/link";
+//import ReactTooltip from "react-tooltip";
+//import Link from "next/link";
 import UserInfo from "../components/user-info";
 import { Transition } from "@headlessui/react";
 
@@ -56,11 +56,11 @@ export default function Nav({ user, setUser }) {
 
   return (
     <div
-      className="sticky top-0 z-50 shadow-lg border border-b-4 border-t-0 border-l-0 border-r-0 border-black bg-cover"
+      className="sticky top-0 z-50 shadow-lg border border-b-4 border-t-0 border-l-0 border-r-0 border-mag-grey-800 bg-cover"
       style={{ backgroundImage: 'url("/siteheader2.jpg")' }}
     >
       <nav className="mx-auto p-4 ">
-        {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150} />}
+        {/* {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150} />} */}
 
         <div className="flex md:justify-between md:space-x-5">
           <div className="w-200 sm:w-60 lg:w-200 flex md:inline-flex items-start mr-5">

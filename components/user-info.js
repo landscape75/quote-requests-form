@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import userbase from "userbase-js";
-import Link from "next/link";
+//import Link from "next/link";
 import toast from "react-hot-toast";
 
 function UserInfo({ user, toggle, setUser }) {
