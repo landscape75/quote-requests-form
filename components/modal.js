@@ -57,6 +57,11 @@ function LoginModal({ toggle, modalType, setUser }) {
     }
   }
 
+  function handleCancel(e) {
+    e.preventDefault();
+    toggle(false);
+  }
+
   function handleCheck(e) {
     if (e) {
       setRememberMe("local");
@@ -175,7 +180,7 @@ function LoginModal({ toggle, modalType, setUser }) {
                     onChange={(e) => setState(e.target.value)}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label htmlFor="dbname" className="sr-only">
                     Database Name
                   </label>
@@ -189,7 +194,7 @@ function LoginModal({ toggle, modalType, setUser }) {
                     value={dbName}
                     onChange={(e) => setDBname(e.target.value)}
                   />
-                </div>
+                </div> */}
               </>
             )}
 
@@ -242,14 +247,14 @@ function LoginModal({ toggle, modalType, setUser }) {
             </div>
           </div>
 
-          <div>
-            {modalType === "logIn" ? (
+          <div className="inline-flex w-full space-x-2">
+          <div className="w-1/2">
               <button
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue"
+                className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
                 disabled={loading}
-                onClick={handleLogIn}
+                onClick={(e) => handleCancel(e)}
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+{/*                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg
                     className="h-5 w-5 text-mag-blue group-hover:text-white"
                     xmlns="http://www.w3.org/2000/svg"
@@ -263,16 +268,41 @@ function LoginModal({ toggle, modalType, setUser }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                </span>
+                </span> */}
+                Cancel
+              </button>
+          </div>
+          <div className="w-1/2">
+            {modalType === "logIn" ? (
+              <button
+                className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue"
+                disabled={loading}
+                onClick={(e) => handleLogIn(e)}
+              >
+{/*                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <svg
+                    className="h-5 w-5 text-mag-blue group-hover:text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span> */}
                 {loading ? "Logging In ..." : "Log In"}
               </button>
             ) : (
               <button
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue"
+                className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm"
                 disabled={loading}
-                onClick={handleSignUp}
+                onClick={(e) => handleSignUp(e)}
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+{/*                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg
                     className="h-5 w-5 text-mag-blue group-hover:text-white"
                     xmlns="http://www.w3.org/2000/svg"
@@ -286,10 +316,11 @@ function LoginModal({ toggle, modalType, setUser }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                </span>
+                </span> */}
                 {loading ? "Signing up ..." : "Sign Up"}
               </button>
             )}
+            </div>
           </div>
           <p className="text-red-500 font-bold">{error}</p>
         </form>

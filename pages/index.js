@@ -44,10 +44,10 @@ function Index({ user }) {
           {/* <div className="text-center"> */}
 
           <h1 className="text-center text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-            <span className="block xl:inline md:inline">MagnumStone</span>
+            <span className="block xl:inline md:inline">Gravity Wall</span>
             <span className="block text-mag-blue xl:inline md:inline">
               {" "}
-              Wall Calculator
+              Calculator
             </span>
           </h1>
           <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-700 dark:text-gray-200">
