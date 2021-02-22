@@ -56,7 +56,7 @@ export default function Nav({ user, setUser }) {
 
   return (
     <div
-      className="sticky top-0 z-50 shadow-lg border border-b-4 border-t-0 border-l-0 border-r-0 border-mag-grey-800 bg-cover"
+      className="sticky top-0 z-50 shadow-2xl border border-b-4 border-t-0 border-l-0 border-r-0 border-mag-grey-800 bg-cover"
       style={{ backgroundImage: 'url("/siteheader2.jpg")' }}
     >
       <nav className="mx-auto p-4 ">
