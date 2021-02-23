@@ -334,14 +334,14 @@ function GravityCalc({ user }) {
   /////////////////////////////////////////////////////////////
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2 p-3">
+    <div className="grid grid-cols-1 gap-4 sm:gap-4 sm:grid-cols-1 lg:grid-cols-2 p-3 sm:p-0">
       <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Wall Details
           </p>
-          <form className="space-y-4 md:space-y-2 lg:space-y-2 divide-gray-200 dark:divide-gray-700">
-            <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
+          <form className="space-y-2 sm:space-y-0 md:space-y-2 lg:space-y-2 divide-gray-200 dark:divide-gray-700">
+            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start sm:pt-5">
               <label
                 htmlFor="case"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -371,7 +371,7 @@ function GravityCalc({ user }) {
 
               {/* ////////////////////////////////////////// */}
             </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start sm:pt-5">
               <label
                 htmlFor="height"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -396,7 +396,7 @@ function GravityCalc({ user }) {
                 </select>
               </div>
             </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start sm:pt-5">
               <label
                 htmlFor="wall-len"
                 className="block text-mdfont-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
@@ -416,7 +416,7 @@ function GravityCalc({ user }) {
                 ></input>
               </div>
             </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
+            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start sm:pt-5">
               <label
                 htmlFor="wall-descr"
                 className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
