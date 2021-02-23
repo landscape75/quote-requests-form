@@ -257,7 +257,7 @@ function GravityCalc({ user }) {
     setTotalExt24(0);
     setTotalBlocks(0);
     setTotalExt48(0);
-    setTotalBaseBlocks(0)
+    setTotalBaseBlocks(0);
     setTotalBase(0);
   }
 
@@ -349,7 +349,6 @@ function GravityCalc({ user }) {
                 Soil Type / Load
               </label>
 
-
               <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
                 <select
                   id="case"
@@ -370,12 +369,7 @@ function GravityCalc({ user }) {
 
               {/* ////////////////////////////////////////// */}
 
-
-
-
               {/* ////////////////////////////////////////// */}
-
-
             </div>
             <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
               <label
@@ -477,7 +471,7 @@ function GravityCalc({ user }) {
                     >
                       <Menu.Items as="ul">
                         <div
-                          className="origin-top-left z-10 absolute left-0 mt-1 w-32 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
+                          className="origin-top-left z-10 absolute left-0 mt-1 w-44 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
@@ -493,18 +487,18 @@ function GravityCalc({ user }) {
                                 <svg
                                   className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                   xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
                                 >
-                                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                   <path
-                                    fillRule="evenodd"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                    clipRule="evenodd"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                   />
                                 </svg>
-                                New
+                                New Calculation
                               </a>
                             </Menu.Item>
                             <Menu.Item as="li">
@@ -526,10 +520,10 @@ function GravityCalc({ user }) {
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
                                       strokeWidth={2}
-                                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                      d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
                                     />
                                   </svg>
-                                  Save
+                                  Save To Cloud
                                 </a>
                               ) : (
                                 <a
@@ -598,10 +592,10 @@ function GravityCalc({ user }) {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                   />
                                 </svg>
-                                PDF
+                                Download PDF
                               </a>
                             </Menu.Item>
 
