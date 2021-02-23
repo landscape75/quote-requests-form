@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, Transition, Listbox } from "@headlessui/react";
 import userbase from "userbase-js";
 import Image from "next/image";
 import { wallData } from "../public/walldata";
@@ -12,7 +12,6 @@ function GravityCalc({ user }) {
   const [fullYear, setYear] = useState(new Date().getFullYear().toString());
   const [version] = useState("2021.02.16.a");
   const [showMenu, setShowMenu] = useState(false);
-
   const [savedWalls, setSavedWalls] = useState([]);
   const [editWall, setEditWall] = useState(false);
   const [editItemId, setEditItemId] = useState("");
@@ -22,7 +21,6 @@ function GravityCalc({ user }) {
   const [selectedHeight, setSelectedHeight] = useState(-1);
   const [wallDescription, setWallDescription] = useState("New wall");
   const [selectedWall, setSelectedWall] = useState(-1);
-
   const [wallLength, setWallLength] = useState(12);
   const [baseWidth, setBaseWidth] = useState(0);
   const [totalBase, setTotalBase] = useState(0);
@@ -350,6 +348,8 @@ function GravityCalc({ user }) {
               >
                 Soil Type / Load
               </label>
+
+
               <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
                 <select
                   id="case"
@@ -367,6 +367,15 @@ function GravityCalc({ user }) {
                   ))}
                 </select>
               </div>
+
+              {/* ////////////////////////////////////////// */}
+
+
+
+
+              {/* ////////////////////////////////////////// */}
+
+
             </div>
             <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5">
               <label
@@ -468,7 +477,7 @@ function GravityCalc({ user }) {
                     >
                       <Menu.Items as="ul">
                         <div
-                          className="origin-top-left z-40 absolute left-0 mt-1 w-32 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
+                          className="origin-top-left z-10 absolute left-0 mt-1 w-32 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
