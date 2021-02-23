@@ -61,8 +61,8 @@ export default function Nav({ user, setUser }) {
     >
       <nav className="mx-auto p-4 ">
         {/* {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150} />} */}
-
-        <div className="flex md:justify-between md:space-x-5">
+        {/* <div className="flex md:justify-between md:space-x-5"></div> */}
+        <div className="flex justify-between">
           <div className="w-200 sm:w-60 lg:w-200 flex md:inline-flex items-start mr-5">
             {/*         <div className="flex-shrink-0">
           <div className="relative"> */}
@@ -77,7 +77,8 @@ export default function Nav({ user, setUser }) {
             {/*           </div>
         </div> */}
           </div>
-          <div className="items-end inline-flex space-y-2 space-x-3 sm:justify-end sm:space-x sm:space-y-2 sm:space-x-3 md:mt-0 sm:mt-0 md:space-x-3">
+          {/* <div className="items-end inline-flex space-y-2 space-x-3 sm:justify-end sm:space-x sm:space-y-2 sm:space-x-3 md:mt-0 sm:mt-0 md:space-x-3"></div> */}
+          <div className="">
             {/* <h1 className="text-3xl font-bold text-gray-900">Wall Calculator</h1> */}
             {/*  {!user ? (
               <>
