@@ -334,8 +334,8 @@ function GravityCalc({ user }) {
   /////////////////////////////////////////////////////////////
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:gap-4 sm:grid-cols-1 lg:grid-cols-2 p-3 sm:p-0">
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3">
+    <div className="grid grid-cols-1 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 lg:grid-cols-2 p-0 sm:p-0">
+      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-2 lg:px-6 py-2 lg:py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Wall Details
@@ -666,14 +666,14 @@ function GravityCalc({ user }) {
 
       {/* //////////// Results Section ////////////// */}
 
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3">
+      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-2 lg:px-6 py-2 lg:py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-4 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Results
           </p>
           <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="py-3 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-6 lg:-mx-8">
+              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-6 md:px-6 lg:px-8">
                 <div className="overflow-hidden border border-gray-200 rounded-md">
                   <table
                     className="min-w-full divide-y divide-gray-200"
@@ -803,7 +803,7 @@ function GravityCalc({ user }) {
         </div>
       </div>
 
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3 hover:border-gray-400">
+      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-2 lg:px-6 py-2 lg:py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Cross-section
@@ -814,7 +814,7 @@ function GravityCalc({ user }) {
         </div>
       </div>
 
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-6 py-5 flex space-x-3">
+      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-2 lg:px-6 py-2 lg:py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Disclaimer
