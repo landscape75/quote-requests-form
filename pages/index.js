@@ -14,7 +14,7 @@ function Index({ user }) {
           />
         </Head>
         <div className="mt-2 pt-2 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-0 sm:mt-2 sm:pt-2 md:mt-3 md:pt-3 lg:mt-3 lg:pt-3">
-          <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-3xl md:text-5xl lg:text-6xl mb-6 ml-3 sm:ml-3 md:ml-3">
+          <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-3xl md:text-5xl lg:text-6xl mb-6 ml-3 sm:ml-3 md:ml-3 lg:ml-1">
             <span className="inline xl:inline md:inline lg:inline sm:inline">
               Gravity Wall
             </span>
