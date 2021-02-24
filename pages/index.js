@@ -13,12 +13,12 @@ function Index({ user }) {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <div className="mt-2 pt-2 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-0 sm:mt-2 sm:pt-2 md:mt-5 md:pt-5 lg:mt-5 lg:pt-5">
-          <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl lg:text-6xl mb-6 ml-4 sm:ml-2">
-            <span className="block xl:inline md:inline lg:inline sm:inline">
+        <div className="mt-2 pt-2 bg-white dark:bg-mag-grey mx-auto max-w-7xl px-0 sm:mt-2 sm:pt-2 md:mt-3 md:pt-3 lg:mt-3 lg:pt-3">
+          <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-3xl md:text-5xl lg:text-6xl mb-6 ml-3 sm:ml-3 md:ml-3">
+            <span className="inline xl:inline md:inline lg:inline sm:inline">
               Gravity Wall
             </span>
-            <span className="block text-mag-blue xl:inline md:inline lg:inline sm:inline">
+            <span className="inline text-mag-blue xl:inline md:inline lg:inline sm:inline">
               {" "}
               Calculator
             </span>
