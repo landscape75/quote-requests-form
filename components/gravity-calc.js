@@ -672,8 +672,8 @@ function GravityCalc({ user }) {
             Results
           </p>
           <div className="flex flex-col">
-            <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-6 lg:-mx-8">
-              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-6 md:px-6 lg:px-8">
+            <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-0 lg:-mx-0">
+              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0">
                 <div className="overflow-hidden border border-gray-200 rounded-md">
                   <table
                     className="min-w-full divide-y divide-gray-200"
