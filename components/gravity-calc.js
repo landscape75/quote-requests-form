@@ -10,30 +10,16 @@ import "jspdf-autotable";
 
 function GravityCalc({ user }) {
   const [fullYear, setYear] = useState(new Date().getFullYear().toString());
-  const [version] = useState("2021.02.16.a");
+  const [version] = useState("2021.03.11.a");
   const [showMenu, setShowMenu] = useState(false);
-  const [savedWalls, setSavedWalls] = useState([]);
-  const [editWall, setEditWall] = useState(false);
+  const [savedSigs, setSavedSigs] = useState([]);
+  const [editSig, setEditSig] = useState(false);
   const [editItemId, setEditItemId] = useState("");
   const [share, setShareToken] = useState("");
-  const [heights, setHeights] = useState([]);
-  const [selectedCase, setSelectedCase] = useState(-1);
-  const [selectedHeight, setSelectedHeight] = useState(-1);
-  const [wallDescription, setWallDescription] = useState("New wall");
-  const [selectedWall, setSelectedWall] = useState(-1);
-  const [wallLength, setWallLength] = useState(12);
-  const [baseWidth, setBaseWidth] = useState(0);
-  const [totalBase, setTotalBase] = useState(0);
-  const [totalCrush, setTotalCrush] = useState(0);
-  const [soilType, setSoilType] = useState("");
-  const [wallHeight, setWallHeight] = useState("");
-  const [totalBaseBlocks, setTotalBaseBlocks] = useState(0);
-  const [totalBlocks, setTotalBlocks] = useState(0);
-  const [totalExt24, setTotalExt24] = useState(0);
-  const [totalExt48, setTotalExt48] = useState(0);
-  const [blockCrush] = useState(6.35);
-  const [ext24Crush] = useState(16);
-  const [ext48Crush] = useState(32);
+  const [customerName, setCustomerName] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [truckNumber, setTruckNumber] = useState("");
+  const [selectedSig, setSelectedSig] = useState("");
 
   /////////////////////////////////////////////////////////////
 
@@ -47,7 +33,7 @@ function GravityCalc({ user }) {
         await userbase.openDatabase({
           databaseName: user.profile.dbName,
           changeHandler: function (items) {
-            setSavedWalls(items);
+            setSavedSigs(items);
           },
         });
         //toast.success('Saved walls loaded.', {duration: 2000, id: toastId})
@@ -66,17 +52,8 @@ function GravityCalc({ user }) {
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    calcWall();
-  }, [
-    selectedCase,
-    selectedHeight,
-    heights,
-    wallLength,
-    totalBlocks,
-    totalExt24,
-    totalExt48,
-    baseWidth,
-  ]);
+    //calcWall();
+  }, []);
 
   /////////////////////////////////////////////////////////////
 
@@ -96,8 +73,8 @@ function GravityCalc({ user }) {
 
   /////////////////////////////////////////////////////////////
 
-  async function saveWall() {
-    setShowMenu(false);
+  async function saveSig() {
+    //setShowMenu(false);
     //const toastId = toast.loading('Saving...');
     const id = uuid();
 
@@ -106,38 +83,38 @@ function GravityCalc({ user }) {
         .insertItem({
           databaseName: user.profile.dbName,
           item: {
-            description: wallDescription,
-            case: selectedCase,
-            height: selectedHeight,
-            length: wallLength,
+            orderNumber: orderNumber,
+            customerName: customerName,
+            truckNumber: truckNumber,
           },
           itemId: id,
         })
         .then((item) => {
-          setEditWall(true);
+          setEditSig(true);
           setEditItemId(id);
-          toast.success("Wall saved to the cloud.", { duration: 4000 });
+          toast.success("Signature saved to the cloud.", { duration: 4000 });
         });
     } catch (e) {
       //console.error(e.message)
       //toast.remove(toastId)
-      toast.error("Failed to save wall. - " + e.message, { duration: 5000 });
+      toast.error("Failed to save signature. - " + e.message, {
+        duration: 5000,
+      });
     }
   }
 
   /////////////////////////////////////////////////////////////
 
-  async function updateWall() {
-    setShowMenu(false);
+  async function updateSig() {
+    //setShowMenu(false);
     //const toastId = toast.loading('Updating...');
     try {
       await userbase.updateItem({
         databaseName: user.profile.dbName,
         item: {
-          description: wallDescription,
-          case: selectedCase,
-          height: selectedHeight,
-          length: wallLength,
+          orderNumber: orderNumber,
+          customerName: customerName,
+          truckNumber: truckNumber,
         },
         itemId: editItemId,
       });
@@ -180,85 +157,31 @@ function GravityCalc({ user }) {
 
   /////////////////////////////////////////////////////////////
 
-  async function calcWall() {
-    if (selectedCase === -1) {
-      return;
-    }
-
-    if (wallData.cases[selectedCase - 1]) {
-      await setHeights(wallData.cases[selectedCase - 1].heights);
-    }
-
-    if (selectedHeight === -1) {
-      return;
-    }
-
-    if (!heights[selectedHeight - 1]) {
-      return;
-    }
-
-    await setWallHeight(heights[selectedHeight - 1].description);
-    await setBaseWidth(heights[selectedHeight - 1].baseWidth);
-    await setSoilType(wallData.cases[selectedCase - 1].description);
-    await setTotalBaseBlocks(Math.ceil(wallLength / 4));
-    await setTotalBlocks(
-      Math.ceil(
-        heights[selectedHeight - 1].blocks * Math.ceil(wallLength / 4)
-      ) - totalBaseBlocks
-    );
-    await setTotalExt24(
-      Math.ceil(heights[selectedHeight - 1].ext24 * Math.ceil(wallLength / 4))
-    );
-    await setTotalExt48(
-      Math.ceil(heights[selectedHeight - 1].ext48 * Math.ceil(wallLength / 4))
-    );
-
-    const bCrush = totalBlocks * blockCrush;
-    const e24Crush = totalExt24 * ext24Crush;
-    const e48Crush = totalExt48 * ext48Crush;
-
-    await setTotalCrush(round(((bCrush + e24Crush + e48Crush) / 27) * 1.05, 1));
-    await setTotalBase(
-      round(((baseWidth * (wallLength * 0.5)) / 27) * 1.05, 1)
-    );
-  }
-
   /////////////////////////////////////////////////////////////
 
-  function loadSavedWall(index) {
+  function loadSavedSig(index) {
     if (index == -1) {
       return;
     }
 
-    setSelectedWall(index);
-    setEditItemId(savedWalls[index].itemId);
-    setSelectedCase(savedWalls[index].item.case);
-    setSelectedHeight(savedWalls[index].item.height);
-    setWallLength(savedWalls[index].item.length);
-    setWallDescription(savedWalls[index].item.description);
-    setEditWall(true);
+    setSelectedSig(index);
+    setEditItemId(savedSigs[index].itemId);
+    setOrderNumber(savedSigs[index].item.orderNumber);
+    setCustomerName(savedSigs[index].item.customerName);
+    setTruckNumber(savedSigs[index].item.truckNumber);
+    setEditSig(true);
   }
 
   /////////////////////////////////////////////////////////////
 
   function reset() {
-    setShowMenu(false);
+    //setShowMenu(false);
 
-    setEditWall(false);
+    setEditSig(false);
     setEditItemId("");
-    setSelectedCase(-1);
-    setSelectedHeight(-1);
-    setSelectedWall(-1);
-    setWallLength(12);
-    setWallDescription("New wall");
-    setWallHeight("-");
-    setSoilType("-");
-    setTotalCrush(0);
-    setTotalExt24(0);
-    setTotalBlocks(0);
-    setTotalExt48(0);
-    setTotalBaseBlocks(0);
-    setTotalBase(0);
+    setOrderNumber("");
+    setCustomerName("");
+    setTruckNumber("");
   }
 
   /////////////////////////////////////////////////////////////
@@ -334,104 +257,68 @@ function GravityCalc({ user }) {
   /////////////////////////////////////////////////////////////
 
   return (
-    <div className="grid grid-cols-1 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 lg:grid-cols-2 p-0 sm:p-0">
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
-        <div className="flex-1 min-w-0">
+    <div className="flex flex-wrap lg:flex-nowrap gap-4 m-0">
+      {/* <div className="grid grid-cols-2 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 p-0 sm:p-0"></div> */}
+      <div className="relative w-full lg:w-1/4 rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5">
+        <div className="w-full">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
-            Wall Details
+            New Signature
           </p>
-          <form className="space-y-2 sm:space-y-0 md:space-y-2 lg:space-y-2 divide-gray-200 dark:divide-gray-700">
-            <div className="sm:grid sm:grid-cols-2 gap-2 sm:items-start pt-2 lg:pt-5 md:pt-2 sm:pt-2">
+          <form className="space-y-1">
+            <div>
               <label
-                htmlFor="case"
-                className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
+                htmlFor="order-number"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
               >
-                Soil Type / Load
+                Order / Invoice #
               </label>
-
-              <div className="mt-1 sm:mt-1 col-span-1 md:col-span-1 sm:col-span-2">
-                <select
-                  id="case"
-                  name="case"
-                  autoComplete="case"
-                  value={selectedCase}
-                  onChange={(e) => handleCaseSelect(e.target.value)}
-                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                >
-                  <option value="-1">- Select Soil Type / Load -</option>
-                  {wallData.cases.map((option, index) => (
-                    <option key={index} value={option.id}>
-                      {option.description}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* ////////////////////////////////////////// */}
-
-              {/* ////////////////////////////////////////// */}
-            </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start pt-2 lg:pt-5 md:pt-5 sm:pt-2">
-              <label
-                htmlFor="height"
-                className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
-              >
-                Wall Height
-              </label>
-              <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
-                <select
-                  id="height"
-                  name="height"
-                  autoComplete="height"
-                  value={selectedHeight}
-                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => handleHeightSelect(e.target.value)}
-                >
-                  <option value="-1">- Select Height -</option>
-                  {heights.map((option, index) => (
-                    <option key={index} value={option.id}>
-                      {option.description}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start pt-2 lg:pt-5 md:pt-5 sm:pt-2">
-              <label
-                htmlFor="wall-len"
-                className="block text-mdfont-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
-              >
-                Wall Length
-              </label>
-              <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
+              <div className="mt-1 mb-2">
                 <input
-                  id="wall-len"
-                  name="wall-len"
-                  type="number"
-                  value={wallLength}
-                  min="4"
-                  step="4"
-                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setWallLength(e.target.value)}
+                  id="order-number"
+                  name="order-number"
+                  type="text"
+                  value={orderNumber}
+                  placeholder="Order / Invoice #"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setOrderNumber(e.target.value)}
                 ></input>
               </div>
             </div>
-            <div className="sm:grid sm:grid-cols-2 sm:gap-2 sm:items-start pt-2 lg:pt-5 md:pt-5 sm:pt-2">
+            <div>
               <label
-                htmlFor="wall-descr"
-                className="block text-md font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
               >
-                Wall Description
+                Name
               </label>
-              <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
+              <div className="mt-1 mb-2">
                 <input
-                  id="wall-descr"
-                  name="wall-descr"
+                  id="name"
+                  name="name"
                   type="text"
-                  value={wallDescription}
-                  placeholder="Wall description"
-                  className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setWallDescription(e.target.value)}
+                  value={customerName}
+                  placeholder="Name"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setCustomerName(e.target.value)}
+                ></input>
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="truck"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Truck / Pick Up
+              </label>
+              <div className="mt-1 mb-2">
+                <input
+                  id="truck"
+                  name="truck"
+                  type="text"
+                  value={truckNumber}
+                  placeholder="Truck Numbver / Pick Up"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setTruckNumber(e.target.value)}
                 ></input>
               </div>
             </div>
@@ -444,7 +331,7 @@ function GravityCalc({ user }) {
               <Menu as="div">
                 {({ open }) => (
                   <>
-                    <Menu.Button className="inline-flex justify-center w-full rounded-md border border-transparent shadow-md px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm">
+                    <Menu.Button className="inline-flex justify-center w-full rounded-md border border-transparent shadow-md px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500">
                       Options
                       <svg
                         className="-mr-1 ml-2 h-5 w-5"
@@ -498,16 +385,16 @@ function GravityCalc({ user }) {
                                     d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                   />
                                 </svg>
-                                New Calculation
+                                New Signature
                               </a>
                             </Menu.Item>
                             <Menu.Item as="li">
-                              {editWall == false ? (
+                              {editSig == false ? (
                                 <a
                                   href="#"
                                   className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
-                                  onClick={() => saveWall()}
+                                  onClick={() => saveSig()}
                                 >
                                   <svg
                                     className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
@@ -530,7 +417,7 @@ function GravityCalc({ user }) {
                                   href="#"
                                   className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
-                                  onClick={() => updateWall()}
+                                  onClick={() => updateSig()}
                                 >
                                   <svg
                                     className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
@@ -601,7 +488,7 @@ function GravityCalc({ user }) {
 
                             <Menu.Item as="li">
                               <div className="py-1">
-                                {editWall == true && (
+                                {editSig == true && (
                                   <a
                                     href="#"
                                     className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
@@ -635,46 +522,123 @@ function GravityCalc({ user }) {
               </Menu>
             </div>
           </div>
-
-          <div className="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:pt-5 border border-gray-200 dark:border-mag-grey-200 border-b-0 border-l-0 border-r-0 mt-5">
-            <label
-              htmlFor="saved"
-              className="block text-smd font-medium text-gray-700 dark:text-gray-100 sm:mt-px sm:pt-2"
-            >
-              Saved Walls
-            </label>
-            <div className="mt-1 sm:mt-0 md:col-span-1 sm:col-span-2">
-              <select
-                id="saved"
-                name="saved"
-                autoComplete="saved"
-                value={selectedWall}
-                className="max-w-lg block bg-white focus:ring-mag-blue focus:border-mag-blue w-full shadow-md sm:max-w-xs sm:text-sm border-gray-300 dark:border-gray-500 rounded-md"
-                onChange={(e) => loadSavedWall(e.target.value)}
-              >
-                <option value="-1">- Select saved wall to open -</option>
-                {savedWalls.map((option, index) => (
-                  <option key={index} value={index}>
-                    {option.item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* //////////// Results Section ////////////// */}
 
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
-        <div className="flex-1 min-w-0">
+      <div className="relative rounded-lg w-full lg:w-3/4 shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 space-x-3">
+        <div className="min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-4 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
-            Results
+            Saved Signatures
           </p>
-          <div className="flex flex-col">
-            <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-0 lg:-mx-0">
-              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0">
-                <div className="overflow-hidden border border-gray-200 rounded-md">
+          {/* <div className="flex flex-col"> */}
+          {/*             <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-0 lg:-mx-0">
+              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0"> */}
+
+          <div>
+            {/* <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2> */}
+            <ul className="fadein mt-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-3">
+              {savedSigs.map((option, index) => (
+                <li id={index} className="col-span-1 flex shadow-sm rounded-md">
+                  <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
+                    {option.item.truckNumber}
+                  </div>
+                  <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-white dark:bg-mag-grey rounded-r-md truncate">
+                    <div className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">
+                        {option.item.orderNumber}
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">
+                        {option.item.customerName}
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0 pr-2">
+                      <button className="w-8 h-8 bg-white dark:bg-mag-grey inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-gray-500" onClick={() => loadSavedSig(index)}>
+                        <span className="sr-only">Open options</span>
+
+                        <svg
+                          className="w-5 h-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+
+              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
+      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-purple-600 text-white text-sm font-medium rounded-l-md">
+        CD
+      </div>
+      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+        <div className="flex-1 px-4 py-2 text-sm truncate">
+          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">Component Design</a>
+          <p className="text-gray-500">12 Members</p>
+        </div>
+        <div className="flex-shrink-0 pr-2">
+          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <span className="sr-only">Open options</span>
+
+            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </li> */}
+
+              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
+      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-500 text-white text-sm font-medium rounded-l-md">
+        T
+      </div>
+      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+        <div className="flex-1 px-4 py-2 text-sm truncate">
+          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">Templates</a>
+          <p className="text-gray-500">16 Members</p>
+        </div>
+        <div className="flex-shrink-0 pr-2">
+          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <span className="sr-only">Open options</span>
+            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </li> */}
+
+              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
+      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-green-500 text-white text-sm font-medium rounded-l-md">
+        RC
+      </div>
+      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+        <div className="flex-1 px-4 py-2 text-sm truncate">
+          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">React Components</a>
+          <p className="text-gray-500">8 Members</p>
+        </div>
+        <div className="flex-shrink-0 pr-2">
+          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <span className="sr-only">Open options</span>
+            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </li> */}
+            </ul>
+          </div>
+
+          {/* <div className="overflow-hidden border border-gray-200 rounded-md">
                   <table
                     className="min-w-full divide-y divide-gray-200"
                     id="order-details"
@@ -691,11 +655,7 @@ function GravityCalc({ user }) {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {/*                           <tr className="divide-x divide-gray-200">
-                            <td className="w-1/2 px-4 py-2 whitespace-wrap text-md font-bold text-gray-900" colspan="2">
-                              Gravity Wall
-                            </td>
-                          </tr>  */}
+
                       <tr className="divide-x divide-gray-200">
                         <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
                           Soil Type / Load
@@ -796,25 +756,14 @@ function GravityCalc({ user }) {
                       </tr>
                     </tbody>
                   </table>
-                </div>
-              </div>
-            </div>
-          </div>
+                </div> */}
+          {/*               </div>
+            </div> */}
+          {/* </div> */}
         </div>
       </div>
 
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
-        <div className="flex-1 min-w-0">
-          <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
-            Cross-section
-          </p>
-          <div className="p-3 rounded-md bg-white">
-            <Image src="/crosssection.png" alt="" width="287" height="224" />
-          </div>
-        </div>
-      </div>
-
-      <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
+      {/*       <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
         <div className="flex-1 min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Disclaimer
@@ -829,7 +778,8 @@ function GravityCalc({ user }) {
             analysis has not been performed
           </p>
         </div>
-      </div>
+      </div> */}
+
       {/*         <div>
           <button className="truncate inline-flex items-center justify-center px-4 py-2 sm:px-2 lg:px-4 md:px-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={shareDatabase}>
             Share Database

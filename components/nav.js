@@ -56,22 +56,22 @@ export default function Nav({ user, setUser }) {
 
   return (
     <div
-      className="sticky top-0 z-50 shadow-2xl border border-b-4 border-t-0 border-l-0 border-r-0 border-mag-grey-800 bg-cover"
-      style={{ backgroundImage: 'url("/siteheader2.jpg")' }}
+      className="sticky top-0 z-50 h-15 shadow-xl border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-mag-grey-500 bg-gradient-to-r from-mag-grey-500 via-mag-grey-800 to-mag-grey-500"
+      // style={{ backgroundImage: 'url(./signal.svg)' }}
     >
-      <nav className="mx-auto p-4 ">
+      <nav className="mx-auto p-2 ">
         {/* {isTooltipVisible && <ReactTooltip textColor="white" delayShow={150} />} */}
         {/* <div className="flex md:justify-between md:space-x-5"></div> */}
         <div className="flex justify-between">
-          <div className="w-200 sm:w-60 lg:w-200 flex md:inline-flex items-start mr-5">
+          <div className="w-60 lg:w-200 flex md:inline-flex items-start mr-5">
             {/*         <div className="flex-shrink-0">
           <div className="relative"> */}
             {/* <img className="w-50" src="https://magnumstone.com/wp-content/themes/bulletpress/src/assets/images/logo/magnumstone-logo-white.svg" alt="" width="248" height="50" onClick={logOut}/> */}
             <Image
-              src="/magnumstone-logo-white-svg.svg"
+              src="/sl-logo-white.svg"
               alt=""
-              width="248"
-              height="50"
+              width="286"
+              height="60"
               onClick={logOut}
             />
             {/*           </div>
