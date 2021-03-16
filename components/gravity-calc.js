@@ -1,17 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Menu, Transition, Listbox } from "@headlessui/react";
-import userbase from "userbase-js";
+//import userbase from "userbase-js";
 import Image from "next/image";
-import { wallData } from "../public/walldata";
 import uuid from "react-uuid";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import SignaturePad  from "signature_pad";
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { firestore, serverTimestamp } from '../lib/firebase';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
+import SigItems from "../components/sig-items";
 
-function GravityCalc({ user }) {
+/////////////////////////////////////////////////////////////
+
+export async function getStaticProps({ params }) {
+  const [value, loading, error] = useCollection(
+    firestore.collection('sigs'),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
+
+  return {
+    props: { value },
+
+  };
+}
+
+/////////////////////////////////////////////////////////////
+
+function GravityCalc() {
+  const { user, username } = useContext(UserContext)
   const [fullYear, setYear] = useState(new Date().getFullYear().toString());
-  const [version] = useState("2021.03.11.a");
-  const [showMenu, setShowMenu] = useState(false);
+  const [version] = useState("2021.03.15.a");
   const [savedSigs, setSavedSigs] = useState([]);
   const [editSig, setEditSig] = useState(false);
   const [editItemId, setEditItemId] = useState("");
@@ -20,87 +43,168 @@ function GravityCalc({ user }) {
   const [orderNumber, setOrderNumber] = useState("");
   const [truckNumber, setTruckNumber] = useState("");
   const [selectedSig, setSelectedSig] = useState("");
+  const [selectedFileId, setSelectedFileId] = useState("");
+  const [sigsOpen, setSigsOpen] = useState(false);
+  const [cache, setCache] = useState({});
+  const [canvas, setCanvas] = useState();
+  const [signaturePad, setSignaturePad] = useState();
+  const [notes, setNotes] = useState("");
+  const [company, setCompany] = useState("");
+  const [sigDate, setSigDate] = useState("");
+  const [sigLabel, setSigLabel] = useState("Signature");
+  const [newSigLabel, setNewSigLabel] = useState("New Signature");
+  const [imgW, setImgW] = useState(0);
+  const [imgH, setImgH] = useState(0);
+  const [loadingSig, setLoadingSig] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(undefined);
+  const [isPhoto, setIsPhoto] = useState(false);
+  const [noSig, setNoSig] = useState(true);
 
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    async function openDatabase() {
-      //const toastId = toast.loading('Loading saved walls...');
-      try {
-        console.log("opening db...");
-        console.log(user.profile.dbName);
-
-        await userbase.openDatabase({
-          databaseName: user.profile.dbName,
-          changeHandler: function (items) {
-            setSavedSigs(items);
-          },
-        });
-        //toast.success('Saved walls loaded.', {duration: 2000, id: toastId})
-      } catch (e) {
-        console.error(e.message);
-        //toast.remove(toastId)
-        toast.error("Failed to open database. - " + e.message, {
-          duration: 5000,
-        });
-      }
+    setCanvas(document.getElementById('signature-pad')) 
+    if (canvas) {
+      setSignaturePad(new SignaturePad(canvas, {
+          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG 
+        }))
     }
-
-    openDatabase();
-  }, [user]);
-
-  /////////////////////////////////////////////////////////////
-
-  useEffect(() => {
-    //calcWall();
+    //resizeCanvas();
+    //console.log(user.photoURL)
   }, []);
 
   /////////////////////////////////////////////////////////////
 
-  async function shareDatabase() {
-    try {
-      await userbase
-        .shareDatabase({
-          databaseName: user.profile.dbName,
-        })
-        .then(({ shareToken }) => {
-          setShareToken(shareToken);
-        });
-    } catch (e) {
-      console.error(e.message);
+  useEffect(() => {
+
+    let temp;
+    function resizeCanvas() {
+      if (signaturePad) {
+        temp = signaturePad.toData();
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+        signaturePad.fromData(temp);
+      }
     }
-  }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    }
+
+  }, []);
+
+  /////////////////////////////////////////////////////////////
+
+  /* const SigItems = (props) => {
+    const [value, loading, error] = useCollection(
+      firestore.collection('sigs'),
+      {
+        snapshotListenOptions: { includeMetadataChanges: true },
+      }
+    );
+
+    const sigs = value || props.value
+
+    return (
+      <div id="fsdfsdfs5fds54fds54f">
+        <p>
+          {error && <strong>Error: {JSON.stringify(error)}</strong>}
+          {loading && <span className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">Loading signatures...</span>}
+        </p>
+          {sigs && (
+            <ul className="fadein mt-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-3">
+              {sigs.docs.map((doc) => (
+                <li id={doc.id} key={doc.id} className="col-span-1 flex shadow-sm rounded-md">
+                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
+                  {doc.data().truckNumber}
+                </div>
+                <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-white dark:bg-mag-grey rounded-r-md truncate">
+                  <div className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">
+                    {doc.data(0).orderNumber}
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
+                      {doc.data().customerName}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 pr-2">
+                    <button
+                      className="w-8 h-8 bg-white dark:bg-mag-grey inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-gray-500"
+                      onClick={() => loadSavedSig(doc.id)}
+                    >
+                      <span className="sr-only">Open options</span>
+
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </li>
+              ))}
+            </ul>
+          )}
+      </div>
+    );
+  }; */
 
   /////////////////////////////////////////////////////////////
 
   async function saveSig() {
-    //setShowMenu(false);
-    //const toastId = toast.loading('Saving...');
-    const id = uuid();
 
-    try {
-      const p = await userbase
-        .insertItem({
-          databaseName: user.profile.dbName,
-          item: {
-            orderNumber: orderNumber,
-            customerName: customerName,
-            truckNumber: truckNumber,
-          },
-          itemId: id,
-        })
-        .then((item) => {
-          setEditSig(true);
-          setEditItemId(id);
-          toast.success("Signature saved to the cloud.", { duration: 4000 });
+    const id = uuid();
+    //let f2
+
+    // No signature and no photo
+    //if (signaturePad.isEmpty() && !isPhoto) {
+      setSigDate("NOT SIGNED YET")
+      setNoSig(true)
+      //const uid = auth.currentUser.uid;
+      //f2 = false
+
+      try {
+        await firestore.collection("sigs").doc(id).set({
+              orderNumber: orderNumber,
+              customerName: customerName,
+              truckNumber: truckNumber,
+              sigDate: sigDate,
+              company: company,
+              noSig: noSig,
+              notes: notes,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+              userId: user.uid,
+              userName: username,
+              userPhotoUrl: user.photoURL,
+              
+          })
+          .then(() => {
+            setEditSig(true);
+            setEditItemId(id);
+            toast.success("Signature saved to the cloud.", { duration: 4000 });
+          });
+      } catch (e) {
+        toast.error("Failed to save signature. - " + e, {
+          duration: 5000,
         });
-    } catch (e) {
-      //console.error(e.message)
-      //toast.remove(toastId)
-      toast.error("Failed to save signature. - " + e.message, {
-        duration: 5000,
-      });
-    }
+      }
+    //}
+
+
   }
 
   /////////////////////////////////////////////////////////////
@@ -175,13 +279,23 @@ function GravityCalc({ user }) {
   /////////////////////////////////////////////////////////////
 
   function reset() {
-    //setShowMenu(false);
-
+    signaturePad.clear()
+    signaturePad.on()
     setEditSig(false);
     setEditItemId("");
     setOrderNumber("");
     setCustomerName("");
     setTruckNumber("");
+    setNotes("");
+    setCompany("")
+    setSigDate("")
+    setSelectedFileId("")
+    setSigLabel("Signature")
+    setNewSigLabel("New Signature")
+    setImgW(0)
+    setImgH(0)
+    setLoadingSig(false)
+    setSelectedFileId(undefined)
   }
 
   /////////////////////////////////////////////////////////////
@@ -248,23 +362,49 @@ function GravityCalc({ user }) {
     }
   }
 
+  /////////////////////////////////////////////////////////////////
+
+
   /////////////////////////////////////////////////////////////
 
-  function handleMenu() {
-    setShowMenu(!showMenu);
-  }
+  
+   
+  
+  // On mobile devices it might make more sense to listen to orientation change,
+  // rather than window resize events.
+
 
   /////////////////////////////////////////////////////////////
 
   return (
+
+    
     <div className="flex flex-wrap lg:flex-nowrap gap-4 m-0">
       {/* <div className="grid grid-cols-2 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 p-0 sm:p-0"></div> */}
+      
       <div className="relative w-full lg:w-1/4 rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5">
         <div className="w-full">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             New Signature
           </p>
           <form className="space-y-1">
+          <div>
+              <label
+                htmlFor="signature-pad"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Signature / Photo
+              </label>
+              <div className="mt-1 mb-2">
+                <canvas id="signature-pad" className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+                  style={{
+                    width: "100%",
+                    height: "150px"
+                  }}>
+                </canvas>
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="order-number"
@@ -358,7 +498,7 @@ function GravityCalc({ user }) {
                     >
                       <Menu.Items as="ul">
                         <div
-                          className="origin-top-left z-10 absolute left-0 mt-1 w-44 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
+                          className="origin-top-left z-10 absolute left-0 mt-1 w-44 rounded-md shadow-lg bg-gray-100 dark:bg-mag-grey-400 ring-1 ring-mag-blue ring-opacity-5"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
@@ -367,7 +507,7 @@ function GravityCalc({ user }) {
                             <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => reset()}
                               >
@@ -392,7 +532,7 @@ function GravityCalc({ user }) {
                               {editSig == false ? (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => saveSig()}
                                 >
@@ -415,7 +555,7 @@ function GravityCalc({ user }) {
                               ) : (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => updateSig()}
                                 >
@@ -440,7 +580,7 @@ function GravityCalc({ user }) {
                             <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => printQuote("print")}
                               >
@@ -464,7 +604,7 @@ function GravityCalc({ user }) {
                             <Menu.Item as="li">
                               <a
                                 href="#"
-                                className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                 role="menuitem"
                                 onClick={() => printQuote("save")}
                               >
@@ -491,7 +631,7 @@ function GravityCalc({ user }) {
                                 {editSig == true && (
                                   <a
                                     href="#"
-                                    className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                     role="menuitem"
                                     onClick={() => deleteWall()}
                                   >
@@ -537,105 +677,7 @@ function GravityCalc({ user }) {
               <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0"> */}
 
           <div>
-            {/* <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2> */}
-            <ul className="fadein mt-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-3">
-              {savedSigs.map((option, index) => (
-                <li id={index} className="col-span-1 flex shadow-sm rounded-md">
-                  <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
-                    {option.item.truckNumber}
-                  </div>
-                  <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-white dark:bg-mag-grey rounded-r-md truncate">
-                    <div className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">
-                        {option.item.orderNumber}
-                      <p className="text-gray-500 dark:text-gray-400 text-sm">
-                        {option.item.customerName}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 pr-2">
-                      <button className="w-8 h-8 bg-white dark:bg-mag-grey inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-gray-500" onClick={() => loadSavedSig(index)}>
-                        <span className="sr-only">Open options</span>
-
-                        <svg
-                          className="w-5 h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
-
-              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
-      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-purple-600 text-white text-sm font-medium rounded-l-md">
-        CD
-      </div>
-      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div className="flex-1 px-4 py-2 text-sm truncate">
-          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">Component Design</a>
-          <p className="text-gray-500">12 Members</p>
-        </div>
-        <div className="flex-shrink-0 pr-2">
-          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <span className="sr-only">Open options</span>
-
-            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </li> */}
-
-              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
-      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-500 text-white text-sm font-medium rounded-l-md">
-        T
-      </div>
-      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div className="flex-1 px-4 py-2 text-sm truncate">
-          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">Templates</a>
-          <p className="text-gray-500">16 Members</p>
-        </div>
-        <div className="flex-shrink-0 pr-2">
-          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <span className="sr-only">Open options</span>
-            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </li> */}
-
-              {/*     <li className="col-span-1 flex shadow-sm rounded-md">
-      <div className="flex-shrink-0 flex items-center justify-center w-16 bg-green-500 text-white text-sm font-medium rounded-l-md">
-        RC
-      </div>
-      <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-        <div className="flex-1 px-4 py-2 text-sm truncate">
-          <a href="#" className="text-gray-900 font-medium hover:text-gray-600">React Components</a>
-          <p className="text-gray-500">8 Members</p>
-        </div>
-        <div className="flex-shrink-0 pr-2">
-          <button className="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            <span className="sr-only">Open options</span>
-            <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </li> */}
-            </ul>
+            <SigItems/>
           </div>
 
           {/* <div className="overflow-hidden border border-gray-200 rounded-md">
@@ -801,3 +843,8 @@ function GravityCalc({ user }) {
 }
 
 export default GravityCalc;
+
+<style>
+
+
+</style>

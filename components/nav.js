@@ -7,8 +7,14 @@ import UserInfo from "../components/user-info";
 import { Transition, Menu } from "@headlessui/react";
 
 import userbase from "userbase-js";
+import { auth, googleAuthProvider } from '../lib/firebase';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
 
-export default function Nav({ user, setUser }) {
+export default function Nav() {
+  //export default function Nav({ user, setUser }) {
+
+  const { user, username } = useContext(UserContext)
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [modalType, setModalType] = useState();
@@ -26,14 +32,14 @@ export default function Nav({ user, setUser }) {
     setTooltipVisibility(true);
   });
 
-  function openModal(type) {
+/*   function openModal(type) {
     setOpen(true);
     setModalType(type);
-  }
+  } */
 
-  function openEdit() {
+/*   function openEdit() {
     setEdit(true);
-  }
+  } */
 
   function toggleDark(mode) {
     if (mode == "light") {
@@ -45,13 +51,28 @@ export default function Nav({ user, setUser }) {
     setTheme(mode);
   }
 
-  async function logOut() {
+/*   async function logOut() {
     try {
       await userbase.signOut();
       setUser(null);
     } catch (e) {
       console.error(e.message);
     }
+  } */
+
+  // Sign in with Google button
+
+  const signInWithGoogle = async () => {
+    await auth.signInWithPopup(googleAuthProvider);
+  }
+
+  function SignOutFromGoogle() {
+    //return <button onClick={() => auth.signOut()}>Sign Out</button>;
+    auth.signOut()
+  }
+  
+  function UsernameForm() {
+    return null;
   }
 
   return (
@@ -72,7 +93,7 @@ export default function Nav({ user, setUser }) {
               alt=""
               width="286"
               height="60"
-              onClick={logOut}
+              //onClick={logOut}
             />
             {/*           </div>
         </div> */}
@@ -153,26 +174,57 @@ export default function Nav({ user, setUser }) {
                     </Menu.Button>
                     <Transition
                       show={open}
-                      /* enter="transition ease-out duration-500"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="transition ease-in duration-300"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0" */
                     >
                       <Menu.Items as="ul">
                         <div
-                          className="origin-top-right z-10 absolute right-0 mt-1 w-36 rounded-md shadow-lg bg-gray-100 ring-1 ring-mag-blue ring-opacity-5"
+                          className="origin-top-right z-10 absolute right-0 mt-1 w-52 rounded-md shadow-lg bg-gray-100 dark:bg-mag-grey-400 ring-1 ring-mag-blue ring-opacity-5"
                           role="menu"
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
                         >
+                          {user && 
+                            <div className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 font-bold border border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-gray-500">
+                              <Image
+                                src={user.photoURL}
+                                alt=""
+                                width="20"
+                                height="20"
+                                className="rounded-full mr-3"
+                              >
+                                  
+                              </Image> 
+                              <div className="ml-3">{username}</div>
+                            </div>
+                          }
                           <div className="py-1">
                             <Menu.Item as="li">
-                              {!user ? (
-                                <a
+                              {!username ? (
+                                <>
+                                  <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
+                                  role="menuitem"
+                                  onClick={signInWithGoogle}
+                                >
+                                  <svg
+                                    className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                                    />
+                                  </svg>
+                                  Sign In With Google
+                                </a>
+{/*                                 <a
+                                  href="#"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => openModal("logIn")}
                                 >
@@ -191,13 +243,14 @@ export default function Nav({ user, setUser }) {
                                     />
                                   </svg>
                                   Sign In
-                                </a>
+                                </a> */}
+                                </>
                               ) : (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
-                                  onClick={() => setEdit(true)}
+                                  onClick={SignOutFromGoogle}
                                 >
                                   <svg
                                     className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
@@ -210,18 +263,18 @@ export default function Nav({ user, setUser }) {
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
                                       strokeWidth={2}
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                                     />
                                   </svg>
-                                  Edit Profile
+                                  Sign Out
                                 </a>
                               )}
                             </Menu.Item>
-                            <Menu.Item as="li">
+{/*                             <Menu.Item as="li">
                               {!user ? (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => openModal("signUp")}
                                 >
@@ -242,9 +295,10 @@ export default function Nav({ user, setUser }) {
                                   Sign Up
                                 </a>
                               ) : (
+                                <>
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-bluehover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={logOut}
                                 >
@@ -264,13 +318,17 @@ export default function Nav({ user, setUser }) {
                                   </svg>
                                   Sign Out
                                 </a>
+
+
+
+                                </>
                               )}
-                            </Menu.Item>
+                            </Menu.Item> */}
                             <Menu.Item as="li">
                               {theme == "light" ? (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => toggleDark("dark")}
                                 >
@@ -291,7 +349,7 @@ export default function Nav({ user, setUser }) {
                               ) : (
                                 <a
                                   href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 hover:text-mag-blue font-normal hover:font-bold"
+                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
                                   onClick={() => toggleDark("light")}
                                 >
@@ -381,14 +439,9 @@ export default function Nav({ user, setUser }) {
         )}
  */}
 
-        <Transition
+      {/*   <Transition
           show={open}
-          /* enter="transition ease-out duration-500"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition ease-in duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0" */
+        
         >
           <div className="fixed z-10 inset-0 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -416,7 +469,7 @@ export default function Nav({ user, setUser }) {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
+
                 <span
                   className="hidden sm:inline-block sm:align-middle sm:h-screen"
                   aria-hidden="true"
@@ -443,12 +496,7 @@ export default function Nav({ user, setUser }) {
 
         <Transition
           show={edit}
-          /* enter="transition ease-out duration-500"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition ease-in duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0" */
+
         >
           <div className="fixed z-10 inset-0 overflow-y-auto">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -476,7 +524,7 @@ export default function Nav({ user, setUser }) {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
+
                 <span
                   className="hidden sm:inline-block sm:align-middle sm:h-screen"
                   aria-hidden="true"
@@ -490,14 +538,13 @@ export default function Nav({ user, setUser }) {
                   aria-modal="true"
                   aria-labelledby="modal-headline"
                 >
-                  {/* <div className="w-full md:w-1/2 lg:w-1/3 sm:w-full mx-auto mt-10"> */}
 
                   <UserInfo toggle={setEdit} setUser={setUser} user={user} />
                 </div>
               </Transition.Child>
             </div>
           </div>
-        </Transition>
+        </Transition> */}
       </nav>
     </div>
   );

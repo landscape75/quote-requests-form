@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import userbase from "userbase-js";
 import Layout from "../components/layout";
 import "../styles/index.css";
+import { UserContext } from '../lib/context';
+import { useUserData } from '../lib/hooks';
 
 function MyApp({ Component, pageProps }) {
-  const [user, setUser] = useState([]);
+  //const [user, setUser] = useState([]);
+  const userData = useUserData();
 
   useEffect(() => {
-    userbase
+/*     userbase
       .init({
         appId: process.env.NEXT_PUBLIC_USERBASE_APP_ID,
         allowServerSideEncryption: true,
@@ -19,19 +22,20 @@ function MyApp({ Component, pageProps }) {
       .then((session) => {
         if (session.user) {
           setUser(session.user);
-          //console.log(session.user)
         } else {
           console.log("No session");
           setUser(null);
         }
       })
-      .catch((e) => console.error(e));
+      .catch((e) => console.error(e)); */
   }, []);
 
   return (
-    <Layout user={user} setUser={setUser}>
-      <Component user={user} {...pageProps} />
-    </Layout>
+    <UserContext.Provider value={userData}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </UserContext.Provider>
   );
 }
 

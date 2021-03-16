@@ -20,11 +20,13 @@
     "postcss": "^8.2.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-firebase-hooks": "^3.0.2",
     "react-hot-toast": "^1.0.2",
     "react-tooltip": "^4.2.13",
     "react-uuid": "^1.0.2",
     "rxfire": "^4.0.0",
     "rxjs": "^6.6.6",
+    "signature_pad": "^3.0.0-beta.4",
     "userbase-js": "^2.8.0"
   },
   "devDependencies": {

@@ -1,9 +1,13 @@
 import GravityCalc from "../components/gravity-calc";
 import Head from "next/head";
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
+
 //import Link from 'next/link'
 
-function Index({ user }) {
-  if (user) {
+function Index() {
+  const { user, username } = useContext(UserContext)
+  if (username) {
     return (
       <>
         <Head>
