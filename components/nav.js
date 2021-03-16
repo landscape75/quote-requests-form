@@ -7,14 +7,14 @@ import UserInfo from "../components/user-info";
 import { Transition, Menu } from "@headlessui/react";
 
 import userbase from "userbase-js";
-import { auth, googleAuthProvider } from '../lib/firebase';
-import { useContext } from 'react';
-import { UserContext } from '../lib/context';
+import { auth, googleAuthProvider } from "../lib/firebase";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 
 export default function Nav() {
   //export default function Nav({ user, setUser }) {
 
-  const { user, username } = useContext(UserContext)
+  const { user, username } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [modalType, setModalType] = useState();
@@ -32,12 +32,12 @@ export default function Nav() {
     setTooltipVisibility(true);
   });
 
-/*   function openModal(type) {
+  /*   function openModal(type) {
     setOpen(true);
     setModalType(type);
   } */
 
-/*   function openEdit() {
+  /*   function openEdit() {
     setEdit(true);
   } */
 
@@ -51,7 +51,7 @@ export default function Nav() {
     setTheme(mode);
   }
 
-/*   async function logOut() {
+  /*   async function logOut() {
     try {
       await userbase.signOut();
       setUser(null);
@@ -64,13 +64,13 @@ export default function Nav() {
 
   const signInWithGoogle = async () => {
     await auth.signInWithPopup(googleAuthProvider);
-  }
+  };
 
   function SignOutFromGoogle() {
     //return <button onClick={() => auth.signOut()}>Sign Out</button>;
-    auth.signOut()
+    auth.signOut();
   }
-  
+
   function UsernameForm() {
     return null;
   }
@@ -172,9 +172,7 @@ export default function Nav() {
                         />
                       </svg>
                     </Menu.Button>
-                    <Transition
-                      show={open}
-                    >
+                    <Transition show={open}>
                       <Menu.Items as="ul">
                         <div
                           className="origin-top-right z-10 absolute right-0 mt-1 w-52 rounded-md shadow-lg bg-gray-100 dark:bg-mag-grey-400 ring-1 ring-mag-blue ring-opacity-5"
@@ -182,7 +180,7 @@ export default function Nav() {
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
                         >
-                          {user && 
+                          {user && (
                             <div className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 font-bold border border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-gray-500">
                               <Image
                                 src={user.photoURL}
@@ -190,39 +188,44 @@ export default function Nav() {
                                 width="20"
                                 height="20"
                                 className="rounded-full mr-3"
-                              >
-                                  
-                              </Image> 
+                              ></Image>
                               <div className="ml-3">{username}</div>
                             </div>
-                          }
+                          )}
                           <div className="py-1">
                             <Menu.Item as="li">
                               {!username ? (
                                 <>
                                   <a
-                                  href="#"
-                                  className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
-                                  role="menuitem"
-                                  onClick={signInWithGoogle}
-                                >
-                                  <svg
-                                    className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                                    href="#"
+                                    className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
+                                    role="menuitem"
+                                    onClick={signInWithGoogle}
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                                    />
-                                  </svg>
-                                  Sign In With Google
-                                </a>
-{/*                                 <a
+{/*                                     <svg
+                                      className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                                      />
+                                    </svg> */}
+                                  <Image
+                                    src={"/google.svg"}
+                                    alt=""
+                                    width="16"
+                                    height="16"
+                                    className="mr-3"
+                                  ></Image>
+                                    <div class="ml-4">Sign In With Google</div>
+                                  </a>
+                                  {/*                                 <a
                                   href="#"
                                   className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
@@ -252,7 +255,7 @@ export default function Nav() {
                                   role="menuitem"
                                   onClick={SignOutFromGoogle}
                                 >
-                                  <svg
+{/*                                   <svg
                                     className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -265,12 +268,19 @@ export default function Nav() {
                                       strokeWidth={2}
                                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                                     />
-                                  </svg>
-                                  Sign Out
+                                  </svg> */}
+                                  <Image
+                                    src={"/google.svg"}
+                                    alt=""
+                                    width="16"
+                                    height="16"
+                                    className="mr-3"
+                                  ></Image>
+                                    <div class="ml-4">Sign Out</div>
                                 </a>
                               )}
                             </Menu.Item>
-{/*                             <Menu.Item as="li">
+                            {/*                             <Menu.Item as="li">
                               {!user ? (
                                 <a
                                   href="#"
@@ -384,7 +394,7 @@ export default function Nav() {
 
             {/* //////////////////////////////////////// */}
 
-{/*             {theme == "light" ? (
+            {/*             {theme == "light" ? (
               <>
                 <div className="inline-flex">
                   <svg
@@ -439,7 +449,7 @@ export default function Nav() {
         )}
  */}
 
-      {/*   <Transition
+        {/*   <Transition
           show={open}
         
         >
