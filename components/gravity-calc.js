@@ -6,33 +6,31 @@ import uuid from "react-uuid";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import SignaturePad  from "signature_pad";
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { firestore, serverTimestamp } from '../lib/firebase';
-import { useContext } from 'react';
-import { UserContext } from '../lib/context';
+import SignaturePad from "signature_pad";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { firestore, serverTimestamp } from "../lib/firebase";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 import SigItems from "../components/sig-items";
+import ImageUploader from "../components/ImageUploader";
+import swal from "@sweetalert/with-react";
 
 /////////////////////////////////////////////////////////////
 
 export async function getStaticProps({ params }) {
-  const [value, loading, error] = useCollection(
-    firestore.collection('sigs'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
+  const [value, loading, error] = useCollection(firestore.collection("sigs"), {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
 
   return {
     props: { value },
-
   };
 }
 
 /////////////////////////////////////////////////////////////
 
 function GravityCalc() {
-  const { user, username } = useContext(UserContext)
+  const { user, username } = useContext(UserContext);
   const [fullYear, setYear] = useState(new Date().getFullYear().toString());
   const [version] = useState("2021.03.15.a");
   const [savedSigs, setSavedSigs] = useState([]);
@@ -53,21 +51,24 @@ function GravityCalc() {
   const [sigDate, setSigDate] = useState("");
   const [sigLabel, setSigLabel] = useState("Signature");
   const [newSigLabel, setNewSigLabel] = useState("New Signature");
-  const [imgW, setImgW] = useState(0);
-  const [imgH, setImgH] = useState(0);
+  const [imgW, setImgW] = useState(250);
+  const [imgH, setImgH] = useState(150);
   const [loadingSig, setLoadingSig] = useState(false);
   const [selectedFile, setSelectedFile] = useState(undefined);
   const [isPhoto, setIsPhoto] = useState(false);
   const [noSig, setNoSig] = useState(true);
+  const [uploadUrl, setUploadUrl] = useState("");
 
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    setCanvas(document.getElementById('signature-pad')) 
+    setCanvas(document.getElementById("signature-pad"));
     if (canvas) {
-      setSignaturePad(new SignaturePad(canvas, {
-          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG 
-        }))
+      setSignaturePad(
+        new SignaturePad(canvas, {
+          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+        })
+      );
     }
     //resizeCanvas();
     //console.log(user.photoURL)
@@ -76,7 +77,6 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
-
     let temp;
     function resizeCanvas() {
       if (signaturePad) {
@@ -90,121 +90,63 @@ function GravityCalc() {
       }
     }
 
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("resize", resizeCanvas);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-    }
-
+      window.removeEventListener("resize", resizeCanvas);
+    };
   }, []);
 
   /////////////////////////////////////////////////////////////
 
-  /* const SigItems = (props) => {
-    const [value, loading, error] = useCollection(
-      firestore.collection('sigs'),
-      {
-        snapshotListenOptions: { includeMetadataChanges: true },
-      }
-    );
-
-    const sigs = value || props.value
-
-    return (
-      <div id="fsdfsdfs5fds54fds54f">
-        <p>
-          {error && <strong>Error: {JSON.stringify(error)}</strong>}
-          {loading && <span className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">Loading signatures...</span>}
-        </p>
-          {sigs && (
-            <ul className="fadein mt-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-3">
-              {sigs.docs.map((doc) => (
-                <li id={doc.id} key={doc.id} className="col-span-1 flex shadow-sm rounded-md">
-                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
-                  {doc.data().truckNumber}
-                </div>
-                <div className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-white dark:bg-mag-grey rounded-r-md truncate">
-                  <div className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">
-                    {doc.data(0).orderNumber}
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">
-                      {doc.data().customerName}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 pr-2">
-                    <button
-                      className="w-8 h-8 bg-white dark:bg-mag-grey inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-gray-500"
-                      onClick={() => loadSavedSig(doc.id)}
-                    >
-                      <span className="sr-only">Open options</span>
-
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </li>
-              ))}
-            </ul>
-          )}
-      </div>
-    );
-  }; */
-
   /////////////////////////////////////////////////////////////
 
   async function saveSig() {
-
     const id = uuid();
     //let f2
 
     // No signature and no photo
     //if (signaturePad.isEmpty() && !isPhoto) {
-      setSigDate("NOT SIGNED YET")
-      setNoSig(true)
-      //const uid = auth.currentUser.uid;
-      //f2 = false
+    setSigDate("NOT SIGNED YET");
+    if (uploadUrl !== "") {
+      setNoSig(false);
+    } else setNoSig(true);
 
-      try {
-        await firestore.collection("sigs").doc(id).set({
-              orderNumber: orderNumber,
-              customerName: customerName,
-              truckNumber: truckNumber,
-              sigDate: sigDate,
-              company: company,
-              noSig: noSig,
-              notes: notes,
-              createdAt: serverTimestamp(),
-              updatedAt: serverTimestamp(),
-              userId: user.uid,
-              userName: username,
-              userPhotoUrl: user.photoURL,
-              
-          })
-          .then(() => {
-            setEditSig(true);
-            setEditItemId(id);
-            toast.success("Signature saved to the cloud.", { duration: 4000 });
-          });
-      } catch (e) {
-        toast.error("Failed to save signature. - " + e, {
-          duration: 5000,
+    //const uid = auth.currentUser.uid;
+    //f2 = false
+
+    try {
+      await firestore
+        .collection("sigs")
+        .doc(id)
+        .set({
+          orderNumber: orderNumber,
+          customerName: customerName,
+          truckNumber: truckNumber,
+          sigDate: sigDate,
+          company: company,
+          noSig: noSig,
+          notes: notes,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          userId: user.uid,
+          userName: username,
+          userPhotoUrl: user.photoURL,
+          photoUrl: uploadUrl,
+          imgW: imgW,
+          imgH: imgH,
+        })
+        .then(() => {
+          setEditSig(true);
+          setEditItemId(id);
+          toast.success("Signature saved to the cloud.", { duration: 4000 });
         });
-      }
+    } catch (e) {
+      toast.error("Failed to save signature. - " + e, {
+        duration: 5000,
+      });
+    }
     //}
-
-
   }
 
   /////////////////////////////////////////////////////////////
@@ -232,70 +174,109 @@ function GravityCalc() {
 
   /////////////////////////////////////////////////////////////
 
-  async function deleteWall() {
-    setShowMenu(false);
-    try {
-      await userbase.deleteItem({
-        databaseName: user.profile.dbName,
-        itemId: editItemId,
+  async function deleteSig(id) {
+    swal({
+      title: "Are you sure?",
+      text: "Deleted signatures cannot bve recovered",
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+      /*       content: (
+        <div className="inline-flex w-full space-x-2">
+          <div className="w-1/2">
+            <button
+              className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-mag-blue text-base font-medium text-white hover:bg-mag-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mag-blue-500 sm:text-sm"
+
+              onClick={(e) => handleSignUp(e)}
+            >
+              Cancel
+            </button>
+          </div>
+        <div className="w-1/2">
+            <button
+              className="flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
+              onClick={(e) => handleCancel(e)}
+            >
+              Delete
+            </button>
+        </div>
+        </div>
+      ) */
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        var docRef = firestore.collection("sigs").doc(id);
+
+        await docRef
+          .delete()
+          .then(() => {
+            reset();
+            toast.success("Signature deleted.", { duration: 3000 });
+          })
+          .catch((error) => {
+            toast.error("Failed to delete signature. - " + e, {
+              duration: 5000,
+            });
+          });
+      }
+    });
+  }
+  /////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////////
+
+  function loadSavedSig(id) {
+    setUploadUrl('')
+    var docRef = firestore.collection("sigs").doc(id);
+
+    docRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          //console.log("Document data:", doc.data());
+          setSelectedSig(id);
+          setEditItemId(doc.id);
+          setOrderNumber(doc.data().orderNumber);
+          setCustomerName(doc.data().customerName);
+          setTruckNumber(doc.data().truckNumber);
+          setUploadUrl(doc.data().photoUrl || "");
+          setImgW(doc.data().imgW || 250);
+          setEditSig(true);
+        } else {
+          toast.error("Failed to load signature.", {
+            duration: 5000,
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error("Failed to load signature. - " + e, {
+          duration: 5000,
+        });
       });
-      reset();
-      toast.success("Wall deleted from cloud.", { duration: 5000 });
-    } catch (e) {
-      console.error(e.message);
-      toast.error("Failed to delete wall. - " + e.message, { duration: 5000 });
-    }
-  }
-
-  /////////////////////////////////////////////////////////////
-
-  async function handleCaseSelect(e) {
-    await setSelectedCase(e);
-  }
-
-  /////////////////////////////////////////////////////////////
-
-  async function handleHeightSelect(e) {
-    await setSelectedHeight(e);
-  }
-
-  /////////////////////////////////////////////////////////////
-
-  /////////////////////////////////////////////////////////////
-
-  function loadSavedSig(index) {
-    if (index == -1) {
-      return;
-    }
-
-    setSelectedSig(index);
-    setEditItemId(savedSigs[index].itemId);
-    setOrderNumber(savedSigs[index].item.orderNumber);
-    setCustomerName(savedSigs[index].item.customerName);
-    setTruckNumber(savedSigs[index].item.truckNumber);
-    setEditSig(true);
   }
 
   /////////////////////////////////////////////////////////////
 
   function reset() {
-    signaturePad.clear()
-    signaturePad.on()
+    signaturePad.clear();
+    signaturePad.on();
     setEditSig(false);
     setEditItemId("");
     setOrderNumber("");
     setCustomerName("");
     setTruckNumber("");
     setNotes("");
-    setCompany("")
-    setSigDate("")
-    setSelectedFileId("")
-    setSigLabel("Signature")
-    setNewSigLabel("New Signature")
-    setImgW(0)
-    setImgH(0)
-    setLoadingSig(false)
-    setSelectedFileId(undefined)
+    setCompany("");
+    setSigDate("");
+    setSelectedFileId("");
+    setSigLabel("Signature");
+    setNewSigLabel("New Signature");
+    setImgW(250);
+    setImgH(150);
+    setLoadingSig(false);
+    setSelectedFileId(undefined);
+    setUploadUrl("");
   }
 
   /////////////////////////////////////////////////////////////
@@ -363,46 +344,111 @@ function GravityCalc() {
   }
 
   /////////////////////////////////////////////////////////////////
+  function clearImage() {
+    setUploadUrl("");
+  }
 
+  function clearSig() {
+    signaturePad.clear();
+    signaturePad.on();
+  }
 
   /////////////////////////////////////////////////////////////
 
-  
-   
-  
   // On mobile devices it might make more sense to listen to orientation change,
   // rather than window resize events.
-
 
   /////////////////////////////////////////////////////////////
 
   return (
-
-    
     <div className="flex flex-wrap lg:flex-nowrap gap-4 m-0">
       {/* <div className="grid grid-cols-2 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 p-0 sm:p-0"></div> */}
-      
+
       <div className="relative w-full lg:w-1/4 rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5">
         <div className="w-full">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             New Signature
           </p>
           <form className="space-y-1">
-          <div>
+            <div>
               <label
                 htmlFor="signature-pad"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-100"
               >
                 Signature / Photo
               </label>
-              <div className="mt-1 mb-2">
-                <canvas id="signature-pad" className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
-                  style={{
-                    width: "100%",
-                    height: "150px"
-                  }}>
-                </canvas>
+              <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
+                {uploadUrl == "" && (
+                  <div className="flex-1 flex items-top justify-between">
+                    <canvas
+                      id="signature-pad"
+                      style={{
+                        width: "100%",
+                        height: "150px",
+                      }}
+                    ></canvas>
+                    <div className="flex-shrink-0 pr-0">
+                      <button
+                        className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                        onClick={() => clearSig()}
+                      >
+                        <span className="sr-only"></span>
+                        <svg
+                          className="w-5 h-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {uploadUrl !== "" && (
+                  <>
+                    <div className="flex-1 flex items-top justify-between">
+                      <Image
+                        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+                        src={uploadUrl}
+                        alt="photo"
+                        width={imgW}
+                        height={imgH}
+                        layout="intrinsic"
+                      />
+                      <div className="flex-shrink-0 pr-0">
+                        <button
+                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                          onClick={() => clearImage()}
+                        >
+                          <span className="sr-only">Open options</span>
+                          <svg
+                          className="w-5 h-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
+              <ImageUploader passUploadUrl={setUploadUrl} setW={setImgW} />
             </div>
 
             <div>
@@ -677,7 +723,7 @@ function GravityCalc() {
               <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0"> */}
 
           <div>
-            <SigItems/>
+            <SigItems loadSavedSig={loadSavedSig} deleteSig={deleteSig} />
           </div>
 
           {/* <div className="overflow-hidden border border-gray-200 rounded-md">
@@ -843,8 +889,3 @@ function GravityCalc() {
 }
 
 export default GravityCalc;
-
-<style>
-
-
-</style>
