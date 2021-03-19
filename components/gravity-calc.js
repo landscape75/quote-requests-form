@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, Transition, Listbox } from "@headlessui/react";
 //import userbase from "userbase-js";
 import Image from "next/image";
@@ -14,6 +14,8 @@ import { UserContext } from "../lib/context";
 import SigItems from "../components/sig-items";
 import ImageUploader from "../components/ImageUploader";
 import swal from "@sweetalert/with-react";
+//import SignaturePad from "react-signature-canvas";
+
 
 /////////////////////////////////////////////////////////////
 
@@ -33,17 +35,15 @@ function GravityCalc() {
   const { user, username } = useContext(UserContext);
   const [fullYear, setYear] = useState(new Date().getFullYear().toString());
   const [version] = useState("2021.03.15.a");
-  const [savedSigs, setSavedSigs] = useState([]);
   const [editSig, setEditSig] = useState(false);
   const [editItemId, setEditItemId] = useState("");
-  const [share, setShareToken] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
   const [truckNumber, setTruckNumber] = useState("");
   const [selectedSig, setSelectedSig] = useState("");
   const [selectedFileId, setSelectedFileId] = useState("");
-  const [sigsOpen, setSigsOpen] = useState(false);
-  const [cache, setCache] = useState({});
+  //const [sigsOpen, setSigsOpen] = useState(false);
+  //const [cache, setCache] = useState({});
   const [canvas, setCanvas] = useState();
   const [signaturePad, setSignaturePad] = useState();
   const [notes, setNotes] = useState("");
@@ -53,11 +53,35 @@ function GravityCalc() {
   const [newSigLabel, setNewSigLabel] = useState("New Signature");
   const [imgW, setImgW] = useState(250);
   const [imgH, setImgH] = useState(150);
-  const [loadingSig, setLoadingSig] = useState(false);
+  //const [loadingSig, setLoadingSig] = useState(false);
   const [selectedFile, setSelectedFile] = useState(undefined);
   const [isPhoto, setIsPhoto] = useState(false);
   const [noSig, setNoSig] = useState(true);
   const [uploadUrl, setUploadUrl] = useState("");
+
+  const [imageUrl, setImageUrl] = useState("");
+
+  //const sigCanvas = useRef({});
+
+  function clearSig() {
+    if (signaturePad) {
+      signaturePad.clear()
+      //setImageUrl("")
+    }
+  };
+
+  async function getSig() {
+    if (signaturePad) {
+      //return sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+      return signaturePad.toDataURL("image/png");
+      //console.log({ data: [sigCanvas.current.toData()] })
+      //return { data: [sigCanvas.current.toData()] };
+    }
+    else {
+      return ""
+    }
+    
+  }
 
   /////////////////////////////////////////////////////////////
 
@@ -66,13 +90,14 @@ function GravityCalc() {
     if (canvas) {
       setSignaturePad(
         new SignaturePad(canvas, {
-          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+          backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
         })
       );
     }
     //resizeCanvas();
     //console.log(user.photoURL)
-  }, []);
+    //getSig()
+  }, [user]);
 
   /////////////////////////////////////////////////////////////
 
@@ -95,7 +120,7 @@ function GravityCalc() {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, []);
+  }, [signaturePad]);
 
   /////////////////////////////////////////////////////////////
 
@@ -103,17 +128,13 @@ function GravityCalc() {
 
   async function saveSig() {
     const id = uuid();
-    //let f2
 
-    // No signature and no photo
-    //if (signaturePad.isEmpty() && !isPhoto) {
-    setSigDate("NOT SIGNED YET");
-    if (uploadUrl !== "") {
-      setNoSig(false);
-    } else setNoSig(true);
-
-    //const uid = auth.currentUser.uid;
-    //f2 = false
+    let notSigned = true
+    if (uploadUrl == "" && signaturePad.isEmpty()) {
+      notSigned = true
+    } else {
+      notSigned = false
+    }
 
     try {
       await firestore
@@ -123,9 +144,9 @@ function GravityCalc() {
           orderNumber: orderNumber,
           customerName: customerName,
           truckNumber: truckNumber,
-          sigDate: sigDate,
+          sigDate: serverTimestamp(),
           company: company,
-          noSig: noSig,
+          noSig: notSigned,
           notes: notes,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
@@ -133,6 +154,7 @@ function GravityCalc() {
           userName: username,
           userPhotoUrl: user.photoURL,
           photoUrl: uploadUrl,
+          sigImageUrl: await getSig(),
           imgW: imgW,
           imgH: imgH,
         })
@@ -143,7 +165,7 @@ function GravityCalc() {
         });
     } catch (e) {
       toast.error("Failed to save signature. - " + e, {
-        duration: 5000,
+        duration: 10000,
       });
     }
     //}
@@ -212,7 +234,7 @@ function GravityCalc() {
             reset();
             toast.success("Signature deleted.", { duration: 3000 });
           })
-          .catch((error) => {
+          .catch((e) => {
             toast.error("Failed to delete signature. - " + e, {
               duration: 5000,
             });
@@ -241,6 +263,8 @@ function GravityCalc() {
           setCustomerName(doc.data().customerName);
           setTruckNumber(doc.data().truckNumber);
           setUploadUrl(doc.data().photoUrl || "");
+          if (sigCanvas.current) clearSig()
+          if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
           setImgW(doc.data().imgW || 250);
           setEditSig(true);
         } else {
@@ -249,7 +273,7 @@ function GravityCalc() {
           });
         }
       })
-      .catch((error) => {
+      .catch((e) => {
         toast.error("Failed to load signature. - " + e, {
           duration: 5000,
         });
@@ -261,6 +285,8 @@ function GravityCalc() {
   function reset() {
     signaturePad.clear();
     signaturePad.on();
+    //clearSig()
+    setImageUrl("")
     setEditSig(false);
     setEditItemId("");
     setOrderNumber("");
@@ -274,17 +300,17 @@ function GravityCalc() {
     setNewSigLabel("New Signature");
     setImgW(250);
     setImgH(150);
-    setLoadingSig(false);
+    //setLoadingSig(false);
     setSelectedFileId(undefined);
     setUploadUrl("");
   }
 
   /////////////////////////////////////////////////////////////
 
-  function round(value, precision) {
+/*   function round(value, precision) {
     var multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
-  }
+  } */
 
   /////////////////////////////////////////////////////////////
 
@@ -348,10 +374,10 @@ function GravityCalc() {
     setUploadUrl("");
   }
 
-  function clearSig() {
+/*   function clearSig() {
     signaturePad.clear();
     signaturePad.on();
-  }
+  } */
 
   /////////////////////////////////////////////////////////////
 
@@ -380,6 +406,12 @@ function GravityCalc() {
               <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
                 {uploadUrl == "" && (
                   <div className="flex-1 flex items-top justify-between">
+                    <div>
+{/*                       <SignaturePad
+                        ref={sigCanvas}
+                        canvasProps={{ className: "w-full" }}
+                      /> */}
+                    
                     <canvas
                       id="signature-pad"
                       style={{
@@ -387,6 +419,7 @@ function GravityCalc() {
                         height: "150px",
                       }}
                     ></canvas>
+                    </div>
                     <div className="flex-shrink-0 pr-0">
                       <button
                         className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
@@ -849,6 +882,7 @@ function GravityCalc() {
             </div> */}
           {/* </div> */}
         </div>
+        {imageUrl}
       </div>
 
       {/*       <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">

@@ -223,7 +223,7 @@ export default function Nav() {
                                     height="16"
                                     className="mr-3"
                                   ></Image>
-                                    <div class="ml-4">Sign In With Google</div>
+                                    <div className="ml-4">Sign In With Google</div>
                                   </a>
                                   {/*                                 <a
                                   href="#"
@@ -276,7 +276,7 @@ export default function Nav() {
                                     height="16"
                                     className="mr-3"
                                   ></Image>
-                                    <div class="ml-4">Sign Out</div>
+                                    <div className="ml-4">Sign Out</div>
                                 </a>
                               )}
                             </Menu.Item>
