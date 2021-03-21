@@ -30,10 +30,18 @@ export default function SigItems(props) {
               className="col-span-1 flex shadow-sm rounded-md cursor-pointer"
               onClick={() => props.loadSavedSig(doc.id)}
             >
-              <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
-                {doc.data().truckNumber}
-              </div>
-              <div tabIndex="0" className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-white dark:bg-mag-grey dark:hover:bg-mag-grey-400 dark:focus:bg-mag-grey-300 rounded-r-md truncate focus:outline-none">
+              {doc.data().noSig &&
+                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-yellow-600 text-white text-lg font-bold rounded-l-md">
+                  {doc.data().truckNumber}
+                </div>
+              }
+              {!doc.data().noSig &&
+                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-green-900 text-white text-lg font-bold rounded-l-md">
+                  {doc.data().truckNumber}
+                </div>
+              }         
+              
+              <div tabIndex="0" className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-300 dark:border-gray-500 bg-gray-50 hover:bg-gray-100 focus:bg-gray-200 dark:bg-mag-grey dark:hover:bg-mag-grey-400 dark:focus:bg-mag-grey-300 rounded-r-md truncate focus:outline-none">
                 <div className="flex-1 px-3 py-1 text-md truncate text-gray-900 dark:text-white font-bold">
                   {doc.data(0).orderNumber}
                   <p className="text-gray-500 dark:text-gray-400 text-sm">

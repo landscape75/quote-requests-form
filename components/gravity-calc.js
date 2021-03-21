@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, Transition, Listbox } from "@headlessui/react";
+import Link from "next/link";
 //import userbase from "userbase-js";
 import Image from "next/image";
 import uuid from "react-uuid";
@@ -15,7 +16,6 @@ import SigItems from "../components/sig-items";
 import ImageUploader from "../components/ImageUploader";
 import swal from "@sweetalert/with-react";
 //import SignaturePad from "react-signature-canvas";
-
 
 /////////////////////////////////////////////////////////////
 
@@ -59,28 +59,29 @@ function GravityCalc() {
   const [noSig, setNoSig] = useState(true);
   const [uploadUrl, setUploadUrl] = useState("");
 
-  const [imageUrl, setImageUrl] = useState("");
+  const [sigUrl, setSigUrl] = useState("");
+  const [sigLocked, setSigLocked] = useState(false);
+  const [photoLocked, setPhotoLocked] = useState(false);
 
   //const sigCanvas = useRef({});
 
-  function clearSig() {
+  function clearSig(e) {
+    e.preventDefault();
     if (signaturePad) {
-      signaturePad.clear()
+      signaturePad.clear();
       //setImageUrl("")
     }
-  };
+  }
 
   async function getSig() {
-    if (signaturePad) {
+    if (signaturePad && !signaturePad.isEmpty()) {
       //return sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
       return signaturePad.toDataURL("image/png");
       //console.log({ data: [sigCanvas.current.toData()] })
       //return { data: [sigCanvas.current.toData()] };
+    } else {
+      return "";
     }
-    else {
-      return ""
-    }
-    
   }
 
   /////////////////////////////////////////////////////////////
@@ -90,7 +91,7 @@ function GravityCalc() {
     if (canvas) {
       setSignaturePad(
         new SignaturePad(canvas, {
-          backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
         })
       );
     }
@@ -102,7 +103,7 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    let temp;
+    let temp = null;
     function resizeCanvas() {
       if (signaturePad) {
         temp = signaturePad.toData();
@@ -112,28 +113,62 @@ function GravityCalc() {
         canvas.getContext("2d").scale(ratio, ratio);
         signaturePad.clear();
         signaturePad.fromData(temp);
+        temp = null;
       }
     }
-
+    //console.log("resize registered");
     window.addEventListener("resize", resizeCanvas);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [signaturePad]);
+  }, []);
 
   /////////////////////////////////////////////////////////////
 
+  useEffect(() => {
+
+    if (uploadUrl == "") {
+      setPhotoLocked(false);
+    } else {
+      setPhotoLocked(true);
+    }
+
+    if (signaturePad) {
+      if (sigUrl == "") {
+        setSigLocked(false);
+        signaturePad.on()
+      } else {
+        setSigLocked(true);
+        signaturePad.off()
+      }
+    }
+
+  }, [uploadUrl, sigUrl, orderNumber]);
   /////////////////////////////////////////////////////////////
 
   async function saveSig() {
     const id = uuid();
 
-    let notSigned = true
+    let notSigned = true;
     if (uploadUrl == "" && signaturePad.isEmpty()) {
-      notSigned = true
+      notSigned = true;
     } else {
-      notSigned = false
+      notSigned = false;
+    }
+
+    if (uploadUrl == "") {
+      setPhotoLocked(false);
+    } else {
+      setPhotoLocked(true);
+    }
+
+    if (signaturePad.isEmpty()) {
+      setSigLocked(false);
+      signaturePad.on()
+    } else {
+      setSigLocked(true);
+      signaturePad.off()
     }
 
     try {
@@ -174,23 +209,58 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   async function updateSig() {
-    //setShowMenu(false);
-    //const toastId = toast.loading('Updating...');
+
+    let notSigned = true;
+    if (uploadUrl == "" && signaturePad.isEmpty()) {
+      notSigned = true;
+    } else {
+      notSigned = false;
+    }
+
+    if (uploadUrl == "") {
+      setPhotoLocked(false);
+    } else {
+      setPhotoLocked(true);
+    }
+
+/*     if (signaturePad.isEmpty()) {
+      setSigLocked(false);
+      signaturePad.on()
+    } else {
+      setSigLocked(true);
+      signaturePad.off()
+    }
+ */
     try {
-      await userbase.updateItem({
-        databaseName: user.profile.dbName,
-        item: {
+      await firestore
+        .collection("sigs")
+        .doc(selectedSig)
+        .update({
           orderNumber: orderNumber,
           customerName: customerName,
           truckNumber: truckNumber,
-        },
-        itemId: editItemId,
-      });
-      toast.success("Changes have been saved.", { duration: 4000 });
+          sigDate: sigDate,
+          company: company,
+          noSig: notSigned,
+          notes: notes,
+          updatedAt: serverTimestamp(),
+          userId: user.uid,
+          userName: username,
+          userPhotoUrl: user.photoURL,
+          photoUrl: uploadUrl,
+          sigImageUrl: await getSig(),
+          imgW: imgW,
+          imgH: imgH,
+        })
+        .then(() => {
+          //setEditSig(true);
+          //setEditItemId(id);
+          toast.success("Signature saved to the cloud.", { duration: 4000 });
+        });
     } catch (e) {
-      //console.error(e.message)
-      //toast.dismiss(toastId)
-      toast.error("Failed to save changes. - " + e.message, { duration: 5000 });
+      toast.error("Failed to save signature. - " + e, {
+        duration: 10000,
+      });
     }
   }
 
@@ -248,11 +318,11 @@ function GravityCalc() {
 
   /////////////////////////////////////////////////////////////
 
-  function loadSavedSig(id) {
-    setUploadUrl('')
+  async function loadSavedSig(id) {
+    setUploadUrl("");
     var docRef = firestore.collection("sigs").doc(id);
 
-    docRef
+    await docRef
       .get()
       .then((doc) => {
         if (doc.exists) {
@@ -263,10 +333,25 @@ function GravityCalc() {
           setCustomerName(doc.data().customerName);
           setTruckNumber(doc.data().truckNumber);
           setUploadUrl(doc.data().photoUrl || "");
-          if (sigCanvas.current) clearSig()
-          if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
-          setImgW(doc.data().imgW || 250);
-          setEditSig(true);
+          //if (sigCanvas.current) clearSig()
+          //if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
+          if (signaturePad) signaturePad.clear();
+          if (signaturePad)
+            signaturePad.fromDataURL(doc.data().sigImageUrl || "");
+            setSigUrl(doc.data().sigImageUrl || "")
+            setImgW(doc.data().imgW || 250);
+            setEditSig(true);
+/*           if (uploadUrl == "") {
+            setPhotoLocked(false);
+          } else {
+            setPhotoLocked(true);
+          } */
+
+/*           if (doc.data().sigImageUrl == "") {
+            setSigLocked(false);
+          } else {
+            setSigLocked(true);
+          } */
         } else {
           toast.error("Failed to load signature.", {
             duration: 5000,
@@ -286,7 +371,7 @@ function GravityCalc() {
     signaturePad.clear();
     signaturePad.on();
     //clearSig()
-    setImageUrl("")
+    setSigUrl("");
     setEditSig(false);
     setEditItemId("");
     setOrderNumber("");
@@ -303,11 +388,14 @@ function GravityCalc() {
     //setLoadingSig(false);
     setSelectedFileId(undefined);
     setUploadUrl("");
+    setSigUrl("");
+    setSigLocked(false);
+    setPhotoLocked(false);
   }
 
   /////////////////////////////////////////////////////////////
 
-/*   function round(value, precision) {
+  /*   function round(value, precision) {
     var multiplier = Math.pow(10, precision || 0);
     return Math.round(value * multiplier) / multiplier;
   } */
@@ -370,11 +458,12 @@ function GravityCalc() {
   }
 
   /////////////////////////////////////////////////////////////////
-  function clearImage() {
+  function clearImage(e) {
+    e.preventDefault();
     setUploadUrl("");
   }
 
-/*   function clearSig() {
+  /*   function clearSig() {
     signaturePad.clear();
     signaturePad.on();
   } */
@@ -395,95 +484,174 @@ function GravityCalc() {
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             New Signature
           </p>
-          <form className="space-y-1">
-            <div>
-              <label
-                htmlFor="signature-pad"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Signature / Photo
-              </label>
-              <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
-                {uploadUrl == "" && (
-                  <div className="flex-1 flex items-top justify-between">
-                    <div>
-{/*                       <SignaturePad
+
+          <div>
+            <label
+              htmlFor="signature-pad"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+            >
+              Signature
+            </label>
+            {/* {sigLocked && <label>Locked</label>} */}
+            <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
+              {/* {uploadUrl == "" && ( */}
+              <div className="flex-1 flex items-top justify-between">
+                <div className="w-full">
+                  {/*                       <SignaturePad
                         ref={sigCanvas}
                         canvasProps={{ className: "w-full" }}
                       /> */}
-                    
-                    <canvas
-                      id="signature-pad"
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                      }}
-                    ></canvas>
-                    </div>
-                    <div className="flex-shrink-0 pr-0">
-                      <button
-                        className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                        onClick={() => clearSig()}
+
+                  <canvas
+                    id="signature-pad"
+                    style={{
+                      width: "100%",
+                      height: "100px",
+                    }}
+                  ></canvas>
+                </div>
+                {sigLocked && (
+                  <div className="flex-shrink-0 pr-0">
+                    <button className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent focus:outline-none">
+                      <span className="sr-only"></span>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                       >
-                        <span className="sr-only"></span>
-                        <svg
-                          className="w-5 h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    </div>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 )}
-                {uploadUrl !== "" && (
-                  <>
-                    <div className="flex-1 flex items-top justify-between">
-                      <Image
-                        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
-                        src={uploadUrl}
-                        alt="photo"
-                        width={imgW}
-                        height={imgH}
-                        layout="intrinsic"
-                      />
-                      <div className="flex-shrink-0 pr-0">
-                        <button
-                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                          onClick={() => clearImage()}
-                        >
-                          <span className="sr-only">Open options</span>
-                          <svg
-                          className="w-5 h-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </>
+                {!sigLocked && (
+                  <div className="flex-shrink-0 pr-0">
+                    <button
+                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                      onClick={(e) => clearSig(e)}
+                    >
+                      <span className="sr-only"></span>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 )}
               </div>
-              <ImageUploader passUploadUrl={setUploadUrl} setW={setImgW} />
+              {/* )} */}
             </div>
 
+            {/* {uploadUrl !== "" && ( */}
+            <label
+              htmlFor="signature-pad"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-100 mt-2"
+            >
+              Photo
+            </label>
+            <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
+              <div className="flex-1 flex items-top justify-between">
+                {uploadUrl !== "" && (
+                  <Image
+                    className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+                    src={uploadUrl}
+                    alt="photo"
+                    width={imgW}
+                    height={imgH}
+                    layout="intrinsic"
+                  />
+                )}
+                {uploadUrl == "" && (
+                  <Image
+                    className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+                    src={"/no-photo.png"}
+                    alt="photo"
+                    width={250}
+                    height={150}
+                    layout="intrinsic"
+                  />
+                )}
+
+                {photoLocked && (
+                  <div className="flex-shrink-0 pr-0">
+                    <button className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent focus:outline-none">
+                      <span className="sr-only">Open options</span>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+                {!photoLocked && (
+                  <div className="flex-shrink-0 pr-0">
+                    <button
+                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                      onClick={(e) => clearImage(e)}
+                    >
+                      <span className="sr-only">Open options</span>
+                      <svg
+                        className="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* )} */}
+          </div>
+
+          {!photoLocked &&
+            <ImageUploader passUploadUrl={setUploadUrl} setW={setImgW} />
+          }
+          {photoLocked &&
+            <Link href={ uploadUrl }>
+              <a target="_blank" className="cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none">
+                Enlarge Photo
+              </a>
+            </Link>
+          }
+          
+
+          <form className="space-y-1">
             <div>
               <label
                 htmlFor="order-number"
@@ -882,7 +1050,7 @@ function GravityCalc() {
             </div> */}
           {/* </div> */}
         </div>
-        {imageUrl}
+        {/* {sigUrl} */}
       </div>
 
       {/*       <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">

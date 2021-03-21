@@ -181,12 +181,12 @@ export default function Nav() {
                           aria-labelledby="options-menu"
                         >
                           {user && (
-                            <div className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 font-bold border border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-gray-500">
+                            <div className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-100 font-bold border border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-gray-500">
                               <Image
                                 src={user.photoURL}
                                 alt=""
-                                width="20"
-                                height="20"
+                                width="25"
+                                height="25"
                                 className="rounded-full mr-3"
                               ></Image>
                               <div className="ml-3">{username}</div>

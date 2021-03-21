@@ -68,13 +68,13 @@ export default function ImageUploader(props) {
   ////////////////////////////////////////////////
 
   return (
-    <div className="pt-1">
+    <div className="pt-0">
       {uploading && <Line percent={progress} strokeWidth="2" strokeColor="#029BDF" />}
       {uploading && <label className="block text-xs pt-1 font-medium text-gray-700 dark:text-gray-100">{progress}%</label>}
 
       {!uploading && (
         <>
-          <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none">
+          <label htmlFor="file-upload" className="relative cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none">
             <span>Upload Photo</span>
             <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/x-png,image/gif,image/jpeg" onChange={uploadFile}/>
           </label>
