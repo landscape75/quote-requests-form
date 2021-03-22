@@ -41,7 +41,7 @@ function GravityCalc() {
   const [orderNumber, setOrderNumber] = useState("");
   const [truckNumber, setTruckNumber] = useState("");
   const [selectedSig, setSelectedSig] = useState("");
-  const [selectedFileId, setSelectedFileId] = useState("");
+  //const [selectedFileId, setSelectedFileId] = useState("");
   //const [sigsOpen, setSigsOpen] = useState(false);
   //const [cache, setCache] = useState({});
   const [canvas, setCanvas] = useState();
@@ -49,14 +49,14 @@ function GravityCalc() {
   const [notes, setNotes] = useState("");
   const [company, setCompany] = useState("");
   const [sigDate, setSigDate] = useState("");
-  const [sigLabel, setSigLabel] = useState("Signature");
-  const [newSigLabel, setNewSigLabel] = useState("New Signature");
+  //const [sigLabel, setSigLabel] = useState("Signature");
+  //const [newSigLabel, setNewSigLabel] = useState("New Signature");
   const [imgW, setImgW] = useState(250);
   const [imgH, setImgH] = useState(150);
   //const [loadingSig, setLoadingSig] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(undefined);
-  const [isPhoto, setIsPhoto] = useState(false);
-  const [noSig, setNoSig] = useState(true);
+  //const [selectedFile, setSelectedFile] = useState(undefined);
+  //const [isPhoto, setIsPhoto] = useState(false);
+  //const [noSig, setNoSig] = useState(true);
   const [uploadUrl, setUploadUrl] = useState("");
 
   const [sigUrl, setSigUrl] = useState("");
@@ -102,7 +102,7 @@ function GravityCalc() {
 
   /////////////////////////////////////////////////////////////
 
-  useEffect(() => {
+/*   useEffect(() => {
     let temp = null;
     function resizeCanvas() {
       if (signaturePad) {
@@ -116,13 +116,13 @@ function GravityCalc() {
         temp = null;
       }
     }
-    //console.log("resize registered");
+
     window.addEventListener("resize", resizeCanvas);
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, []);
+  }, []); */
 
   /////////////////////////////////////////////////////////////
 
@@ -134,7 +134,7 @@ function GravityCalc() {
       setPhotoLocked(true);
     }
 
-    if (signaturePad) {
+/*     if (signaturePad) {
       if (sigUrl == "") {
         setSigLocked(false);
         signaturePad.on()
@@ -142,7 +142,7 @@ function GravityCalc() {
         setSigLocked(true);
         signaturePad.off()
       }
-    }
+    } */
 
   }, [uploadUrl, sigUrl, orderNumber]);
   /////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ function GravityCalc() {
     const id = uuid();
 
     let notSigned = true;
-    if (uploadUrl == "" && signaturePad.isEmpty()) {
+    if (uploadUrl == "") {
       notSigned = true;
     } else {
       notSigned = false;
@@ -163,13 +163,13 @@ function GravityCalc() {
       setPhotoLocked(true);
     }
 
-    if (signaturePad.isEmpty()) {
+/*     if (signaturePad.isEmpty()) {
       setSigLocked(false);
       signaturePad.on()
     } else {
       setSigLocked(true);
       signaturePad.off()
-    }
+    } */
 
     try {
       await firestore
@@ -189,7 +189,7 @@ function GravityCalc() {
           userName: username,
           userPhotoUrl: user.photoURL,
           photoUrl: uploadUrl,
-          sigImageUrl: await getSig(),
+          sigImageUrl: "", //await getSig(),
           imgW: imgW,
           imgH: imgH,
         })
@@ -211,7 +211,7 @@ function GravityCalc() {
   async function updateSig() {
 
     let notSigned = true;
-    if (uploadUrl == "" && signaturePad.isEmpty()) {
+    if (uploadUrl == "") {
       notSigned = true;
     } else {
       notSigned = false;
@@ -248,7 +248,7 @@ function GravityCalc() {
           userName: username,
           userPhotoUrl: user.photoURL,
           photoUrl: uploadUrl,
-          sigImageUrl: await getSig(),
+          sigImageUrl: "", //await getSig(),
           imgW: imgW,
           imgH: imgH,
         })
@@ -335,23 +335,12 @@ function GravityCalc() {
           setUploadUrl(doc.data().photoUrl || "");
           //if (sigCanvas.current) clearSig()
           //if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
-          if (signaturePad) signaturePad.clear();
+          /* if (signaturePad) signaturePad.clear();
           if (signaturePad)
             signaturePad.fromDataURL(doc.data().sigImageUrl || "");
             setSigUrl(doc.data().sigImageUrl || "")
-            setImgW(doc.data().imgW || 250);
+            setImgW(doc.data().imgW || 250); */
             setEditSig(true);
-/*           if (uploadUrl == "") {
-            setPhotoLocked(false);
-          } else {
-            setPhotoLocked(true);
-          } */
-
-/*           if (doc.data().sigImageUrl == "") {
-            setSigLocked(false);
-          } else {
-            setSigLocked(true);
-          } */
         } else {
           toast.error("Failed to load signature.", {
             duration: 5000,
@@ -368,8 +357,8 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   function reset() {
-    signaturePad.clear();
-    signaturePad.on();
+    //signaturePad.clear();
+    //signaturePad.on();
     //clearSig()
     setSigUrl("");
     setEditSig(false);
@@ -380,13 +369,13 @@ function GravityCalc() {
     setNotes("");
     setCompany("");
     setSigDate("");
-    setSelectedFileId("");
-    setSigLabel("Signature");
-    setNewSigLabel("New Signature");
+    //setSelectedFileId("");
+    //setSigLabel("Signature");
+    //setNewSigLabel("New Signature");
     setImgW(250);
     setImgH(150);
     //setLoadingSig(false);
-    setSelectedFileId(undefined);
+    //setSelectedFileId(undefined);
     setUploadUrl("");
     setSigUrl("");
     setSigLocked(false);
@@ -486,22 +475,15 @@ function GravityCalc() {
           </p>
 
           <div>
-            <label
+{/*             <label
               htmlFor="signature-pad"
               className="block text-sm font-medium text-gray-700 dark:text-gray-100"
             >
               Signature
-            </label>
-            {/* {sigLocked && <label>Locked</label>} */}
-            <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
-              {/* {uploadUrl == "" && ( */}
+            </label> */}
+{/*             <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
               <div className="flex-1 flex items-top justify-between">
                 <div className="w-full">
-                  {/*                       <SignaturePad
-                        ref={sigCanvas}
-                        canvasProps={{ className: "w-full" }}
-                      /> */}
-
                   <canvas
                     id="signature-pad"
                     style={{
@@ -556,10 +538,9 @@ function GravityCalc() {
                   </div>
                 )}
               </div>
-              {/* )} */}
-            </div>
+ 
+            </div> */}
 
-            {/* {uploadUrl !== "" && ( */}
             <label
               htmlFor="signature-pad"
               className="block text-sm font-medium text-gray-700 dark:text-gray-100 mt-2"
