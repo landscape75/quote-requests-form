@@ -333,6 +333,8 @@ function GravityCalc() {
           setCustomerName(doc.data().customerName);
           setTruckNumber(doc.data().truckNumber);
           setUploadUrl(doc.data().photoUrl || "");
+          setImgW(doc.data().imgW || 250)
+          setImgH(doc.data().imgH || 150)
           //if (sigCanvas.current) clearSig()
           //if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
           /* if (signaturePad) signaturePad.clear();
