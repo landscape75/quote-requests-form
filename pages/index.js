@@ -56,19 +56,9 @@ function Index() {
           </h1> */}
           <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-700 dark:text-gray-200">
             <p>
-              These preliminary details are intended soley to act as an aid when
-              designing a wall. These drawings should not be used for final
-              design or construction. Each site-specific wall should be
-              certified and signed by a registered geotechnical engineer in the
-              Sate or Province where it is being built. the accuarcy and use of
-              the details in this document are the sole responsibility of the
-              user. Global stability analysis has not been performed.
+              Please log in.
             </p>
-            {/* <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl"> */}
-            <p>
-              The Trademark Signature Log, Logo and Copyright are owned by
-              Clara Projects. All Rights Reserved.
-            </p>
+
           </article>
           {/*         <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
             <div class="rounded-md shadow">

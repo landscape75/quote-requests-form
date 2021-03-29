@@ -343,6 +343,7 @@ function GravityCalc() {
             setSigUrl(doc.data().sigImageUrl || "")
             setImgW(doc.data().imgW || 250); */
             setEditSig(true);
+            console.log(id)
         } else {
           toast.error("Failed to load signature.", {
             duration: 5000,
