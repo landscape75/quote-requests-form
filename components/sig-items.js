@@ -36,7 +36,7 @@ export default function SigItems(props) {
                 </div>
               }
               {!doc.data().noSig &&
-                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-green-900 text-white text-lg font-bold rounded-l-md">
+                <div className="flex-shrink-0 flex items-center justify-center w-16 bg-mag-blue text-white text-lg font-bold rounded-l-md">
                   {doc.data().truckNumber}
                 </div>
               }         

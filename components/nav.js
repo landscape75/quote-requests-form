@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import LoginModal from "./modal";
+//import LoginModal from "./modal";
 import Image from "next/image";
-//import ReactTooltip from "react-tooltip";
+import Headroom from "react-headroom";
 //import Link from "next/link";
-import UserInfo from "../components/user-info";
+//import UserInfo from "../components/user-info";
 import { Transition, Menu } from "@headlessui/react";
 
-import userbase from "userbase-js";
+//import userbase from "userbase-js";
 import { auth, googleAuthProvider } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
@@ -76,6 +76,7 @@ export default function Nav() {
   }
 
   return (
+    <Headroom>
     <div
       className="sticky top-0 z-50 h-15 shadow-xl border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-mag-grey-500 bg-gradient-to-r from-mag-grey-500 via-mag-grey-800 to-mag-grey-500"
       // style={{ backgroundImage: 'url(./signal.svg)' }}
@@ -557,5 +558,6 @@ export default function Nav() {
         </Transition> */}
       </nav>
     </div>
+    </Headroom>
   );
 }
