@@ -650,7 +650,7 @@ function GravityCalc() {
                   type="text"
                   value={orderNumber}
                   placeholder="Order / Invoice #"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  className="filter sepia contrast-125 block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
                   onChange={(e) => setOrderNumber(e.target.value)}
                 ></input>
               </div>
