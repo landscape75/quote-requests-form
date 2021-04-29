@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   const [curYear, setYear] = useState("");
-  const [version] = useState("2021.03.25.a");
+  const [version] = useState("2021.04.29.a");
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());
