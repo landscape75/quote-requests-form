@@ -7,7 +7,7 @@ import { UserContext } from '../lib/context';
 
 function Index() {
   const { user, username } = useContext(UserContext)
-  if (username) {
+  if (user) {
     return (
       <>
         <Head>

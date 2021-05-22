@@ -63,7 +63,8 @@ export default function Nav() {
   // Sign in with Google button
 
   const signInWithGoogle = async () => {
-    await auth.signInWithPopup(googleAuthProvider);
+    //await auth.signInWithPopup(googleAuthProvider);
+    await auth.signInAnonymously();
   };
 
   function SignOutFromGoogle() {
@@ -181,7 +182,7 @@ export default function Nav() {
                           aria-orientation="vertical"
                           aria-labelledby="options-menu"
                         >
-                          {user && (
+                          {user && user.photoURL && (
                             <div className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-100 font-bold border border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-gray-500">
                               <Image
                                 src={user.photoURL}
@@ -195,7 +196,7 @@ export default function Nav() {
                           )}
                           <div className="py-1">
                             <Menu.Item as="li">
-                              {!username ? (
+                              {!user ? (
                                 <>
                                   <a
                                     href="#"
