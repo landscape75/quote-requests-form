@@ -24,6 +24,10 @@ export default function ImageUploader(props) {
     const ref = storage.ref(`uploads/photos/${Date.now()}.${extension}`);
     setUploading(true);
 
+/*     const metaData = {
+      cacheControl: 'public,max-age=604800'
+    }; */
+
     // Starts the upload
     const task = ref.put(file);
 
