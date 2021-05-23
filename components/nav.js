@@ -79,7 +79,7 @@ export default function Nav() {
   return (
     <Headroom>
     <div
-      className="sticky top-0 z-50 h-15 shadow-xl border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 dark:border-mag-grey-500 bg-gradient-to-r from-mag-grey-500 via-mag-grey-800 to-mag-grey-500"
+      className="sticky top-0 z-50 h-15 shadow-lg border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300"
       // style={{ backgroundImage: 'url(./signal.svg)' }}
     >
       <nav className="mx-auto p-2 ">
@@ -89,14 +89,14 @@ export default function Nav() {
           <div className="w-60 lg:w-200 flex md:inline-flex items-start mr-5">
             {/*         <div className="flex-shrink-0">
           <div className="relative"> */}
-            {/* <img className="w-50" src="https://magnumstone.com/wp-content/themes/bulletpress/src/assets/images/logo/magnumstone-logo-white.svg" alt="" width="248" height="50" onClick={logOut}/> */}
-            <Image
-              src="/sl-logo-white.svg"
-              alt=""
-              width="286"
-              height="60"
-              //onClick={logOut}
-            />
+      <Image
+        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+        src={"/logo-med.jpeg"}
+        alt="photo"
+        width={300 * 0.5}
+        height={124 * 0.5}
+        layout="intrinsic"
+      />
             {/*           </div>
         </div> */}
           </div>

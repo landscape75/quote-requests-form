@@ -7,14 +7,13 @@ import uuid from "react-uuid";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import SignaturePad from "signature_pad";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 import SigItems from "../components/sig-items";
 import ImageUploader from "../components/ImageUploader";
-import swal from "@sweetalert/with-react";
+//import swal from "@sweetalert/with-react";
 //import SignaturePad from "react-signature-canvas";
 
 /////////////////////////////////////////////////////////////
@@ -37,20 +36,14 @@ function GravityCalc() {
   const [version] = useState("2021.03.15.a");
   const [editSig, setEditSig] = useState(false);
   const [editItemId, setEditItemId] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [orderNumber, setOrderNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [truckNumber, setTruckNumber] = useState("");
   const [selectedSig, setSelectedSig] = useState("");
-  //const [selectedFileId, setSelectedFileId] = useState("");
-  //const [sigsOpen, setSigsOpen] = useState(false);
-  //const [cache, setCache] = useState({});
-  const [canvas, setCanvas] = useState();
   const [signaturePad, setSignaturePad] = useState();
   const [notes, setNotes] = useState("");
   const [company, setCompany] = useState("");
   const [sigDate, setSigDate] = useState("");
-  //const [sigLabel, setSigLabel] = useState("Signature");
-  //const [newSigLabel, setNewSigLabel] = useState("New Signature");
   const [imgW, setImgW] = useState(250);
   const [imgH, setImgH] = useState(150);
   //const [loadingSig, setLoadingSig] = useState(false);
@@ -63,46 +56,13 @@ function GravityCalc() {
   const [sigLocked, setSigLocked] = useState(false);
   const [photoLocked, setPhotoLocked] = useState(false);
 
-  //const sigCanvas = useRef({});
+  /////////////////////////////////////////////////////////////
 
-  function clearSig(e) {
-    e.preventDefault();
-    if (signaturePad) {
-      signaturePad.clear();
-      //setImageUrl("")
-    }
-  }
-
-  async function getSig() {
-    if (signaturePad && !signaturePad.isEmpty()) {
-      //return sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
-      return signaturePad.toDataURL("image/png");
-      //console.log({ data: [sigCanvas.current.toData()] })
-      //return { data: [sigCanvas.current.toData()] };
-    } else {
-      return "";
-    }
-  }
+  useEffect(() => {}, []);
 
   /////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    setCanvas(document.getElementById("signature-pad"));
-    if (canvas) {
-      setSignaturePad(
-        new SignaturePad(canvas, {
-          //backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-        })
-      );
-    }
-    //resizeCanvas();
-    //console.log(user.photoURL)
-    //getSig()
-  }, [user]);
-
-  /////////////////////////////////////////////////////////////
-
-/*   useEffect(() => {
+  /*   useEffect(() => {
     let temp = null;
     function resizeCanvas() {
       if (signaturePad) {
@@ -126,25 +86,7 @@ function GravityCalc() {
 
   /////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-
-    if (uploadUrl == "") {
-      setPhotoLocked(false);
-    } else {
-      setPhotoLocked(true);
-    }
-
-/*     if (signaturePad) {
-      if (sigUrl == "") {
-        setSigLocked(false);
-        signaturePad.on()
-      } else {
-        setSigLocked(true);
-        signaturePad.off()
-      }
-    } */
-
-  }, [uploadUrl, sigUrl, orderNumber]);
+  useEffect(() => {}, []);
   /////////////////////////////////////////////////////////////
 
   async function saveSig() {
@@ -163,7 +105,7 @@ function GravityCalc() {
       setPhotoLocked(true);
     }
 
-/*     if (signaturePad.isEmpty()) {
+    /*     if (signaturePad.isEmpty()) {
       setSigLocked(false);
       signaturePad.on()
     } else {
@@ -186,8 +128,8 @@ function GravityCalc() {
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           userId: user.uid,
-          userName: username || 'anon',
-          userPhotoUrl: user.photoURL || '',
+          userName: username || "anon",
+          userPhotoUrl: user.photoURL || "",
           photoUrl: uploadUrl,
           sigImageUrl: "", //await getSig(),
           imgW: imgW,
@@ -209,7 +151,6 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   async function updateSig() {
-
     let notSigned = true;
     if (uploadUrl == "") {
       notSigned = true;
@@ -223,7 +164,7 @@ function GravityCalc() {
       setPhotoLocked(true);
     }
 
-/*     if (signaturePad.isEmpty()) {
+    /*     if (signaturePad.isEmpty()) {
       setSigLocked(false);
       signaturePad.on()
     } else {
@@ -333,8 +274,8 @@ function GravityCalc() {
           setCustomerName(doc.data().customerName);
           setTruckNumber(doc.data().truckNumber);
           setUploadUrl(doc.data().photoUrl || "");
-          setImgW(doc.data().imgW || 250)
-          setImgH(doc.data().imgH || 150)
+          setImgW(doc.data().imgW || 250);
+          setImgH(doc.data().imgH || 150);
           //if (sigCanvas.current) clearSig()
           //if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
           /* if (signaturePad) signaturePad.clear();
@@ -342,8 +283,8 @@ function GravityCalc() {
             signaturePad.fromDataURL(doc.data().sigImageUrl || "");
             setSigUrl(doc.data().sigImageUrl || "")
             setImgW(doc.data().imgW || 250); */
-            setEditSig(true);
-            //console.log(id)
+          setEditSig(true);
+          //console.log(id)
         } else {
           toast.error("Failed to load signature.", {
             duration: 5000,
@@ -468,82 +409,115 @@ function GravityCalc() {
   /////////////////////////////////////////////////////////////
 
   return (
-    <div className="flex flex-wrap lg:flex-nowrap gap-4 m-0">
+    <div className="">
       {/* <div className="grid grid-cols-2 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 p-0 sm:p-0"></div> */}
+{/*       <Image
+        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+        src={"/logo-med.jpeg"}
+        alt="photo"
+        width={300 * 0.75}
+        height={124 * 0.75}
+        layout="intrinsic"
+      /> */}
+      <div className="relative w-full rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 ">
+        <div className="w-full space-y-4">
+          <div>
+            <h2 className="text-2xl leading-6 font-medium text-gray-900">
+              Contractor Cash Account Application
+            </h2>
+            <p className="mt-1 text-md text-gray-500">
+              If you have any questions, please call 604-540-0333
+            </p>
+            <div className="items-center pt-2 pb-0" aria-hidden="true">
+              <div className="w-full border-t border-gray-400" />
+            </div>
+          </div>
 
-      <div className="relative w-full lg:w-1/4 rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5">
-        <div className="w-full">
-          <p className="text-lg font-medium text-gray-900 dark:text-white mb-2 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
-            New Signature
+          <p className="mt-1 text-sm text-gray-500">
+            A Contractor Cash account enables you to purchase product at a
+            discounted rate. Note, we protect our contractors so the discount is
+            given only to you as the contractor and does not apply if your
+            customer is paying. Please contact us if you have any questions.
+            Thank you and we look forward to working with you.
           </p>
+          <p className="mt-1 text-sm text-gray-500">
+            Fields marked with * must be filled in.
+          </p>
+          <div className="items-center pt-1 pb-1" aria-hidden="true">
+            <div className="w-full border-t border-gray-200" />
+          </div>
+          <form className="space-y-2 pt-0">
+            <div>
+              <h3 className="text-xl leading-6 font-medium text-gray-900">
+                Company Information
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                If you have any questions, please call 604-540-0333
+              </p>
+              <div className="items-center pt-2 pb-2" aria-hidden="true">
+                <div className="w-full border-t border-gray-200" />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="company-name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Company Name *
+              </label>
+              <div className="mt-1 mb-2">
+                <input
+                  id="company-name"
+                  name="company-name"
+                  type="text"
+                  value={companyName}
+                  placeholder="Company Name"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md required"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                ></input>
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Street Address *
+              </label>
+              <div className="mt-1 mb-2">
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  value={address}
+                  placeholder="Street Address"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setAddress(e.target.value)}
+                ></input>
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="truck"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Truck / Pick Up
+              </label>
+              <div className="mt-1 mb-2">
+                <input
+                  id="truck"
+                  name="truck"
+                  type="text"
+                  value={truckNumber}
+                  placeholder="Truck Numbver / Pick Up"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  onChange={(e) => setTruckNumber(e.target.value)}
+                ></input>
+              </div>
+            </div>
+          </form>
 
           <div>
-{/*             <label
-              htmlFor="signature-pad"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-            >
-              Signature
-            </label> */}
-{/*             <div className="mt-1 mb-0 border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey">
-              <div className="flex-1 flex items-top justify-between">
-                <div className="w-full">
-                  <canvas
-                    id="signature-pad"
-                    style={{
-                      width: "100%",
-                      height: "100px",
-                    }}
-                  ></canvas>
-                </div>
-                {sigLocked && (
-                  <div className="flex-shrink-0 pr-0">
-                    <button className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent focus:outline-none">
-                      <span className="sr-only"></span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )}
-                {!sigLocked && (
-                  <div className="flex-shrink-0 pr-0">
-                    <button
-                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                      onClick={(e) => clearSig(e)}
-                    >
-                      <span className="sr-only"></span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )}
-              </div>
- 
-            </div> */}
-
             <label
               htmlFor="signature-pad"
               className="block text-sm font-medium text-gray-700 dark:text-gray-100 mt-2"
@@ -573,127 +547,33 @@ function GravityCalc() {
                   />
                 )}
 
-                {photoLocked && (
-                  <div className="flex-shrink-0 pr-0">
-                    <button className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent focus:outline-none">
-                      <span className="sr-only">Open options</span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )}
-                {!photoLocked && (
-                  <div className="flex-shrink-0 pr-0">
-                    <button
-                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                      onClick={(e) => clearImage(e)}
+                <div className="flex-shrink-0 pr-0">
+                  <button
+                    className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                    onClick={(e) => clearImage(e)}
+                  >
+                    <span className="sr-only">Open options</span>
+                    <svg
+                      className="w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      <span className="sr-only">Open options</span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                )}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
-            {/* )} */}
           </div>
 
-          {!photoLocked &&
-            <ImageUploader passUploadUrl={setUploadUrl} setW={setImgW} />
-          }
-          {photoLocked &&
-            <Link href={ uploadUrl }>
-              <a target="_blank" className="cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none">
-                Enlarge Photo
-              </a>
-            </Link>
-          }
-          
-
-          <form className="space-y-1">
-            <div>
-              <label
-                htmlFor="order-number"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Order / Invoice #
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="order-number"
-                  name="order-number"
-                  type="text"
-                  value={orderNumber}
-                  placeholder="Order / Invoice #"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Name
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={customerName}
-                  placeholder="Name"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setCustomerName(e.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="truck"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Truck / Pick Up
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="truck"
-                  name="truck"
-                  type="text"
-                  value={truckNumber}
-                  placeholder="Truck Numbver / Pick Up"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-mag-blue focus:border-mag-blue w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  onChange={(e) => setTruckNumber(e.target.value)}
-                ></input>
-              </div>
-            </div>
-          </form>
+          <ImageUploader passUploadUrl={setUploadUrl} setW={setImgW} />
 
           <div className="mt-6">
             {/* <div className="items-end inline-flex mt-6 space-y-0 space-x-3 sm:justify-end sm:space-x sm:space-y-0 sm:space-x-3 md:space-x-3"> */}
@@ -898,178 +778,16 @@ function GravityCalc() {
 
       {/* //////////// Results Section ////////////// */}
 
-      <div className="relative rounded-lg w-full lg:w-3/4 shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 space-x-3">
+      {/*       <div className="relative rounded-lg w-full lg:w-3/4 shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 space-x-3">
         <div className="min-w-0">
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-4 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
             Saved Signatures
           </p>
-          {/* <div className="flex flex-col"> */}
-          {/*             <div className="overflow-x-auto mx-o sm:-mx-4 md:mx-0 lg:-mx-0">
-              <div className="py-3 align-middle inline-block min-w-full px-0 sm:px-4 md:px-0 lg:px-0"> */}
-
           <div>
             <SigItems loadSavedSig={loadSavedSig} deleteSig={deleteSig} />
           </div>
-
-          {/* <div className="overflow-hidden border border-gray-200 rounded-md">
-                  <table
-                    className="min-w-full divide-y divide-gray-200"
-                    id="order-details"
-                  >
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th
-                          scope="col"
-                          colSpan="2"
-                          className="px-4 py-2 text-left text-md font-bold text-gray-900 tracking-wider"
-                        >
-                          Gravity Wall
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-
-                      <tr className="divide-x divide-gray-200">
-                        <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Soil Type / Load
-                        </td>
-                        <td className="w-1/2 px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {soilType}
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Wall Height
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {wallHeight}
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Wall length
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {wallLength} lin. feet
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total Base Blocks
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalBaseBlocks} pieces
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total Standard Blocks
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalBlocks} pieces
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total 24" Extenders
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalExt24} pieces
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total 48" Extenders
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalExt48} pieces
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total Base Gravel
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalBase} cu. yards
-                        </td>
-                      </tr>
-                      <tr className="divide-x divide-gray-200">
-                        <td className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900">
-                          Total Clear Crush
-                        </td>
-                        <td className="px-4 py-2 whitespace-wrap text-sm text-gray-600">
-                          {totalCrush} cu. yards
-                        </td>
-                      </tr>
-                      <tr style={{ display: "none" }}>
-                        <td
-                          className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900"
-                          colSpan="2"
-                        >
-                          <p className="font-bold text-mag-blue">Disclaimer:</p>
-                        </td>
-                      </tr>
-                      <tr style={{ display: "none" }}>
-                        <td
-                          className="px-4 py-2 whitespace-wrap text-sm font-medium text-gray-900"
-                          colSpan="2"
-                        >
-                          <p className="pt-0">
-                            These preliminary details are intended soley to act
-                            as an aid when designing a wall. These drawings
-                            should not be used for final design or construction.
-                            Each site-specific wall should be certified and
-                            signed by a registered geotechnical engineer in the
-                            State or Province where it is being built. the
-                            accuarcy and use of the details in this document are
-                            the sole responsibility of the user. Global
-                            stability analysis has not been performed.
-                          </p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> */}
-          {/*               </div>
-            </div> */}
-          {/* </div> */}
-        </div>
-        {/* {sigUrl} */}
-      </div>
-
-      {/*       <div className="relative rounded-lg shadow-lg border border-gray-300 dark:border-mag-grey-700 bg-white dark:bg-mag-grey-600 px-3 lg:px-6 py-2 lg:py-5 flex space-x-3">
-        <div className="flex-1 min-w-0">
-          <p className="text-lg font-medium text-gray-900 dark:text-white mb-3 border border-l-0 border-r-0 border-t-0 border-gray-200 dark:border-mag-grey-200 pb-2">
-            Disclaimer
-          </p>
-          <p className="text-sm text-gray-700 dark:text-gray-200">
-            These preliminary details are intended soley to act as an aid when
-            designing a wall. These drawings should not be used for final design
-            or construction. Each site-specific wall should be certified and
-            signed by a registered geotechnical engineer in the Sate or Province
-            where it is being built. the accuarcy and use of the details in this
-            document are the sole responsibility of the user. Global stability
-            analysis has not been performed
-          </p>
         </div>
       </div> */}
-
-      {/*         <div>
-          <button className="truncate inline-flex items-center justify-center px-4 py-2 sm:px-2 lg:px-4 md:px-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-mag-blue hover:bg-mag-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-mag-blue" onClick={shareDatabase}>
-            Share Database
-          </button>
-          <div className="mt-3 text-gray-700 dark:text-gray-100">
-            {share}
-          </div>
-        </div> */}
-      {/* 
-      {isClient && (
-        <div>
-          <PDFDownloadLink document={<MyDoc />} fileName="somename.pdf">
-            {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
-          </PDFDownloadLink>
-        </div>
-      )} */}
     </div>
   );
 }

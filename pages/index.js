@@ -17,7 +17,7 @@ function Index() {
             content="initial-scale=1.0, width=device-width"
           />
         </Head>
-        <div className="mt-2 pt-2 bg-white dark:bg-mag-grey mx-auto max-w-8xl px-2 lg:px-5 py-2 lg:py-5">
+        <div className="mt-2 pt-2 bg-white dark:bg-mag-grey mx-auto max-w-2xl px-2 lg:px-5 py-2 lg:py-5">
           {/* <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-3xl md:text-5xl lg:text-6xl mb-6 ml-3 sm:ml-3 md:ml-3 lg:ml-1">
             <span className="inline xl:inline md:inline lg:inline sm:inline">
               Signature

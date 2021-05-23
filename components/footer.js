@@ -11,8 +11,8 @@ export default function Footer() {
   });
 
   return (
-    <footer className="bg-white dark:bg-mag-grey mx-auto p-4">
-      <div className="relative pt-20 pb-0">
+    <footer className="bg-white dark:bg-mag-grey mx-auto p-0">
+      <div className="relative pt-10 pb-0">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="w-full border-t border-gray-300 dark:border-gray-400"></div>
         </div>
@@ -21,7 +21,7 @@ export default function Footer() {
         </div>
       </div>
 
-       <div className="max-w-8xl mx-auto py-5 pt-0 px-0 sm:px-0 md:flex items-center md:justify-between lg:px-0">
+       <div className="max-w-2xl mx-auto py-2 pt-0 px-0 sm:px-0 items-center lg:px-0">
 
         {/*<div className="flex justify-center space-x-6 md:order-3">
           <a href="#" className="text-gray-400 hover:text-gray-500">
@@ -75,9 +75,9 @@ export default function Footer() {
             </a>
           </Link>
         </div> */}
-        <div className="mt-8 md:mt-0 md:order-2">
-          <p className="text-center text-base text-gray-400">
-            &copy; {curYear} Clara Projects. All rights reserved. -{" "}
+        <div className="mt-4 md:mt-0">
+          <p className="text-center text-sm text-gray-400">
+            &copy; {curYear} Landscape Centre Inc. All rights reserved. -{" "}
             {version}
           </p>
         </div>
