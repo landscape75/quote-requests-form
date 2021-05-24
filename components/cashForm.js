@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
   InformationCircleIcon,
-  ClockIcon,
+  UserCircleIcon,
 } from "@heroicons/react/solid";
 import { ClipboardListIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 
@@ -314,30 +314,35 @@ function cashForm() {
 
   return (
     <div className="">
-      {/* <div className="grid grid-cols-2 gap-0 m-0 md:gap-4 lg-gap-4 xl:gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 p-0 sm:p-0"></div> */}
-      {/*       <Image
-        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
-        src={"/logo-med.jpeg"}
-        alt="photo"
-        width={300 * 0.75}
-        height={124 * 0.75}
-        layout="intrinsic"
-      /> */}
-      <div className="relative w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 px-3 lg:px-6 py-2 lg:py-5 ">
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6">
         <div className="w-full space-y-4">
-          <div>
-            <h2 className="text-2xl leading-6 font-medium text-gray-900">
-              Contractor Cash Account Application
-            </h2>
-            <p className="mt-1 text-md text-gray-500">
-              If you have any questions, please call 604-540-0333
-            </p>
-            <div className="items-center pt-2 pb-0" aria-hidden="true">
-              <div className="w-full border-t border-gray-400" />
+          <div className="flex items-center space-x-5">
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <UserCircleIcon
+                  className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
+                  aria-hidden="true"
+                />
+                <span
+                  className="absolute inset-0 shadow-inner rounded-full"
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+            <div>
+              <h1 className="sm:text-2xl text-md font-bold text-gray-900 truncate">
+                Contractor Cash Account Application
+              </h1>
+              <p className="sm:text-sm text-xs font-medium text-gray-500">
+                If you have any questions, please call 604-540-0333
+              </p>
             </div>
           </div>
+          <div className="items-center pt-2 pb-0" aria-hidden="true">
+            <div className="w-full border-t border-gray-400" />
+          </div>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="pt-2 text-sm text-gray-500">
             A Contractor Cash account enables you to purchase product at a
             discounted rate. Note, we protect our contractors so the discount is
             given only to you as the contractor and does not apply if your
@@ -356,7 +361,7 @@ function cashForm() {
                 Company Information
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                If you have any questions, please call 604-540-0333
+                Please provide company name, address and contact info
               </p>
             </div>
             <div>
@@ -406,7 +411,7 @@ function cashForm() {
                   placeholder="Street Address"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                   //onChange={(e) => setAddress(e.target.value)}
-                  {...register("streetAddress", { required: true })}
+                  {...register("address.streetAddress", { required: true })}
                 ></input>
                 {errors.streetAddress && (
                   <div className="flex items-center pt-1">
@@ -987,140 +992,144 @@ function cashForm() {
                 Attachments
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Please attach copies of the following documents
+                Please attach copies of the following documents.
               </p>
             </div>
-            <div id="11" key="1">
-              <label
-                htmlFor="business-license"
-                className="block text-sm font-medium text-gray-700 mt-2"
-              >
-                Business License
-              </label>
-              <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white">
-                <div className="flex-1 flex items-top justify-between">
-                  {uploadUrl !== "" && (
-                    <Image
-                      className="border rounded-md border-gray-200 bg-white"
-                      src={uploadUrl}
-                      alt="business license"
-                      width={imgW1}
-                      height={imgH1}
-                      layout="intrinsic"
-                      id="business-license"
-                    />
-                  )}
-                  {uploadUrl == "" && (
-                    <Image
-                      className="border rounded-md border-gray-200 bg-white"
-                      src={"/no-photo.png"}
-                      alt="photo"
-                      width={250}
-                      height={150}
-                      layout="intrinsic"
-                    />
-                  )}
-
-                  <div className="flex-shrink-0 pr-0">
-                    <button
-                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                      onClick={(e) => clearImage(e)}
-                    >
-                      <span className="sr-only">Open options</span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
+            <ul>
+              <li key="bus-lic">
+                <div>
+                  <label
+                    htmlFor="business-license"
+                    className="block text-sm font-medium text-gray-700 mt-2"
+                  >
+                    Business License
+                  </label>
+                  <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white">
+                    <div className="flex-1 flex items-top justify-between">
+                      {uploadUrl !== "" && (
+                        <Image
+                          className="border rounded-md border-gray-200 bg-white"
+                          src={uploadUrl}
+                          alt="business license"
+                          width={imgW1}
+                          height={imgH1}
+                          layout="intrinsic"
+                          id="business-license"
                         />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <ImageUploader
-                key="100"
-                passUploadUrl={setUploadUrl}
-                setW={setImgW1}
-                id={"1"}
-                title="Upload Business License Image"
-                key="1"
-              />
-            </div>
-            <div id="22" key="2">
-              <label
-                htmlFor="void-cheque"
-                className="block text-sm font-medium text-gray-700 mt-2"
-              >
-                Void Cheque
-              </label>
-              <div
-                id="22"
-                className="mt-1 mb-0 border rounded-md border-gray-200 bg-white"
-              >
-                <div className="flex-1 flex items-top justify-between">
-                  {uploadUrl2 !== "" && (
-                    <Image
-                      className="border rounded-md border-gray-200 bg-white"
-                      src={uploadUrl2}
-                      alt="void cheque"
-                      width={imgW2}
-                      height={imgH2}
-                      layout="intrinsic"
-                      id="void-cheque"
-                    />
-                  )}
-                  {uploadUrl2 == "" && (
-                    <Image
-                      className="border rounded-md border-gray-200 bg-white"
-                      src={"/no-photo.png"}
-                      alt="photo"
-                      width={250}
-                      height={150}
-                      layout="intrinsic"
-                    />
-                  )}
-
-                  <div className="flex-shrink-0 pr-0">
-                    <button
-                      className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                      onClick={(e) => clearImage2(e)}
-                    >
-                      <span className="sr-only">Open options</span>
-                      <svg
-                        className="w-5 h-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
+                      )}
+                      {uploadUrl == "" && (
+                        <Image
+                          className="border rounded-md border-gray-200 bg-white"
+                          src={"/no-photo.png"}
+                          alt="photo"
+                          width={250}
+                          height={150}
+                          layout="intrinsic"
                         />
-                      </svg>
-                    </button>
+                      )}
+
+                      <div className="flex-shrink-0 pr-0">
+                        <button
+                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                          onClick={(e) => clearImage(e)}
+                        >
+                          <span className="sr-only">Business License</span>
+                          <svg
+                            className="w-5 h-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
+                  <ImageUploader
+                    key="100"
+                    passUploadUrl={setUploadUrl}
+                    setW={setImgW1}
+                    uid={"1z"}
+                    title="Upload Business License Image"
+                  />
                 </div>
-              </div>
-              <ImageUploader
-                key="200"
-                passUploadUrl={setUploadUrl2}
-                setW={setImgW2}
-                id={"2"}
-                title="Upload Void Cheque Image"
-                key="2"
-              />
-            </div>
+              </li>
+              <li key="void-cheq">
+                <div>
+                  <label
+                    htmlFor="void-cheque"
+                    className="block text-sm font-medium text-gray-700 mt-2"
+                  >
+                    Void Cheque
+                  </label>
+                  <div
+                    id="22"
+                    className="mt-1 mb-0 border rounded-md border-gray-200 bg-white"
+                  >
+                    <div className="flex-1 flex items-top justify-between">
+                      {uploadUrl2 !== "" && (
+                        <Image
+                          className="border rounded-md border-gray-200 bg-white"
+                          src={uploadUrl2}
+                          alt="void cheque"
+                          width={imgW2}
+                          height={imgH2}
+                          layout="intrinsic"
+                          id="void-cheque"
+                        />
+                      )}
+                      {uploadUrl2 == "" && (
+                        <Image
+                          className="border rounded-md border-gray-200 bg-white"
+                          src={"/no-photo.png"}
+                          alt="photo"
+                          width={250}
+                          height={150}
+                          layout="intrinsic"
+                        />
+                      )}
+
+                      <div className="flex-shrink-0 pr-0">
+                        <button
+                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
+                          onClick={(e) => clearImage2(e)}
+                        >
+                          <span className="sr-only">Void Cheque</span>
+                          <svg
+                            className="w-5 h-5"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <ImageUploader
+                    key="200"
+                    passUploadUrl={setUploadUrl2}
+                    setW={setImgW2}
+                    uid={"2z"}
+                    title="Upload Void Cheque Image"
+                  />
+                </div>
+              </li>
+            </ul>
             <input
               type="submit"
               className="inline-flex justify-center md:w-1/4 w-full rounded-md border border-transparent cursor-pointer shadow-md px-4 py-2 bg-lc-green text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lc-yellow"

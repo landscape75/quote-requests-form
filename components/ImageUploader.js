@@ -9,6 +9,7 @@ export default function ImageUploader(props) {
 
   const uploadFile = async (e) => {
     // Get the file
+    //console.log('ID: ' + props.uid)
     const file = Array.from(e.target.files)[0];
     const extension = file.type.split("/")[1];
 
@@ -60,9 +61,9 @@ export default function ImageUploader(props) {
   ////////////////////////////////////////////////
 
   return (
-    <div className="pt-0" id={ props.id * 8 } key={ props.id * 3 }>
+    <div className="pt-0">
       {uploading && (
-        <Line percent={progress} strokeWidth="1" strokeColor="#029BDF" key={ props.id * 10 }/>
+        <Line percent={progress} strokeWidth="1" strokeColor="#029BDF" />
       )}
       {uploading && (
         <label className="block text-xs pt-1 font-medium text-gray-700 dark:text-gray-100">
@@ -73,7 +74,7 @@ export default function ImageUploader(props) {
       {!uploading && (
         <>
           <label
-            htmlFor="file-upload"
+            //htmlFor="file-upload"
             className="relative cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none"
           >
             <span>{props.title}</span>
@@ -81,7 +82,7 @@ export default function ImageUploader(props) {
               id="file-upload"
               name="file-upload"
               type="file"
-              className="sr-only"
+              className="sr-only text-white mt-2"
               accept="image/x-png,image/gif,image/jpeg"
               onChange={uploadFile}
             />
