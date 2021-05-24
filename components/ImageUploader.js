@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { auth, storage, STATE_CHANGED } from "../lib/firebase";
 import { Line, Circle } from "rc-progress";
-//import Loader from './Loader';
 
-// Uploads images to Firebase Storage
 export default function ImageUploader(props) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [downloadURL, setDownloadURL] = useState(null);
-  //const [w, setW] = useState(250);
-  //const [h, setH] = useState(150);
+  //const [downloadURL, setDownloadURL] = useState(null);
 
-  // Creates a Firebase Upload Task
   const uploadFile = async (e) => {
     // Get the file
     const file = Array.from(e.target.files)[0];
@@ -23,10 +18,6 @@ export default function ImageUploader(props) {
     // Makes reference to the storage bucket location
     const ref = storage.ref(`uploads/photos/${Date.now()}.${extension}`);
     setUploading(true);
-
-/*     const metaData = {
-      cacheControl: 'public,max-age=604800'
-    }; */
 
     // Starts the upload
     const task = ref.put(file);
@@ -43,7 +34,7 @@ export default function ImageUploader(props) {
       task
         .then((d) => ref.getDownloadURL())
         .then((url) => {
-          setDownloadURL(url);
+          //setDownloadURL(url);
           setUploading(false);
           props.passUploadUrl(url);
         });
@@ -59,10 +50,7 @@ export default function ImageUploader(props) {
       img.onload = await function () {
         console.log("The width of the image is " + img.width + "px.");
         console.log("The height of the image is " + img.height + "px.");
-        //setW(img.width)
-        //setH(img.height)
         props.setW(150 * (img.width / img.height));
-        //props.setH(150)
       };
       img.src = reader.result;
     };
@@ -72,9 +60,9 @@ export default function ImageUploader(props) {
   ////////////////////////////////////////////////
 
   return (
-    <div className="pt-0">
+    <div className="pt-0" id={ props.id * 8 } key={ props.id * 3 }>
       {uploading && (
-        <Line percent={progress} strokeWidth="1" strokeColor="#029BDF" />
+        <Line percent={progress} strokeWidth="1" strokeColor="#029BDF" key={ props.id * 10 }/>
       )}
       {uploading && (
         <label className="block text-xs pt-1 font-medium text-gray-700 dark:text-gray-100">
@@ -88,7 +76,7 @@ export default function ImageUploader(props) {
             htmlFor="file-upload"
             className="relative cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none"
           >
-            <span>Upload Photo</span>
+            <span>{props.title}</span>
             <input
               id="file-upload"
               name="file-upload"
@@ -100,8 +88,6 @@ export default function ImageUploader(props) {
           </label>
         </>
       )}
-
-      {/* {downloadURL && <code>{downloadURL}</code>} */}
     </div>
   );
 }

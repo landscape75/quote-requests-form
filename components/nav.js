@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
-//import LoginModal from "./modal";
 import Image from "next/image";
 import Headroom from "react-headroom";
-//import Link from "next/link";
-//import UserInfo from "../components/user-info";
 import { Transition, Menu } from "@headlessui/react";
-
-//import userbase from "userbase-js";
 import { auth, googleAuthProvider } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
+
 
 export default function Nav() {
   //export default function Nav({ user, setUser }) {
@@ -17,31 +13,15 @@ export default function Nav() {
   const { user, username } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [modalType, setModalType] = useState();
   const [theme, setTheme] = useState("light");
-  const [isTooltipVisible, setTooltipVisibility] = useState(false);
+  //const [isTooltipVisible, setTooltipVisibility] = useState(false);
 
   useEffect(() => {
-    if (localStorage.theme && localStorage.theme == "dark") {
-      setTheme("dark");
-      //console.log('Dark')
-    } else {
-      setTheme("light");
-      //console.log('Light')
-    }
-    setTooltipVisibility(true);
+    signInWithGoogle()
   });
 
-  /*   function openModal(type) {
-    setOpen(true);
-    setModalType(type);
-  } */
 
-  /*   function openEdit() {
-    setEdit(true);
-  } */
-
-  function toggleDark(mode) {
+/*   function toggleDark(mode) {
     if (mode == "light") {
       document.querySelector("html").classList.remove("dark");
     } else {
@@ -49,7 +29,7 @@ export default function Nav() {
     }
     localStorage.theme = mode;
     setTheme(mode);
-  }
+  } */
 
   /*   async function logOut() {
     try {
@@ -79,7 +59,7 @@ export default function Nav() {
   return (
     <Headroom>
     <div
-      className="sticky top-0 z-50 h-15 shadow-lg border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300"
+      className="sticky top-0 z-50 h-15 shadow-lg bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300"
       // style={{ backgroundImage: 'url(./signal.svg)' }}
     >
       <nav className="mx-auto p-2 ">
@@ -90,7 +70,7 @@ export default function Nav() {
             {/*         <div className="flex-shrink-0">
           <div className="relative"> */}
       <Image
-        className="border rounded-md border-gray-200 dark:border-mag-grey-200 bg-white dark:bg-mag-grey"
+        className="border rounded-md bg-white"
         src={"/logo-med.jpeg"}
         alt="photo"
         width={300 * 0.5}
@@ -342,7 +322,7 @@ export default function Nav() {
                                   href="#"
                                   className="group flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-100 hover:bg-gray-300 hover:text-mag-blue dark:hover:text-mag-blue font-normal hover:font-bold"
                                   role="menuitem"
-                                  onClick={() => toggleDark("dark")}
+                                  //onClick={() => toggleDark("dark")}
                                 >
                                   <svg
                                     className="mr-3 h-5 w-5 text-gray-500 group-hover:text-mag-blue"
@@ -352,7 +332,7 @@ export default function Nav() {
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    onClick={() => toggleDark("light")}
+                                    //onClick={() => toggleDark("light")}
                                   >
                                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                                   </svg>

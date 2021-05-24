@@ -8,10 +8,10 @@ function Layout({ user, setUser, children }) {
 
     <div className="bg-white dark:bg-mag-grey mx-auto">
       <Head>
-        <title>Magnumstone Wall Calculator</title>
+        <title>Cash Account Form</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <script>if (localStorage.theme === 'dark' || (!('theme' in localStorage))) document.querySelector('html').classList.add('dark'), document.querySelector('html').classList.remove('light')</script>
-        <script>document.querySelector('body').classList.add('dark:bg-mag-grey')</script>
+{/*         <script>if (localStorage.theme === 'dark' || (!('theme' in localStorage))) document.querySelector('html').classList.add('dark'), document.querySelector('html').classList.remove('light')</script>
+        <script>document.querySelector('body').classList.add('dark:bg-mag-grey')</script> */}
       </Head>
       <Nav user={user} setUser={setUser} />
       {children}

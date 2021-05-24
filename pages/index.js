@@ -1,4 +1,4 @@
-import GravityCalc from "../components/gravity-calc";
+import CashForm from "../components/cashForm";
 import Head from "next/head";
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
@@ -11,7 +11,7 @@ function Index() {
     return (
       <>
         <Head>
-          <title>Signature Log</title>
+          <title>Cash Account Form</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -30,7 +30,7 @@ function Index() {
           {/*             <Link href="edit-user">
                 <a className="text-gray-400 hover:text-gray-500">Edit User</a>
             </Link> */}
-          <GravityCalc user={user} />
+          <CashForm user={user} />
         </div>
       </>
     );
@@ -38,7 +38,7 @@ function Index() {
     return (
       <>
         <Head>
-          <title>Sign in to Signature Log</title>
+          <title>Cash Account Form</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -56,7 +56,7 @@ function Index() {
           </h1> */}
           <article className="text-center mx-auto mt-20 sm:mt-5 md:mt-10 prose lg:prose-xl md:prose-xl sm:prose-lg text-gray-700 dark:text-gray-200">
             <p>
-              Please log in.
+              Please wait...
             </p>
 
           </article>
