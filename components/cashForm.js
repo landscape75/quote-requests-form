@@ -10,12 +10,10 @@ import "jspdf-autotable";
 import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
-import SigItems from "./sig-items";
 import ImageUploader from "./ImageUploader";
 import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
-  InformationCircleIcon,
   UserCircleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/solid";
@@ -45,7 +43,11 @@ function cashForm() {
 
   /////////////////////////////////////////////////////////////
 
-  let cn = watch("companyName", "").replace(/\s/g, "");
+  let cn = ""
+  if (!failed) {
+    cn = watch("companyName", "").replace(/\s/g, "");
+  }
+  
 
   const onSubmit = (data) => saveData(data);
   //console.log(cn)
@@ -81,6 +83,27 @@ function cashForm() {
         duration: 10000,
       });
     }
+  }
+
+  /////////////////////////////////////////////////////////////
+
+  async function sendMail(d) {
+    console.log('emailing')
+    let response = await fetch(`https://www.magnumwallestimator.com//api/email` , {
+      method: 'POST',
+      body: JSON.stringify({
+        name: d.companyName,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': 'https://www.magnumwallestimator.com'
+      }
+    })
+    let data = await response.json();
+    
+    console.log(data);
+    return data
   }
 
   /////////////////////////////////////////////////////////////
@@ -179,6 +202,25 @@ function cashForm() {
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
           If you have any questions, please call 604-540-0333. We will contact you when your account is ready to use or if we need more information.
+        </p>
+      </div>
+    );
+  }
+
+  if (failed) {
+    return (
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+        <div className="mx-auto mb-4">
+        <ExclamationCircleIcon
+          className="h-10 sm:h-16 w-10 sm:w-16 text-red-600 ml-0"
+          aria-hidden="true"
+        />
+        </div>
+        <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
+          Your Landscape Centre Inc. Cash Account application was not submitted. 
+        </h1>
+        <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
+          Please refresh the page and try again or call 604-540-0333.
         </p>
       </div>
     );

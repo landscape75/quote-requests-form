@@ -11,19 +11,18 @@
 //}
 
 import sendgrid from '@sendgrid/mail';
-
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-
-//to: ['alain@cornerstonewallsolutions.com', 'dave@cornerstonewallsolutions.com'],
+//
+//sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+sendgrid.setApiKey('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');
 
 export default async (req, res) => {
   try {
     await sendgrid.send({
-      to: ['dermot@clarasolutions.com'],
+      to: ['dermot@clandscapecentre.com'],
       bcc: 'tomredf@gmail.com',
-      from: 'dermot@claraprojects.com',
-      subject: 'New MagnumStone Wall Calculator Signup',
-      text: 'New user has signed up for MagnumStone Calculator. : ' + req.body.name + ' - ' + req.body.email + ' - ' + req.body.city + ' - ' + req.body.state 
+      from: 'sales@landscapecentre.com',
+      subject: 'New Cash Account Application',
+      text: 'New contractor has applied for a cas account. : ' + req.body.name
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ error: error.message });

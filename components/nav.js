@@ -17,7 +17,12 @@ export default function Nav() {
 
   useEffect(() => {
     signInWithGoogle();
-  });
+
+    return function cleanup () {
+      auth.signOut();
+    }
+
+  }, []);
 
   /*   function toggleDark(mode) {
     if (mode == "light") {
@@ -50,26 +55,22 @@ export default function Nav() {
     auth.signOut();
   }
 
-  function UsernameForm() {
-    return null;
-  }
-
   return (
     <Headroom>
-      <div className="sticky top-0 z-50 h-15 shadow-lg bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
-      style={{ backgroundImage: 'url("/cash-account-header-1.png")' }}
+      <div
+        className="sticky top-0 z-50 h-15 shadow-xl bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
+        style={{ backgroundImage: 'url("/cash-account-header-1.png")' }}
       >
-          <div className="pt-1">
-            <Image
-              src={"/logo-3.png"}
-              alt="logo"
-              width={300 * 0.65}
-              height={117 * 0.65}
-              layout="intrinsic"
-              className="mx-auto"
-            />
-          </div>
-        
+        <div className="pt-1">
+          <Image
+            src={"/logo-3.png"}
+            alt="logo"
+            width={300 * 0.65}
+            height={117 * 0.65}
+            layout="intrinsic"
+            className="mx-auto"
+          />
+        </div>
       </div>
     </Headroom>
   );
