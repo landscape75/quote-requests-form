@@ -17,8 +17,9 @@ import {
   ExclamationCircleIcon,
   InformationCircleIcon,
   UserCircleIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/solid";
-import { ClipboardListIcon, ShoppingCartIcon } from "@heroicons/react/outline";
+//import { ClipboardListIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 
 /////////////////////////////////////////////////////////////
 
@@ -30,13 +31,8 @@ function cashForm() {
     watch,
     formState: { errors },
   } = useForm();
-  const [fullYear, setYear] = useState(new Date().getFullYear().toString());
-  const [version] = useState("2021.03.15.a");
-  const [editSig, setEditSig] = useState(false);
-  const [selectedSig, setSelectedSig] = useState("");
-  const [notes, setNotes] = useState("");
-  const [company, setCompany] = useState("");
-  const [sigDate, setSigDate] = useState("");
+  //const [fullYear] = useState(new Date().getFullYear().toString());
+  //const [version] = useState("2021.03.15.a");
   const [imgW1, setImgW1] = useState(250);
   const [imgH1, setImgH1] = useState(150);
   const [imgW2, setImgW2] = useState(250);
@@ -44,210 +40,68 @@ function cashForm() {
   const [uploadUrl, setUploadUrl] = useState("");
   const [uploadUrl2, setUploadUrl2] = useState("");
   const [uploadUrl3, setUploadUrl3] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   /////////////////////////////////////////////////////////////
 
-  const onSubmit = (data) => console.log(data);
+  let cn = watch("companyName", "").replace(/\s/g, "");
 
-  async function saveData() {
+  const onSubmit = (data) => saveData(data);
+  //console.log(cn)
+  async function saveData(d) {
     const id = uuid();
-
     try {
       await firestore
-        .collection("sigs")
+        .collection("cashAccounts")
         .doc(id)
         .set({
-          orderNumber: orderNumber,
-          customerName: customerName,
-          truckNumber: truckNumber,
-          sigDate: serverTimestamp(),
-          company: company,
-          notes: notes,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           userId: user.uid,
-          userName: username || "anon",
-          userPhotoUrl: user.photoURL || "",
           businessLicenseUrl: uploadUrl,
           voidChequeUrl: uploadUrl2,
           otherUrl: uploadUrl3,
           imgW1: imgW1,
           imgH1: imgH1,
+          imgW2: imgW2,
+          imgH2: imgH2,
+          formData: d,
         })
         .then(() => {
-          setEditSig(true);
-          setEditItemId(id);
-          toast.success("Signature saved to the cloud.", { duration: 4000 });
+          setSubmitted(true);
+          setFailed(false)
+          toast.success("Cash account application submitted.", {
+            duration: 4000,
+          });
         });
     } catch (e) {
-      toast.error("Failed to save signature. - " + e, {
+      setFailed(true)
+      toast.error("Failed to submit cash account application. - " + e, {
         duration: 10000,
       });
     }
-    //}
-  }
-
-  /////////////////////////////////////////////////////////////
-
-  async function updateSig() {
-    let notSigned = true;
-    if (uploadUrl == "") {
-      notSigned = true;
-    } else {
-      notSigned = false;
-    }
-
-    if (uploadUrl == "") {
-      setPhotoLocked(false);
-    } else {
-      setPhotoLocked(true);
-    }
-
-    try {
-      await firestore
-        .collection("sigs")
-        .doc(selectedSig)
-        .update({
-          orderNumber: orderNumber,
-          customerName: customerName,
-          truckNumber: truckNumber,
-          sigDate: sigDate,
-          company: company,
-          noSig: notSigned,
-          notes: notes,
-          updatedAt: serverTimestamp(),
-          userId: user.uid,
-          userName: username,
-          userPhotoUrl: user.photoURL,
-          photoUrl: uploadUrl,
-          sigImageUrl: "", //await getSig(),
-          imgW: imgW,
-          imgH: imgH,
-        })
-        .then(() => {
-          //setEditSig(true);
-          //setEditItemId(id);
-          toast.success("Signature saved to the cloud.", { duration: 4000 });
-        });
-    } catch (e) {
-      toast.error("Failed to save signature. - " + e, {
-        duration: 10000,
-      });
-    }
-  }
-
-  /////////////////////////////////////////////////////////////
-
-  async function deleteSig(id) {
-    swal({
-      title: "Are you sure?",
-      text: "Deleted signatures cannot bve recovered",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        var docRef = firestore.collection("sigs").doc(id);
-
-        await docRef
-          .delete()
-          .then(() => {
-            reset();
-            toast.success("Signature deleted.", { duration: 3000 });
-          })
-          .catch((e) => {
-            toast.error("Failed to delete signature. - " + e, {
-              duration: 5000,
-            });
-          });
-      }
-    });
-  }
-  /////////////////////////////////////////////////////////////
-
-  async function loadSavedSig(id) {
-    setUploadUrl("");
-    var docRef = firestore.collection("sigs").doc(id);
-
-    await docRef
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          //console.log("Document data:", doc.data());
-          setSelectedSig(id);
-          setEditItemId(doc.id);
-          setOrderNumber(doc.data().orderNumber);
-          setCustomerName(doc.data().customerName);
-          setTruckNumber(doc.data().truckNumber);
-          setUploadUrl(doc.data().photoUrl || "");
-          setImgW(doc.data().imgW || 250);
-          setImgH(doc.data().imgH || 150);
-          //if (sigCanvas.current) clearSig()
-          //if (sigCanvas.current) sigCanvas.current.fromDataURL(doc.data().sigImageUrl || []);
-          /* if (signaturePad) signaturePad.clear();
-          if (signaturePad)
-            signaturePad.fromDataURL(doc.data().sigImageUrl || "");
-            setSigUrl(doc.data().sigImageUrl || "")
-            setImgW(doc.data().imgW || 250); */
-          setEditSig(true);
-          //console.log(id)
-        } else {
-          toast.error("Failed to load signature.", {
-            duration: 5000,
-          });
-        }
-      })
-      .catch((e) => {
-        toast.error("Failed to load signature. - " + e, {
-          duration: 5000,
-        });
-      });
   }
 
   /////////////////////////////////////////////////////////////
 
   function reset() {
-    //signaturePad.clear();
-    //signaturePad.on();
-    //clearSig()
-    setSigUrl("");
-    setEditSig(false);
-    setEditItemId("");
-    setOrderNumber("");
-    setCustomerName("");
-    setTruckNumber("");
-    setNotes("");
-    setCompany("");
-    setSigDate("");
-    //setSelectedFileId("");
-    //setSigLabel("Signature");
-    //setNewSigLabel("New Signature");
-    setImgW(250);
-    setImgH(150);
-    //setLoadingSig(false);
-    //setSelectedFileId(undefined);
     setUploadUrl("");
-    setSigUrl("");
-    setSigLocked(false);
-    setPhotoLocked(false);
+    setUploadUrl2("");
+    setUploadUrl3("");
+    setSubmitted(false);
+    setImgW1(250);
+    setImgH1(150);
+    setImgW2(250);
+    setImgH2(150);
   }
 
   /////////////////////////////////////////////////////////////
 
-  /*   function round(value, precision) {
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-  } */
-
-  /////////////////////////////////////////////////////////////
-
-  function printQuote(o) {
+  /*   function printQuote(o) {
     setShowMenu(false);
-
     let printterms =
       "© " + fullYear + " CornerStone Wall Solutions | " + version;
-
-    //printimage = canvas.toDataURL("image/png")
     let title = "magnumstone- " + wallHeight;
     let doc = new jsPDF("p", "mm", "letter");
     doc.setProperties({
@@ -260,7 +114,6 @@ function cashForm() {
     if (o == "print") {
       doc.autoPrint({ variant: "non-conform" });
     }
-    //doc.addImage(logo, 'png', 13.5, 19)
     doc.addImage("magnumstone-logo.png", "png", 13.5, 19, 62, 12);
     doc.setFontSize(18);
     doc.text("", 50, 21);
@@ -294,7 +147,7 @@ function cashForm() {
     } else if (o == "save") {
       doc.save(fname);
     }
-  }
+  } */
 
   /////////////////////////////////////////////////////////////////
 
@@ -311,6 +164,25 @@ function cashForm() {
   /////////////////////////////////////////////////////////////
 
   //console.log(watch("companyName"));
+  if (submitted) {
+    return (
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+        <div className="mx-auto mb-4">
+        <CheckCircleIcon
+          className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
+          aria-hidden="true"
+        />
+        </div>
+        <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
+          Thank you. Your Landscape Centre Inc. Cash Account application has
+          been submitted. 
+        </h1>
+        <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
+          If you have any questions, please call 604-540-0333. We will contact you when your account is ready to use or if we need more information.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="">
@@ -411,7 +283,7 @@ function cashForm() {
                   placeholder="Street Address"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                   //onChange={(e) => setAddress(e.target.value)}
-                  {...register("address.streetAddress", { required: true })}
+                  {...register("streetAddress", { required: true })}
                 ></input>
                 {errors.streetAddress && (
                   <div className="flex items-center pt-1">
@@ -699,8 +571,17 @@ function cashForm() {
                   placeholder="GST Number"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                   //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("gst", { required: true })}
+                  {...register("gst", {
+                    required: true,
+                    pattern: {
+                      value:
+                        /^(\d{5})[\s.-]?(\d{4})[\s.-]?[RCMPT]{2}[\s.-]?\d{4}$/i,
+                    },
+                  })}
                 ></input>
+                <p className="mt-1 pb-2 text-xs text-gray-400">
+                  Example: 12345 6789 RT 0001
+                </p>
                 {errors.gst && (
                   <div className="flex items-center pt-1">
                     <ExclamationCircleIcon
@@ -1056,6 +937,8 @@ function cashForm() {
                     key="100"
                     passUploadUrl={setUploadUrl}
                     setW={setImgW1}
+                    folder={cn}
+                    fileType={"BusinessLicense"}
                     uid={"1z"}
                     title="Upload Business License Image"
                   />
@@ -1124,6 +1007,8 @@ function cashForm() {
                     key="200"
                     passUploadUrl={setUploadUrl2}
                     setW={setImgW2}
+                    folder={cn}
+                    fileType={"VoidCheque"}
                     uid={"2z"}
                     title="Upload Void Cheque Image"
                   />
