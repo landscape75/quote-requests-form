@@ -22,7 +22,7 @@ export default async (req, res) => {
       bcc: 'tomredf@gmail.com',
       from: 'sales@landscapecentre.com',
       subject: 'New Cash Account Application',
-      text: 'New contractor has applied for a cas account. : ' + req.body.name
+      text: 'New contractor has applied for a cash account. : ' + req.body.name
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ error: error.message });
