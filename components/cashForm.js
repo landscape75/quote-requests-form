@@ -70,7 +70,7 @@ function cashForm() {
           imgH2: imgH2,
           formData: d,
         })
-        .then(() => {
+        .then( async () => {
           await sendMail(d.formData)
           setSubmitted(true);
           setFailed(false)
