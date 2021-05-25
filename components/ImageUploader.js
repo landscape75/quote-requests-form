@@ -17,7 +17,7 @@ export default function ImageUploader(props) {
     await getSize(f);
 
     // Makes reference to the storage bucket location
-    const ref = storage.ref(`uploads/photos/${Date.now()}.${extension}`);
+    const ref = storage.ref(`uploads/cashaccounts/${props.folder}/${props.fileType}-${Date.now()}.${extension}`);
     setUploading(true);
 
     // Starts the upload
