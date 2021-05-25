@@ -18,7 +18,7 @@ sendgrid.setApiKey('SG.S-W8J1x4QHGM5elQ7-yh0w.HC5lyTN272nq7DuBXx2YUgRo-7tWgjJeF2
 export default async (req, res) => {
   try {
     await sendgrid.send({
-      to: ['dermot@clandscapecentre.com'],
+      to: ['dermot@landscapecentre.com'],
       bcc: 'tomredf@gmail.com',
       from: 'sales@landscapecentre.com',
       subject: 'New Cash Account Application',
