@@ -69,6 +69,7 @@ function cashForm() {
           imgW2: imgW2,
           imgH2: imgH2,
           formData: d,
+          read: false
         })
         .then( async () => {
           await sendMail(d)
