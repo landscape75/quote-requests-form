@@ -249,7 +249,7 @@ function cashForm() {
                 Contractor Cash Account Application
               </h1>
               <p className="sm:text-sm text-xs font-medium text-gray-500">
-                If you have any questions, please call 604-540-0333
+                If you have any questions, please call 604-540-0333 { user.uid }
               </p>
             </div>
           </div>
