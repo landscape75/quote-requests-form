@@ -71,7 +71,7 @@ function cashForm() {
           formData: d,
         })
         .then( async () => {
-          await sendMail(d.formData)
+          await sendMail(d)
           setSubmitted(true);
           setFailed(false)
           toast.success("Cash account application submitted.", {
