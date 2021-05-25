@@ -71,6 +71,7 @@ function cashForm() {
           formData: d,
         })
         .then(() => {
+          //await sendMail(d.formData)
           setSubmitted(true);
           setFailed(false)
           toast.success("Cash account application submitted.", {
@@ -89,7 +90,7 @@ function cashForm() {
 
   async function sendMail(d) {
     console.log('emailing')
-    let response = await fetch(`https://www.magnumwallestimator.com//api/email` , {
+    let response = await fetch(`https://cash-account-form.vercel.app/api/email` , {
       method: 'POST',
       body: JSON.stringify({
         name: d.companyName,
@@ -97,7 +98,7 @@ function cashForm() {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin': 'https://www.magnumwallestimator.com'
+        'Access-Control-Allow-Origin': 'https://cash-account-form.vercel.app'
       }
     })
     let data = await response.json();
