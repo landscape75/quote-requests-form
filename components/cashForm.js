@@ -53,13 +53,14 @@ function cashForm() {
   //console.log(cn)
   async function saveData(d) {
     const id = uuid();
+    let d = new Date();
     try {
       await firestore
         .collection("cashAccounts")
         .doc(id)
         .set({
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
+          createdAt: d, //serverTimestamp(),
+          updatedAt: d, //serverTimestamp(),
           userId: user.uid,
           businessLicenseUrl: uploadUrl,
           voidChequeUrl: uploadUrl2,
