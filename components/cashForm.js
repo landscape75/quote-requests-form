@@ -11,6 +11,7 @@ import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 import ImageUploader from "./ImageUploader";
+import FileUploader from "./FileUploader";
 import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
@@ -38,16 +39,16 @@ function cashForm() {
   const [uploadUrl, setUploadUrl] = useState("");
   const [uploadUrl2, setUploadUrl2] = useState("");
   const [uploadUrl3, setUploadUrl3] = useState("");
+  const [fileName, setFileName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [failed, setFailed] = useState(false);
 
   /////////////////////////////////////////////////////////////
 
-  let cn = ""
+  let cn = "";
   if (!failed) {
     cn = watch("companyName", "").replace(/\s/g, "");
   }
-  
 
   const onSubmit = (data) => saveData(data);
   //console.log(cn)
@@ -65,23 +66,24 @@ function cashForm() {
           businessLicenseUrl: uploadUrl,
           voidChequeUrl: uploadUrl2,
           otherUrl: uploadUrl3,
+          otherFileName: fileName,
           imgW1: imgW1,
           imgH1: imgH1,
           imgW2: imgW2,
           imgH2: imgH2,
           formData: d,
-          read: false
+          read: false,
         })
-        .then( async () => {
-          await sendMail(d)
+        .then(async () => {
+          await sendMail(d);
           setSubmitted(true);
-          setFailed(false)
+          setFailed(false);
           toast.success("Cash account application submitted.", {
             duration: 4000,
           });
         });
     } catch (e) {
-      setFailed(true)
+      setFailed(true);
       toast.error("Failed to submit cash account application. - " + e, {
         duration: 10000,
       });
@@ -91,22 +93,25 @@ function cashForm() {
   /////////////////////////////////////////////////////////////
 
   async function sendMail(d) {
-    console.log('emailing')
-    let response = await fetch(`https://cash-account-form.vercel.app/api/email` , {
-      method: 'POST',
-      body: JSON.stringify({
-        name: d.companyName,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Origin': 'https://cash-account-form.vercel.app'
+    console.log("emailing");
+    let response = await fetch(
+      `https://cash-account-form.vercel.app/api/email`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: d.companyName,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "https://cash-account-form.vercel.app",
+        },
       }
-    })
+    );
     let data = await response.json();
-    
+
     console.log(data);
-    return data
+    return data;
   }
 
   /////////////////////////////////////////////////////////////
@@ -194,17 +199,18 @@ function cashForm() {
     return (
       <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
-        <CheckCircleIcon
-          className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
-          aria-hidden="true"
-        />
+          <CheckCircleIcon
+            className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
+            aria-hidden="true"
+          />
         </div>
         <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
           Thank you. Your Landscape Centre Inc. Cash Account application has
-          been submitted. 
+          been submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
-          If you have any questions, please call 604-540-0333. We will contact you when your account is ready to use or if we need more information.
+          If you have any questions, please call 604-540-0333. We will contact
+          you when your account is ready to use or if we need more information.
         </p>
       </div>
     );
@@ -214,13 +220,13 @@ function cashForm() {
     return (
       <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
-        <ExclamationCircleIcon
-          className="h-10 sm:h-16 w-10 sm:w-16 text-red-600 ml-0"
-          aria-hidden="true"
-        />
+          <ExclamationCircleIcon
+            className="h-10 sm:h-16 w-10 sm:w-16 text-red-600 ml-0"
+            aria-hidden="true"
+          />
         </div>
         <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
-          Your Landscape Centre Inc. Cash Account application was not submitted. 
+          Your Landscape Centre Inc. Cash Account application was not submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
           Please refresh the page and try again or call 604-540-0333.
@@ -853,7 +859,7 @@ function cashForm() {
                 htmlFor="supplier"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-100"
               >
-                Current Supplier
+                Current Supplier *
               </label>
               <div className="mt-1 mb-2">
                 <input
@@ -864,7 +870,7 @@ function cashForm() {
                   placeholder="Current Supplier"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                   //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("supplier", { required: false })}
+                  {...register("supplier", { required: true })}
                 ></input>
                 {errors.supplier && (
                   <div className="flex items-center pt-1">
@@ -873,7 +879,8 @@ function cashForm() {
                       aria-hidden="true"
                     />
                     <span className="text-sm text-red-600 font-medium pl-1">
-                      ...
+                      Current Supplier is required. If you don't have one, enter
+                      NONE
                     </span>
                   </div>
                 )}
@@ -918,7 +925,11 @@ function cashForm() {
                 Attachments
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Please attach copies of the following documents.
+                Please attach copies of the following documents. If you don't
+                have them or can't access them right now, you can still submit
+                the application but we won't be able to set up your account
+                until you provide them. You can email them or drop off physical
+                copies.
               </p>
             </div>
             <ul>
@@ -955,7 +966,7 @@ function cashForm() {
                       )}
 
                       <div className="flex-shrink-0 pr-0">
-                        <button
+                        {/*                         <button
                           className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
                           onClick={(e) => clearImage(e)}
                         >
@@ -974,19 +985,31 @@ function cashForm() {
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
-                  <ImageUploader
-                    key="100"
-                    passUploadUrl={setUploadUrl}
-                    setW={setImgW1}
-                    folder={cn}
-                    fileType={"BusinessLicense"}
-                    uid={"1z"}
-                    title="Upload Business License Image"
-                  />
+                  {cn !== "" ? (
+                    <ImageUploader
+                      key="100"
+                      passUploadUrl={setUploadUrl}
+                      setW={setImgW1}
+                      folder={cn}
+                      fileType={"BusinessLicense"}
+                      uid={"1z"}
+                      title="Upload Business License Image"
+                    />
+                  ) : (
+                    <div className="flex items-center pt-1">
+                      <ExclamationCircleIcon
+                        className="h-5 w-5 text-red-600 ml-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-red-600 font-medium pl-1">
+                        You must enter a company name first
+                      </span>
+                    </div>
+                  )}
                 </div>
               </li>
               <li key="void-cheq">
@@ -1025,7 +1048,7 @@ function cashForm() {
                       )}
 
                       <div className="flex-shrink-0 pr-0">
-                        <button
+                        {/*                         <button
                           className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
                           onClick={(e) => clearImage2(e)}
                         >
@@ -1044,19 +1067,89 @@ function cashForm() {
                               d="M6 18L18 6M6 6l12 12"
                             />
                           </svg>
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
-                  <ImageUploader
-                    key="200"
-                    passUploadUrl={setUploadUrl2}
-                    setW={setImgW2}
-                    folder={cn}
-                    fileType={"VoidCheque"}
-                    uid={"2z"}
-                    title="Upload Void Cheque Image"
-                  />
+                  {cn !== "" ? (
+                    <ImageUploader
+                      key="200"
+                      passUploadUrl={setUploadUrl2}
+                      setW={setImgW2}
+                      folder={cn}
+                      fileType={"VoidCheque"}
+                      uid={"2z"}
+                      title="Upload Void Cheque Image"
+                    />
+                  ) : (
+                    <div className="flex items-center pt-1">
+                      <ExclamationCircleIcon
+                        className="h-5 w-5 text-red-600 ml-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-red-600 font-medium pl-1">
+                        You must enter a company name first
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </li>
+              <li key="other-file">
+                <div>
+                  <label
+                    htmlFor="other-file"
+                    className="block text-sm font-medium text-gray-700 mt-4"
+                  >
+                    Additional File (optional)
+                  </label>
+                  <p className="mt-1 pb-2 text-sm text-gray-500">
+                    You can attach an image, pdf or Excel file
+                  </p>
+                  <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white p-2">
+                    <div className="flex-1 flex items-top justify-between">
+                      {fileName !== "" && (
+                        <div className="text-sm text-gray-700">
+                          - {fileName}
+                        </div>
+                      )}
+
+                      {/*  
+                      {uploadUrl3 == "" && (
+                        <Image
+                          className="border rounded-md border-gray-200 bg-white"
+                          src={"/no-photo.png"}
+                     Name } alt="photo"
+                          width={250}
+                          height={150}
+                          layout="intrinsic"
+                        />
+                      )} */}
+
+                      <div className="flex-shrink-0 pr-0"></div>
+                    </div>
+                  </div>
+                  {cn !== "" ? (
+                    <FileUploader
+                      key="300"
+                      passUploadUrl={setUploadUrl3}
+                      passFileName={setFileName}
+                      setW={setImgW2}
+                      folder={cn}
+                      fileType={"Other"}
+                      uid={"2zz"}
+                      title="Upload Additional File"
+                    />
+                  ) : (
+                    <div className="flex items-center pt-1">
+                      <ExclamationCircleIcon
+                        className="h-5 w-5 text-red-600 ml-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-red-600 font-medium pl-1">
+                        You must enter a company name first
+                      </span>
+                    </div>
+                  )}
                 </div>
               </li>
             </ul>
