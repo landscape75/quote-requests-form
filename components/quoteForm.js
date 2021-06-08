@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Menu, Transition, Listbox } from "@headlessui/react";
+//import { Menu, Transition, Listbox } from "@headlessui/react";
 //import Link from "next/link";
 import Image from "next/image";
 import uuid from "react-uuid";
 import toast from "react-hot-toast";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+//import jsPDF from "jspdf";
+//import "jspdf-autotable";
 //import { useCollection } from "react-firebase-hooks/firestore";
 import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
@@ -22,7 +22,7 @@ import {
 
 /////////////////////////////////////////////////////////////
 
-function cashForm() {
+function quoteForm() {
   const { user, username } = useContext(UserContext);
   const {
     register,
@@ -78,13 +78,13 @@ function cashForm() {
           await sendMail(d);
           setSubmitted(true);
           setFailed(false);
-          toast.success("Cash account application submitted.", {
+          toast.success("Quote request submitted.", {
             duration: 4000,
           });
         });
     } catch (e) {
       setFailed(true);
-      toast.error("Failed to submit cash account application. - " + e, {
+      toast.error("Failed to submit quote request. - " + e, {
         duration: 10000,
       });
     }
@@ -127,59 +127,6 @@ function cashForm() {
     setImgH2(150);
   }
 
-  /////////////////////////////////////////////////////////////
-
-  /*   function printQuote(o) {
-    setShowMenu(false);
-    let printterms =
-      "© " + fullYear + " CornerStone Wall Solutions | " + version;
-    let title = "magnumstone- " + wallHeight;
-    let doc = new jsPDF("p", "mm", "letter");
-    doc.setProperties({
-      title: title,
-      subject: title,
-      author: "MagnumStone",
-      keywords: "magnumstone calculator",
-      creator: "MagnumStone",
-    });
-    if (o == "print") {
-      doc.autoPrint({ variant: "non-conform" });
-    }
-    doc.addImage("magnumstone-logo.png", "png", 13.5, 19, 62, 12);
-    doc.setFontSize(18);
-    doc.text("", 50, 21);
-    doc.text("Wall Calculation", 156, 25);
-    doc.setFontSize(10);
-    doc.text("", 50, 27);
-    doc.setDrawColor("#009ade");
-    doc.line(14, 32, 202, 32);
-    doc.setFontSize(10);
-    doc.text(wallDescription, 14, 37);
-    doc.autoTable({
-      startY: 39,
-      html: "#order-details",
-      useCss: true,
-      theme: "grid",
-      includeHiddenHtml: true,
-    });
-    let finalY = doc.previousAutoTable.finalY;
-
-    doc.addImage("crosssection.png", "png", 13.5, finalY, 50, 45);
-
-    doc.setDrawColor("#009ade");
-    doc.line(14, finalY + 128, 202, finalY + 128);
-    doc.setFontSize(7);
-    doc.text(printterms, 14, finalY + 131, { align: "left" });
-
-    let fname = "magnumstone-calculation- " + wallHeight + ".pdf";
-
-    if (o == "print") {
-      doc.output("dataurlnewwindow", { filename: fname });
-    } else if (o == "save") {
-      doc.save(fname);
-    }
-  } */
-
   /////////////////////////////////////////////////////////////////
 
   function clearImage(e) {
@@ -205,8 +152,8 @@ function cashForm() {
           />
         </div>
         <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
-          Thank you. Your Landscape Centre Inc. Cash Account application has
-          been submitted.
+          Thank you. Your Landscape Centre Inc. Quote request has been
+          submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
           If you have any questions, please call 604-540-0333. We will contact
@@ -226,7 +173,7 @@ function cashForm() {
           />
         </div>
         <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
-          Your Landscape Centre Inc. Cash Account application was not submitted.
+          Your Landscape Centre Inc. Quote request was not submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
           Please refresh the page and try again or call 604-540-0333.
@@ -254,7 +201,7 @@ function cashForm() {
             </div>
             <div>
               <h1 className="sm:text-2xl text-md font-bold text-gray-900 truncate">
-                Contractor Cash Account Application
+                Quote Request
               </h1>
               <p className="sm:text-sm text-xs font-medium text-gray-500">
                 If you have any questions, please call 604-540-0333
@@ -281,7 +228,7 @@ function cashForm() {
           <form className="space-y-2 pt-0" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <h3 className="text-xl leading-6 font-medium text-gray-900">
-                Company Information
+                Contact Information
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
                 Please provide company name, address and contact info
@@ -289,10 +236,41 @@ function cashForm() {
             </div>
             <div>
               <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+              >
+                Name *
+              </label>
+              <div className="mt-1 mb-2">
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  //value={truckNumber}
+                  placeholder="Name"
+                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  //onChange={(e) => setTruckNumber(e.target.value)}
+                  {...register("name", { required: true })}
+                ></input>
+                {errors.name && (
+                  <div className="flex items-center pt-1">
+                    <ExclamationCircleIcon
+                      className="h-5 w-5 text-red-600 ml-0"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm text-red-600 font-medium pl-1">
+                      Name is required
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div>
+              <label
                 htmlFor="company-name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-100"
               >
-                Company Name *
+                Company Name
               </label>
               <div className="mt-1 mb-2">
                 <input
@@ -303,53 +281,67 @@ function cashForm() {
                   placeholder="Company Name"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md required"
                   //onChange={(e) => setCompanyName(e.target.value)}
-                  {...register("companyName", { required: true })}
+                  {...register("companyName", { required: false })}
                 ></input>
-                {errors.companyName && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      Company Name is required
-                    </span>
-                  </div>
-                )}
               </div>
             </div>
             <div>
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Street Address *
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="address"
-                  name="address"
-                  type="text"
-                  //value={address}
-                  placeholder="Street Address"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setAddress(e.target.value)}
-                  {...register("streetAddress", { required: true })}
-                ></input>
-                {errors.streetAddress && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
+                <div className="relative flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="delivery-required"
+                      name="delivery-required"
+                      type="checkbox"
+                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
+                      {...register("deliveryRequired")}
                     />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      Street Address is required
-                    </span>
                   </div>
-                )}
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="delivery-required"
+                      className="font-medium text-gray-700"
+                    >
+                      Delivery Required
+                    </label>
+                    {/* <p className="text-gray-500">
+                      Get notified when a candidate accepts or rejects an offer.
+                    </p> */}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-6">
+            <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-4">
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                >
+                  Street Address *
+                </label>
+                <div className="mt-1 mb-2">
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    //value={address}
+                    placeholder="Street Address"
+                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                    //onChange={(e) => setAddress(e.target.value)}
+                    {...register("streetAddress", { required: true })}
+                  ></input>
+                  {errors.streetAddress && (
+                    <div className="flex items-center pt-1">
+                      <ExclamationCircleIcon
+                        className="h-5 w-5 text-red-600 ml-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-red-600 font-medium pl-1">
+                        Street Address is required
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="city"
@@ -381,113 +373,15 @@ function cashForm() {
                   )}
                 </div>
               </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="province"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-                >
-                  Province *
-                </label>
-                <div className="mt-1 mb-2">
-                  <input
-                    id="province"
-                    name="province"
-                    type="text"
-                    //value={truckNumber}
-                    placeholder="Province"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                    //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("province", { required: true })}
-                  ></input>
-                  {errors.province && (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        Province is required
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="postal-code"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-                >
-                  Postal Code *
-                </label>
-                <div className="mt-1 mb-2">
-                  <input
-                    id="postal-code"
-                    name="postal-code"
-                    type="text"
-                    //value={truckNumber}
-                    placeholder="Postal Code"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                    //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("postalCode", {
-                      required: true,
-                      pattern: {
-                        value:
-                          /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i,
-                      },
-                    })}
-                  ></input>
-                  {errors.postalCode && (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        Postal Code is required
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
-            <div>
-              <label
-                htmlFor="contact"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Principle Contact *
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="contact"
-                  name="contact"
-                  type="text"
-                  //value={truckNumber}
-                  placeholder="Principle Contact"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("contact", { required: true })}
-                ></input>
-                {errors.contact && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      Principle Contact is required
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+
             <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
                   htmlFor="office-phone"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-100"
                 >
-                  Office Phone *
+                  Home Phone *
                 </label>
                 <div className="mt-1 mb-2">
                   <input
@@ -498,7 +392,7 @@ function cashForm() {
                     placeholder="Office Phone"
                     className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                     //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("officePhone", {
+                    {...register("homePhone", {
                       required: true,
                       pattern: {
                         value:
@@ -506,14 +400,14 @@ function cashForm() {
                       },
                     })}
                   ></input>
-                  {errors.officePhone && (
+                  {errors.homePhone && (
                     <div className="flex items-center pt-1">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-600 ml-0"
                         aria-hidden="true"
                       />
                       <span className="text-sm text-red-600 font-medium pl-1">
-                        Valid office phone number is required
+                        Valid home phone number is required
                       </span>
                     </div>
                   )}
@@ -604,224 +498,6 @@ function cashForm() {
               <p className="mt-1 pb-2 text-sm text-gray-500">
                 Please tell us some more about your business
               </p>
-            </div>
-
-            <div>
-              <label
-                htmlFor="gst"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                GST Number *
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="gst"
-                  name="gst"
-                  type="text"
-                  //value={truckNumber}
-                  placeholder="GST Number"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("gst", {
-                    required: true,
-                    pattern: {
-                      value:
-                        /^(\d{5})[\s.-]?(\d{4})[\s.-]?[RCMPT]{2}[\s.-]?\d{4}$/i,
-                    },
-                  })}
-                ></input>
-                <p className="mt-1 pb-2 text-xs text-gray-400">
-                  Example: 12345 6789 RT 0001
-                </p>
-                {errors.gst && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      A valid GST Number is required
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">
-                Business Type *
-              </label>
-              <p className="text-gray-500 text-xs pb-2">Check all that apply</p>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="landscape-maintenace"
-                      name="landscape-maintenace"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.landscapeMaintenance")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="landscape-maintenace"
-                      className="font-medium text-gray-700"
-                    >
-                      Landscape Maintenance
-                    </label>
-                    {/* <p className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p> */}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="landscape-contractor"
-                      name="landscape-contractor"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.landscapeContractor")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="landscape-contractor"
-                      className="font-medium text-gray-700"
-                    >
-                      Landscape Contractor
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="landscape-designer"
-                      name="landscape-designer"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.landscapeDesigner")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="landscape-designer"
-                      className="font-medium text-gray-700"
-                    >
-                      Landscape Designer
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="general-contractor"
-                      name="general-contractor"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.generalContactor")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="general-contractor"
-                      className="font-medium text-gray-700"
-                    >
-                      General Contractor
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="home-builder"
-                      name="home-builder"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.homeBuilder")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="home-builder"
-                      className="font-medium text-gray-700"
-                    >
-                      Home Builder
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="mason"
-                      name="mason"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.mason")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="mason"
-                      className="font-medium text-gray-700"
-                    >
-                      Mason
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="contractor"
-                      name="contactor"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.contractor")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="contractor"
-                      className="font-medium text-gray-700"
-                    >
-                      Contractor
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="other"
-                      name="other"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("type.other")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="offers"
-                      className="font-medium text-gray-700"
-                    >
-                      Other
-                    </label>
-                  </div>
-                </div>
-              </div>
             </div>
             <div>
               <label
@@ -1164,4 +840,4 @@ function cashForm() {
   );
 }
 
-export default cashForm;
+export default quoteForm;

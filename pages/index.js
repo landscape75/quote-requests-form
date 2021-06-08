@@ -1,4 +1,4 @@
-import CashForm from "../components/cashForm";
+import QuoteForm from "../components/quoteForm";
 import Head from "next/head";
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
@@ -11,7 +11,7 @@ function Index() {
     return (
       <>
         <Head>
-          <title>Cash Account Form</title>
+          <title>Quote Request Form</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -30,7 +30,7 @@ function Index() {
           {/*             <Link href="edit-user">
                 <a className="text-gray-400 hover:text-gray-500">Edit User</a>
             </Link> */}
-          <CashForm user={user} />
+          <QuoteForm user={user} />
         </div>
       </>
     );
@@ -38,7 +38,7 @@ function Index() {
     return (
       <>
         <Head>
-          <title>Cash Account Form</title>
+          <title>Quote Request Form</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
