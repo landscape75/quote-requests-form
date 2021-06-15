@@ -30,24 +30,20 @@ function quoteForm() {
     watch,
     formState: { errors },
   } = useForm();
-  //const [fullYear] = useState(new Date().getFullYear().toString());
-  //const [version] = useState("2021.03.15.a");
-  const [imgW1, setImgW1] = useState(250);
-  const [imgH1, setImgH1] = useState(150);
-  const [imgW2, setImgW2] = useState(250);
-  const [imgH2, setImgH2] = useState(150);
-  const [uploadUrl, setUploadUrl] = useState("");
-  const [uploadUrl2, setUploadUrl2] = useState("");
-  const [uploadUrl3, setUploadUrl3] = useState("");
-  const [fileName, setFileName] = useState("");
+  const [files, setFiles] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [lineItems, setLineItems] = useState([
+    { description: "", quantity: "", unit: "" },
+  ]);
 
   /////////////////////////////////////////////////////////////
 
   let cn = "";
+  let dr = false;
   if (!failed) {
-    cn = watch("companyName", "").replace(/\s/g, "");
+    cn = watch("name", "").replace(/\s/g, "");
+    dr = watch("deliveryRequired", false);
   }
 
   const onSubmit = (data) => saveData(data);
@@ -57,25 +53,19 @@ function quoteForm() {
     //const date = new Date();
     try {
       await firestore
-        .collection("cashAccounts")
+        .collection("quotes")
         .doc(id)
         .set({
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           userId: user.uid,
-          businessLicenseUrl: uploadUrl,
-          voidChequeUrl: uploadUrl2,
-          otherUrl: uploadUrl3,
-          otherFileName: fileName,
-          imgW1: imgW1,
-          imgH1: imgH1,
-          imgW2: imgW2,
-          imgH2: imgH2,
+          files: files,
           formData: d,
+          lineItems: lineItems,
           read: false,
         })
         .then(async () => {
-          await sendMail(d);
+          //await sendMail(d);
           setSubmitted(true);
           setFailed(false);
           toast.success("Quote request submitted.", {
@@ -85,10 +75,54 @@ function quoteForm() {
     } catch (e) {
       setFailed(true);
       toast.error("Failed to submit quote request. - " + e, {
-        duration: 10000,
+        duration: 6000,
       });
     }
   }
+
+  //////////////////////////////////////////////////////////////
+
+  const handleAddFile = (fName, fUrl) => {
+    let newFile = { fileName: fName, fileUrl: fUrl };
+    setFiles([...files, newFile]);
+    console.log(files);
+  };
+
+  //////////////////////////////////////////////////////////////
+
+  const handleLineItemChange = (elementIndex) => (event) => {
+    let lineItems2 = lineItems.map((item, i) => {
+      if (elementIndex !== i) return item;
+      return { ...item, [event.target.name]: event.target.value };
+    });
+    //console.log(lineItems2)
+    setLineItems(lineItems2);
+  };
+
+  //////////////////////////////////////////////////////////////
+
+  const handleAddLineItem = (event) => {
+    setLineItems(
+      lineItems.concat([{ description: "", quantity: "", unit: "" }])
+    );
+  };
+
+  //////////////////////////////////////////////////////////////
+
+  const handleRemoveLineItem = (elementIndex) => (event) => {
+    setLineItems(
+      lineItems.filter((item, i) => {
+        return elementIndex !== i;
+      })
+    );
+    //console.log('delete')
+  };
+
+  //////////////////////////////////////////////////////////////
+
+  const handleFocusSelect = (event) => {
+    event.target.select();
+  };
 
   /////////////////////////////////////////////////////////////
 
@@ -99,7 +133,7 @@ function quoteForm() {
       {
         method: "POST",
         body: JSON.stringify({
-          name: d.companyName,
+          name: d.name,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -127,21 +161,8 @@ function quoteForm() {
     setImgH2(150);
   }
 
-  /////////////////////////////////////////////////////////////////
-
-  function clearImage(e) {
-    e.preventDefault();
-    setUploadUrl("");
-  }
-
-  function clearImage2(e) {
-    e.preventDefault();
-    setUploadUrl2("");
-  }
-
   /////////////////////////////////////////////////////////////
 
-  //console.log(watch("companyName"));
   if (submitted) {
     return (
       <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
@@ -151,13 +172,13 @@ function quoteForm() {
             aria-hidden="true"
           />
         </div>
-        <h1 className="sm:text-2xl text-md font-bold text-gray-900 text-center">
+        <h1 className="sm:text-2xl text-md font-medium text-gray-900 text-center">
           Thank you. Your Landscape Centre Inc. Quote request has been
           submitted.
         </h1>
-        <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
-          If you have any questions, please call 604-540-0333. We will contact
-          you when your account is ready to use or if we need more information.
+        <p className="sm:text-lg text-sm font-medium text-gray-500 text-center mt-4 mb-2">
+        We will get back to you within 48 hours. We will email you
+          if we equire more information.
         </p>
       </div>
     );
@@ -204,7 +225,8 @@ function quoteForm() {
                 Quote Request
               </h1>
               <p className="sm:text-sm text-xs font-medium text-gray-500">
-                If you have any questions, please call 604-540-0333
+                If you have any questions, please email
+                sales@landscapecentre.con or call 604-540-0333
               </p>
             </div>
           </div>
@@ -212,13 +234,13 @@ function quoteForm() {
             <div className="w-full border-t border-gray-400" />
           </div>
 
-          <p className="pt-2 text-sm text-gray-500">
+          {/*           <p className="pt-2 text-sm text-gray-500">
             A Contractor Cash account enables you to purchase product at a
             discounted rate. Note, we protect our contractors so the discount is
             given only to you as the contractor and does not apply if your
             customer is paying. Please contact us if you have any questions.
             Thank you and we look forward to working with you.
-          </p>
+          </p> */}
           <p className="mt-1 text-sm text-gray-500">
             Fields marked with * must be filled in.
           </p>
@@ -231,7 +253,8 @@ function quoteForm() {
                 Contact Information
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Please provide company name, address and contact info
+                Please provide name, contact info, and address if you require
+                delivery
               </p>
             </div>
             <div>
@@ -278,7 +301,7 @@ function quoteForm() {
                   name="company-name"
                   type="text"
                   //value={companyName}
-                  placeholder="Company Name"
+                  placeholder="Company Name (optional)"
                   className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md required"
                   //onChange={(e) => setCompanyName(e.target.value)}
                   {...register("companyName", { required: false })}
@@ -286,113 +309,116 @@ function quoteForm() {
               </div>
             </div>
             <div>
-                <div className="relative flex items-start">
-                  <div className="flex items-center h-5">
-                    <input
-                      id="delivery-required"
-                      name="delivery-required"
-                      type="checkbox"
-                      className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
-                      {...register("deliveryRequired")}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="delivery-required"
-                      className="font-medium text-gray-700"
-                    >
-                      Delivery Required
-                    </label>
-                    {/* <p className="text-gray-500">
+              <div className="relative flex items-start">
+                <div className="flex items-center h-5">
+                  <input
+                    id="delivery-required"
+                    name="delivery-required"
+                    type="checkbox"
+                    className="focus:ring-lc-yellow h-4 w-4 text-lc-yellow border-gray-300 rounded"
+                    {...register("deliveryRequired")}
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="delivery-required"
+                    className="font-medium text-gray-700"
+                  >
+                    Delivery Required
+                  </label>
+                  {/* <p className="text-gray-500">
                       Get notified when a candidate accepts or rejects an offer.
                     </p> */}
-                  </div>
-                </div>
-              </div>
-            <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-4">
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-                >
-                  Street Address *
-                </label>
-                <div className="mt-1 mb-2">
-                  <input
-                    id="address"
-                    name="address"
-                    type="text"
-                    //value={address}
-                    placeholder="Street Address"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                    //onChange={(e) => setAddress(e.target.value)}
-                    {...register("streetAddress", { required: true })}
-                  ></input>
-                  {errors.streetAddress && (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        Street Address is required
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="city"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-                >
-                  City *
-                </label>
-                <div className="mt-1 mb-2">
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    //value={truckNumber}
-                    placeholder="City"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                    //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("city", { required: true })}
-                  ></input>
-                  {errors.city && (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        City is required
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
+            {dr && (
+              <>
+                <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-4">
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="address"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                    >
+                      Street Address *
+                    </label>
+                    <div className="mt-1 mb-2">
+                      <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        //value={address}
+                        placeholder="Street Address"
+                        className="block bg-whit text-gay-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
+                        //onChange={(e) => setAddress(e.target.value)}
+                        {...register("streetAddress", { required: true })}
+                      ></input>
+                      {errors.streetAddress && (
+                        <div className="flex items-center pt-1">
+                          <ExclamationCircleIcon
+                            className="h-5 w-5 text-red-600 ml-0"
+                            aria-hidden="true"
+                          />
+                          <span className="text-sm text-red-600 font-medium pl-1">
+                            Street Address is required
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                    >
+                      City *
+                    </label>
+                    <div className="mt-1 mb-2">
+                      <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        //value={truckNumber}
+                        placeholder="City"
+                        className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                        //onChange={(e) => setTruckNumber(e.target.value)}
+                        {...register("city", { required: true })}
+                      ></input>
+                      {errors.city && (
+                        <div className="flex items-center pt-1">
+                          <ExclamationCircleIcon
+                            className="h-5 w-5 text-red-600 ml-0"
+                            aria-hidden="true"
+                          />
+                          <span className="text-sm text-red-600 font-medium pl-1">
+                            City is required
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
             <div className="mt-0 grid grid-cols-1 gap-y-0 gap-x-4 sm:grid-cols-6">
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-2">
                 <label
-                  htmlFor="office-phone"
+                  htmlFor="phone"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-100"
                 >
-                  Home Phone *
+                  Phone *
                 </label>
                 <div className="mt-1 mb-2">
                   <input
-                    id="office-phone"
-                    name="office-phone"
+                    id="phone"
+                    name="phone"
                     type="text"
                     //value={truckNumber}
-                    placeholder="Office Phone"
+                    placeholder="Phone"
                     className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                     //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("homePhone", {
+                    {...register("phone", {
                       required: true,
                       pattern: {
                         value:
@@ -400,168 +426,196 @@ function quoteForm() {
                       },
                     })}
                   ></input>
-                  {errors.homePhone && (
+                  {errors.phone && (
                     <div className="flex items-center pt-1">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-600 ml-0"
                         aria-hidden="true"
                       />
                       <span className="text-sm text-red-600 font-medium pl-1">
-                        Valid home phone number is required
+                        Valid phone number is required
                       </span>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-4">
                 <label
-                  htmlFor="mobile-phone"
+                  htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-100"
                 >
-                  Mobile Phone *
+                  Email Address *
                 </label>
                 <div className="mt-1 mb-2">
                   <input
-                    id="mobile-phone"
-                    name="mobile-phone"
+                    id="email"
+                    name="email"
                     type="text"
                     //value={truckNumber}
-                    placeholder="Mobile Phone"
+                    placeholder="Email Address"
                     className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                     //onChange={(e) => setTruckNumber(e.target.value)}
-                    {...register("mobilePhone", {
+                    {...register("email", {
                       required: true,
                       pattern: {
                         value:
-                          /^[+]?(\d{1,2})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                       },
                     })}
                   ></input>
-                  {errors.mobilePhone && (
+                  {errors.email && (
                     <div className="flex items-center pt-1">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-600 ml-0"
                         aria-hidden="true"
                       />
                       <span className="text-sm text-red-600 font-medium pl-1">
-                        Valid mobile phone number is required
+                        Valid email address is required
                       </span>
                     </div>
                   )}
                 </div>
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Email Address *
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="text"
-                  //value={truckNumber}
-                  placeholder="Email Address"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("email", {
-                    required: true,
-                    pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    },
-                  })}
-                ></input>
-                {errors.email && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      Valid email address is required
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+
             <div>
               <div className="items-center pt-4 mb-4" aria-hidden="true">
                 <div className="w-full border-t border-gray-200" />
               </div>
               <h3 className="text-xl leading-6 font-medium text-gray-900">
-                About Your Business
+                Quote Details
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Please tell us some more about your business
+                Please list the materials and quantities you want us to quote.
+                Please make sure to include the colour and size in the
+                description if applicable. Only include one product per row.
+                Click the + to add a new row.
               </p>
             </div>
-            <div>
-              <label
-                htmlFor="if-other"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                If Other Please Provide Details
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="if-other"
-                  name="if-other"
-                  type="text"
-                  //value={truckNumber}
-                  placeholder="Other"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("ifother", { required: false })}
-                ></input>
-                {errors.ifOther && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      ...
-                    </span>
-                  </div>
-                )}
-              </div>
+            <div className="border border-gray-200 rounded-md">
+              <table id="line-items" className="w-full">
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                    >
+                      #
+                    </th>
+                    <th
+                      scope="col"
+                      className="w-7/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-1 border-r-1"
+                    >
+                      Description
+                    </th>
+                    <th
+                      scope="col"
+                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
+                    >
+                      Quantity
+                    </th>
+                    <th
+                      scope="col"
+                      className="w-2/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
+                    >
+                      Unit
+                    </th>
+                    <th
+                      scope="col"
+                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                    >
+                      <button
+                        type="button"
+                        className="bg-gray-0 text-lc-yellow hover:text-lc-green relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+                        onClick={handleAddLineItem}
+                      >
+                        <span></span>
+                        <svg
+                          className="h-6 w-6"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {lineItems.map((item, i) => (
+                    <tr
+                      //className="border border-t-0 border-b-0 border-l-0 border-r-0"
+                      key={i}
+                    >
+                      <td className="text-center border border-t-0 border-b-0 border-l-0 border-r-0 p-2 text-sm text-gray-400">
+                        {i + 1}
+                      </td>
+                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
+                        <input
+                          name="description"
+                          type="text"
+                          className="bg-white text-gray-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          value={item.description}
+                          onChange={handleLineItemChange(i)}
+                        />
+                      </td>
+                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
+                        <input
+                          name="quantity"
+                          type="text"
+                          className="bg-white text-gray-700 text-center focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          value={item.quantity}
+                          onChange={handleLineItemChange(i)}
+                          //onFocus={handleFocusSelect}
+                        />
+                      </td>
+                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
+                        <input
+                          name="unit"
+                          type="text"
+                          className="bg-white text-gray-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          value={item.unit}
+                          onChange={handleLineItemChange(i)}
+                          //onFocus={handleFocusSelect}
+                        />
+                      </td>
+                      <td className="text-center px-2 py-2 border border-gray-100 border-l-0 border-t-0 border-b-0">
+                        <button
+                          type="button"
+                          disabled={lineItems.length == 1}
+                          className="text-gray-300 hover:text-red-600 disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+                          onClick={handleRemoveLineItem(i)}
+                        >
+                          <span></span>
+                          <svg
+                            className="h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <div>
-              <label
-                htmlFor="supplier"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
-              >
-                Current Supplier *
-              </label>
-              <div className="mt-1 mb-2">
-                <input
-                  id="supplier"
-                  name="supplier"
-                  type="text"
-                  //value={truckNumber}
-                  placeholder="Current Supplier"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
-                  {...register("supplier", { required: true })}
-                ></input>
-                {errors.supplier && (
-                  <div className="flex items-center pt-1">
-                    <ExclamationCircleIcon
-                      className="h-5 w-5 text-red-600 ml-0"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-red-600 font-medium pl-1">
-                      Current Supplier is required. If you don't have one, enter
-                      NONE
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
+
             <div>
               <label
                 htmlFor="notes"
@@ -601,234 +655,40 @@ function quoteForm() {
                 Attachments
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Please attach copies of the following documents. If you don't
-                have them or can't access them right now, you can still submit
-                the application but we won't be able to set up your account
-                until you provide them. You can email them or drop off physical
-                copies.
+                Optionally attach files including images, PDFs or Excel files.
               </p>
             </div>
-            <ul>
-              <li key="bus-lic">
-                <div>
-                  <label
-                    htmlFor="business-license"
-                    className="block text-sm font-medium text-gray-700 mt-2"
-                  >
-                    Business License
-                  </label>
-                  <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white">
-                    <div className="flex-1 flex items-top justify-between">
-                      {uploadUrl !== "" && (
-                        <Image
-                          className="border rounded-md border-gray-200 bg-white"
-                          src={uploadUrl}
-                          alt="business license"
-                          width={imgW1}
-                          height={imgH1}
-                          layout="intrinsic"
-                          id="business-license"
-                        />
-                      )}
-                      {uploadUrl == "" && (
-                        <Image
-                          className="border rounded-md border-gray-200 bg-white"
-                          src={"/no-photo.png"}
-                          alt="photo"
-                          width={250}
-                          height={150}
-                          layout="intrinsic"
-                        />
-                      )}
-
-                      <div className="flex-shrink-0 pr-0">
-                        {/*                         <button
-                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                          onClick={(e) => clearImage(e)}
-                        >
-                          <span className="sr-only">Business License</span>
-                          <svg
-                            className="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button> */}
+            <div>
+              <div>
+                <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white">
+                  <div className="divide-y divide-gray-100">
+                    {files.map((item, i) => (
+                      <div id={i} className="text-sm text-gray-700 p-2">
+                        {i + 1} - {item.fileName}
                       </div>
-                    </div>
+                    ))}
                   </div>
-                  {cn !== "" ? (
-                    <ImageUploader
-                      key="100"
-                      passUploadUrl={setUploadUrl}
-                      setW={setImgW1}
-                      folder={cn}
-                      fileType={"BusinessLicense"}
-                      uid={"1z"}
-                      title="Upload Business License Image"
-                    />
-                  ) : (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        You must enter a company name first
-                      </span>
-                    </div>
-                  )}
                 </div>
-              </li>
-              <li key="void-cheq">
-                <div>
-                  <label
-                    htmlFor="void-cheque"
-                    className="block text-sm font-medium text-gray-700 mt-2"
-                  >
-                    Void Cheque
-                  </label>
-                  <div
-                    id="22"
-                    className="mt-1 mb-0 border rounded-md border-gray-200 bg-white"
-                  >
-                    <div className="flex-1 flex items-top justify-between">
-                      {uploadUrl2 !== "" && (
-                        <Image
-                          className="border rounded-md border-gray-200 bg-white"
-                          src={uploadUrl2}
-                          alt="void cheque"
-                          width={imgW2}
-                          height={imgH2}
-                          layout="intrinsic"
-                          id="void-cheque"
-                        />
-                      )}
-                      {uploadUrl2 == "" && (
-                        <Image
-                          className="border rounded-md border-gray-200 bg-white"
-                          src={"/no-photo.png"}
-                          alt="photo"
-                          width={250}
-                          height={150}
-                          layout="intrinsic"
-                        />
-                      )}
-
-                      <div className="flex-shrink-0 pr-0">
-                        {/*                         <button
-                          className="w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-mag-blue focus:outline-none"
-                          onClick={(e) => clearImage2(e)}
-                        >
-                          <span className="sr-only">Void Cheque</span>
-                          <svg
-                            className="w-5 h-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button> */}
-                      </div>
-                    </div>
+                {cn !== "" ? (
+                  <FileUploader
+                    addFile={handleAddFile}
+                    folder={cn}
+                    title="Upload File"
+                  />
+                ) : (
+                  <div className="flex items-center pt-1">
+                    <ExclamationCircleIcon
+                      className="h-5 w-5 text-red-600 ml-0"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm text-red-600 font-medium pl-1">
+                      You must enter your name first
+                    </span>
                   </div>
-                  {cn !== "" ? (
-                    <ImageUploader
-                      key="200"
-                      passUploadUrl={setUploadUrl2}
-                      setW={setImgW2}
-                      folder={cn}
-                      fileType={"VoidCheque"}
-                      uid={"2z"}
-                      title="Upload Void Cheque Image"
-                    />
-                  ) : (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        You must enter a company name first
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </li>
-              <li key="other-file">
-                <div>
-                  <label
-                    htmlFor="other-file"
-                    className="block text-sm font-medium text-gray-700 mt-4"
-                  >
-                    Additional File (optional)
-                  </label>
-                  <p className="mt-1 pb-2 text-sm text-gray-500">
-                    You can attach an image, pdf or Excel file
-                  </p>
-                  <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white p-2">
-                    <div className="flex-1 flex items-top justify-between">
-                      {fileName !== "" && (
-                        <div className="text-sm text-gray-700">
-                          - {fileName}
-                        </div>
-                      )}
+                )}
+              </div>
+            </div>
 
-                      {/*  
-                      {uploadUrl3 == "" && (
-                        <Image
-                          className="border rounded-md border-gray-200 bg-white"
-                          src={"/no-photo.png"}
-                     Name } alt="photo"
-                          width={250}
-                          height={150}
-                          layout="intrinsic"
-                        />
-                      )} */}
-
-                      <div className="flex-shrink-0 pr-0"></div>
-                    </div>
-                  </div>
-                  {cn !== "" ? (
-                    <FileUploader
-                      key="300"
-                      passUploadUrl={setUploadUrl3}
-                      passFileName={setFileName}
-                      setW={setImgW2}
-                      folder={cn}
-                      fileType={"Other"}
-                      uid={"2zz"}
-                      title="Upload Additional File"
-                    />
-                  ) : (
-                    <div className="flex items-center pt-1">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-red-600 ml-0"
-                        aria-hidden="true"
-                      />
-                      <span className="text-sm text-red-600 font-medium pl-1">
-                        You must enter a company name first
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </li>
-            </ul>
             <input
               type="submit"
               className="inline-flex justify-center md:w-1/4 w-full rounded-md border border-transparent cursor-pointer shadow-md px-4 py-2 bg-lc-green text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lc-yellow"

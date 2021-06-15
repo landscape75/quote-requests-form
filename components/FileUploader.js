@@ -13,10 +13,10 @@ export default function FileUploader(props) {
     const fname = file.name
 
     const f = file;
-    await getSize(f);
+    //await getSize(f);
 
     // Makes reference to the storage bucket location
-    const ref = storage.ref(`uploads/cashaccounts/${props.folder}/${props.fileType}-${Date.now()}.${extension}`);
+    const ref = storage.ref(`uploads/quotes/${props.folder}/${fname}-${Date.now()}.${extension}`);
     setUploading(true);
 
     // Starts the upload
@@ -34,29 +34,11 @@ export default function FileUploader(props) {
       task
         .then((d) => ref.getDownloadURL())
         .then((url) => {
-          //setDownloadURL(url);
           setUploading(false);
-          props.passUploadUrl(url);
-          props.passFileName(fname);
+          props.addFile(fname, url);
         });
     });
   };
-
-  ////////////////////////////////////////////////
-
-  async function getSize(input) {
-    var reader = new FileReader();
-    reader.onload = async function (e) {
-      var img = new Image();
-      img.onload = await function () {
-        //console.log("The width of the image is " + img.width + "px.");
-        //console.log("The height of the image is " + img.height + "px.");
-        props.setW(150 * (img.width / img.height));
-      };
-      img.src = reader.result;
-    };
-    await reader.readAsDataURL(input);
-  }
 
   ////////////////////////////////////////////////
 
@@ -74,7 +56,7 @@ export default function FileUploader(props) {
       {!uploading && (
         <>
           <label
-            //htmlFor="file-upload"
+            htmlFor="file-upload"
             className="relative cursor-pointer text-sm bg-transparent rounded-md font-medium text-mag-blue hover:text-mag-blue-400 focus-within:outline-none"
           >
             <span>{props.title}</span>
