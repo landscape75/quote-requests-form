@@ -10,6 +10,7 @@ import {
   ExclamationCircleIcon,
   UserCircleIcon,
   CheckCircleIcon,
+  CurrencyDollarIcon
 } from "@heroicons/react/solid";
 //import { ClipboardListIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 
@@ -171,7 +172,7 @@ function quoteForm() {
         </h1>
         <p className="sm:text-lg text-sm font-medium text-gray-500 text-center mt-4 mb-2">
         We will get back to you within 48 hours. We will email you
-          if we equire more information.
+          if we require more information.
         </p>
       </div>
     );
@@ -190,7 +191,7 @@ function quoteForm() {
           Your Landscape Centre Inc. Quote request was not submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
-          Please refresh the page and try again or call 604-540-0333.
+          Please refresh the page and try again or email sales@landscapecentre.com.
         </p>
       </div>
     );
@@ -203,7 +204,7 @@ function quoteForm() {
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">
               <div className="relative">
-                <UserCircleIcon
+                <CurrencyDollarIcon
                   className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
                   aria-hidden="true"
                 />
@@ -481,7 +482,7 @@ function quoteForm() {
                 Please list the materials and quantities you want us to quote.
                 Please make sure to include the colour and size in the
                 description if applicable. Only include one product per row.
-                Click the + to add a new row.
+                Click the + button to add a new row.
               </p>
             </div>
             <div className="border border-gray-200 rounded-md">
