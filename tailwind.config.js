@@ -1,16 +1,10 @@
 module.exports = {
   mode: 'jit',
   purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
-  variants: {
-    extend: {
-      //opacity: ['disabled']
-    }
-  },
-  darkMode: 'class',
   plugins: [
     //require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
+    //require('@tailwindcss/typography'),
 
   ],
   theme: {

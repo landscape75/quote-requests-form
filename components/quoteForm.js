@@ -1,16 +1,9 @@
 import { useState } from "react";
-//import { Menu, Transition, Listbox } from "@headlessui/react";
-//import Link from "next/link";
-import Image from "next/image";
 import uuid from "react-uuid";
 import toast from "react-hot-toast";
-//import jsPDF from "jspdf";
-//import "jspdf-autotable";
-//import { useCollection } from "react-firebase-hooks/firestore";
 import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
-import ImageUploader from "./ImageUploader";
 import FileUploader from "./FileUploader";
 import { useForm } from "react-hook-form";
 import {
@@ -226,7 +219,7 @@ function quoteForm() {
               </h1>
               <p className="sm:text-sm text-xs font-medium text-gray-500">
                 If you have any questions, please email
-                sales@landscapecentre.con or call 604-540-0333
+                sales@landscapecentre.com or call 604-540-0333
               </p>
             </div>
           </div>
@@ -260,7 +253,7 @@ function quoteForm() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                className="block text-sm font-medium text-gray-700"
               >
                 Name *
               </label>
@@ -269,9 +262,8 @@ function quoteForm() {
                   id="name"
                   name="name"
                   type="text"
-                  //value={truckNumber}
+                  className="bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                   placeholder="Name"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
                   //onChange={(e) => setTruckNumber(e.target.value)}
                   {...register("name", { required: true })}
                 ></input>
@@ -291,7 +283,7 @@ function quoteForm() {
             <div>
               <label
                 htmlFor="company-name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                className="text-sm font-medium text-gray-700 dark:text-gray-100"
               >
                 Company Name
               </label>
@@ -302,7 +294,7 @@ function quoteForm() {
                   type="text"
                   //value={companyName}
                   placeholder="Company Name (optional)"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md required"
+                  className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md required"
                   //onChange={(e) => setCompanyName(e.target.value)}
                   {...register("companyName", { required: false })}
                 ></input>
@@ -349,7 +341,7 @@ function quoteForm() {
                         type="text"
                         //value={address}
                         placeholder="Street Address"
-                        className="block bg-whit text-gay-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
+                        className="bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                         //onChange={(e) => setAddress(e.target.value)}
                         {...register("streetAddress", { required: true })}
                       ></input>
@@ -370,7 +362,7 @@ function quoteForm() {
                   <div className="sm:col-span-2">
                     <label
                       htmlFor="city"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                      className="block text-sm font-medium text-gray-700"
                     >
                       City *
                     </label>
@@ -381,7 +373,7 @@ function quoteForm() {
                         type="text"
                         //value={truckNumber}
                         placeholder="City"
-                        className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                        className="bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                         //onChange={(e) => setTruckNumber(e.target.value)}
                         {...register("city", { required: true })}
                       ></input>
@@ -405,7 +397,7 @@ function quoteForm() {
               <div className="sm:col-span-2">
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Phone *
                 </label>
@@ -416,7 +408,7 @@ function quoteForm() {
                     type="text"
                     //value={truckNumber}
                     placeholder="Phone"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                    className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                     //onChange={(e) => setTruckNumber(e.target.value)}
                     {...register("phone", {
                       required: true,
@@ -442,7 +434,7 @@ function quoteForm() {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Email Address *
                 </label>
@@ -453,7 +445,7 @@ function quoteForm() {
                     type="text"
                     //value={truckNumber}
                     placeholder="Email Address"
-                    className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                    className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                     //onChange={(e) => setTruckNumber(e.target.value)}
                     {...register("email", {
                       required: true,
@@ -561,7 +553,8 @@ function quoteForm() {
                         <input
                           name="description"
                           type="text"
-                          className="bg-white text-gray-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          placeholder="Item Description"
+                          className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
                           value={item.description}
                           onChange={handleLineItemChange(i)}
                         />
@@ -570,7 +563,8 @@ function quoteForm() {
                         <input
                           name="quantity"
                           type="text"
-                          className="bg-white text-gray-700 text-center focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          placeholder="Quantity"
+                          className="bg-white text-sm text-gray-700 placeholder-gray-500 placeholder-opacity-25 text-center focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
                           value={item.quantity}
                           onChange={handleLineItemChange(i)}
                           //onFocus={handleFocusSelect}
@@ -580,7 +574,8 @@ function quoteForm() {
                         <input
                           name="unit"
                           type="text"
-                          className="bg-white text-gray-700 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
+                          placeholder="Unit"
+                          className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
                           value={item.unit}
                           onChange={handleLineItemChange(i)}
                           //onFocus={handleFocusSelect}
@@ -619,7 +614,7 @@ function quoteForm() {
             <div>
               <label
                 htmlFor="notes"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-100"
+                className="block text-sm font-medium text-gray-700"
               >
                 Notes
               </label>
@@ -630,7 +625,7 @@ function quoteForm() {
                   rows="3"
                   //value={truckNumber}
                   placeholder="Notes"
-                  className="block bg-white dark:bg-mag-grey text-gay-700 dark:text-white focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 dark:border-gray-500 rounded-md"
+                  className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                   //onChange={(e) => setTruckNumber(e.target.value)}
                   {...register("notes", { required: false })}
                 ></textarea>

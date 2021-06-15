@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Headroom from "react-headroom";
-import { Transition, Menu } from "@headlessui/react";
+//import { Transition, Menu } from "@headlessui/react";
 import { auth, googleAuthProvider } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
