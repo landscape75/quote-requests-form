@@ -5,16 +5,18 @@ import { firestore, serverTimestamp } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 import FileUploader from "./FileUploader";
+import LineItem from "./LineItem";
 import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
   UserCircleIcon,
   CheckCircleIcon,
-  CurrencyDollarIcon
+  CurrencyDollarIcon,
 } from "@heroicons/react/solid";
-//import { ClipboardListIcon, ShoppingCartIcon } from "@heroicons/react/outline";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { PlusCircleIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 
-/////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
 function quoteForm() {
   const { user, username } = useContext(UserContext);
@@ -39,6 +41,20 @@ function quoteForm() {
     cn = watch("name", "").replace(/\s/g, "");
     dr = watch("deliveryRequired", false);
   }
+
+  /////////////////////////////////////////////////////////////
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(lineItems);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setLineItems(items);
+  }
+
+  /////////////////////////////////////////////////////////////
 
   const onSubmit = (data) => saveData(data);
   //console.log(cn)
@@ -99,6 +115,7 @@ function quoteForm() {
     setLineItems(
       lineItems.concat([{ description: "", quantity: "", unit: "" }])
     );
+    console.log(lineItems);
   };
 
   //////////////////////////////////////////////////////////////
@@ -144,7 +161,7 @@ function quoteForm() {
 
   /////////////////////////////////////////////////////////////
 
-  function reset() {
+  /*   function reset() {
     setUploadUrl("");
     setUploadUrl2("");
     setUploadUrl3("");
@@ -153,7 +170,7 @@ function quoteForm() {
     setImgH1(150);
     setImgW2(250);
     setImgH2(150);
-  }
+  } */
 
   /////////////////////////////////////////////////////////////
 
@@ -171,8 +188,8 @@ function quoteForm() {
           submitted.
         </h1>
         <p className="sm:text-lg text-sm font-medium text-gray-500 text-center mt-4 mb-2">
-        We will get back to you within 48 hours. We will email you
-          if we require more information.
+          We will get back to you within 48 hours. We will email you if we
+          require more information.
         </p>
       </div>
     );
@@ -191,7 +208,8 @@ function quoteForm() {
           Your Landscape Centre Inc. Quote request was not submitted.
         </h1>
         <p className="sm:text-sm text-xs font-medium text-gray-500 text-center mt-4 mb-2">
-          Please refresh the page and try again or email sales@landscapecentre.com.
+          Please refresh the page and try again or email
+          sales@landscapecentre.com.
         </p>
       </div>
     );
@@ -227,14 +245,6 @@ function quoteForm() {
           <div className="items-center pt-2 pb-0" aria-hidden="true">
             <div className="w-full border-t border-gray-400" />
           </div>
-
-          {/*           <p className="pt-2 text-sm text-gray-500">
-            A Contractor Cash account enables you to purchase product at a
-            discounted rate. Note, we protect our contractors so the discount is
-            given only to you as the contractor and does not apply if your
-            customer is paying. Please contact us if you have any questions.
-            Thank you and we look forward to working with you.
-          </p> */}
           <p className="mt-1 text-sm text-gray-500">
             Fields marked with * must be filled in.
           </p>
@@ -486,130 +496,78 @@ function quoteForm() {
               </p>
             </div>
             <div className="border border-gray-200 rounded-md">
-              <table id="line-items" className="w-full">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
-                    >
-                      #
-                    </th>
-                    <th
-                      scope="col"
-                      className="w-7/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-1 border-r-1"
-                    >
-                      Description
-                    </th>
-                    <th
-                      scope="col"
-                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
-                    >
-                      Quantity
-                    </th>
-                    <th
-                      scope="col"
-                      className="w-2/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
-                    >
-                      Unit
-                    </th>
-                    <th
-                      scope="col"
-                      className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
-                    >
-                      <button
-                        type="button"
-                        className="bg-gray-0 text-lc-yellow hover:text-lc-green relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
-                        onClick={handleAddLineItem}
+              <DragDropContext onDragEnd={handleOnDragEnd}>
+                <table id="line-items" className="w-full">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
-                        <span></span>
-                        <svg
-                          className="h-6 w-6"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {lineItems.map((item, i) => (
-                    <tr
-                      //className="border border-t-0 border-b-0 border-l-0 border-r-0"
-                      key={i}
-                    >
-                      <td className="text-center border border-t-0 border-b-0 border-l-0 border-r-0 p-2 text-sm text-gray-400">
-                        {i + 1}
-                      </td>
-                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
-                        <input
-                          name="description"
-                          type="text"
-                          placeholder="Item Description"
-                          className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
-                          value={item.description}
-                          onChange={handleLineItemChange(i)}
-                        />
-                      </td>
-                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
-                        <input
-                          name="quantity"
-                          type="text"
-                          placeholder="Quantity"
-                          className="bg-white text-sm text-gray-700 placeholder-gray-500 placeholder-opacity-25 text-center focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
-                          value={item.quantity}
-                          onChange={handleLineItemChange(i)}
-                          //onFocus={handleFocusSelect}
-                        />
-                      </td>
-                      <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
-                        <input
-                          name="unit"
-                          type="text"
-                          placeholder="Unit"
-                          className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-200 rounded-md"
-                          value={item.unit}
-                          onChange={handleLineItemChange(i)}
-                          //onFocus={handleFocusSelect}
-                        />
-                      </td>
-                      <td className="text-center px-2 py-2 border border-gray-100 border-l-0 border-t-0 border-b-0">
+                        #
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-7/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-1 border-r-1"
+                      >
+                        Description
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
+                      >
+                        Quantity
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-2/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
+                      >
+                        Unit
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                      >
                         <button
                           type="button"
-                          disabled={lineItems.length == 1}
-                          className="text-gray-300 hover:text-red-600 disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
-                          onClick={handleRemoveLineItem(i)}
+                          className="bg-gray-0 text-lc-yellow relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+                          onClick={handleAddLineItem}
                         >
                           <span></span>
-                          <svg
-                            className="h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
+                          <PlusCircleIcon
+                            className="h-6 w-6 ml-0"
+                            aria-hidden="true"
+                          />
                         </button>
-                      </td>
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <Droppable droppableId="line-items2">
+                    {(provided, snapshot) => (
+                      <tbody
+                        className="divide-y divide-gray-100"
+                        //{...provided.droppableProps}
+                        //{...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        {lineItems.map((item, i) => (
+                          <LineItem
+                            key={i}
+                            item={item}
+                            id={i}
+                            index={i}
+                            handleLineItemChange={handleLineItemChange}
+                            handleRemoveLineItem={handleRemoveLineItem}
+                            itemCount={lineItems.length}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </tbody>
+                    )}
+                  </Droppable>
+                </table>
+              </DragDropContext>
             </div>
 
             <div>
