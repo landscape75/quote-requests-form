@@ -15,7 +15,7 @@ import sendgrid from '@sendgrid/mail';
 //sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 sendgrid.setApiKey('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');
 
-export default async (req, res) => {
+ const email = async (req, res) => {
   try {
     await sendgrid.send({
       to: ['dermot@landscapecentre.com'],
@@ -30,3 +30,5 @@ export default async (req, res) => {
 
   return res.status(200).json({ res: 'Email sent -' });
 };
+
+export default email

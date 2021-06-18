@@ -1,4 +1,4 @@
-import QuoteForm from "../components/quoteForm";
+import QuoteForm from "../components/QuoteForm";
 import Head from "next/head";
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';

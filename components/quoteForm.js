@@ -18,7 +18,7 @@ import { PlusCircleIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 
 ////////////////////////////////////////////////////////////
 
-function quoteForm() {
+function QuoteForm() {
   const { user, username } = useContext(UserContext);
   const {
     register,
@@ -176,7 +176,7 @@ function quoteForm() {
 
   if (submitted) {
     return (
-      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
           <CheckCircleIcon
             className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
@@ -184,7 +184,7 @@ function quoteForm() {
           />
         </div>
         <h1 className="sm:text-2xl text-md font-medium text-gray-900 text-center">
-          Thank you. Your Landscape Centre Inc. Quote request has been
+          Thank you. Your Landscape Centre Inc. quote request has been
           submitted.
         </h1>
         <p className="sm:text-lg text-sm font-medium text-gray-500 text-center mt-4 mb-2">
@@ -197,7 +197,7 @@ function quoteForm() {
 
   if (failed) {
     return (
-      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
           <ExclamationCircleIcon
             className="h-10 sm:h-16 w-10 sm:w-16 text-red-600 ml-0"
@@ -217,7 +217,7 @@ function quoteForm() {
 
   return (
     <div className="">
-      <div className="relative mt-4 w-full z--10 rounded-lg shadow-lg border border-gray-300 bg-white opcity-50 p-3 sm:p-6">
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6">
         <div className="w-full space-y-4">
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">
@@ -547,8 +547,8 @@ function quoteForm() {
                     {(provided, snapshot) => (
                       <tbody
                         className="divide-y divide-gray-100"
-                        //{...provided.droppableProps}
-                        //{...provided.dragHandleProps}
+                        {...provided.droppableProps}
+                        {...provided.dragHandleProps}
                         ref={provided.innerRef}
                       >
                         {lineItems.map((item, i) => (
@@ -617,7 +617,7 @@ function quoteForm() {
                 <div className="mt-1 mb-0 border rounded-md border-gray-200 bg-white">
                   <div className="divide-y divide-gray-100">
                     {files.map((item, i) => (
-                      <div id={i} className="text-sm text-gray-700 p-2">
+                      <div key={i} id={i} className="text-sm text-gray-700 p-2">
                         {i + 1} - {item.fileName}
                       </div>
                     ))}

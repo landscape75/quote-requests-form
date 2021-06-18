@@ -5,6 +5,7 @@ import Headroom from "react-headroom";
 import { auth, googleAuthProvider } from "../lib/firebase";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
+import Logo from "../public/logo-3.png"
 
 export default function Nav() {
   //export default function Nav({ user, setUser }) {
@@ -58,12 +59,12 @@ export default function Nav() {
   return (
     <Headroom>
       <div
-        className="sticky top-0 z-50 h-15 shadow-xl bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
+        className="sticky top-0 z-50 h-15 shadow-md bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
         // style={{ backgroundImage: 'url("/cash-account-header-1.png")' }}
       >
         <div className="pt-1">
           <Image
-            src={"/logo-3.png"}
+            src={Logo}
             alt="logo"
             width={300 * 0.65}
             height={117 * 0.65}
