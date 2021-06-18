@@ -654,4 +654,4 @@ function QuoteForm() {
   );
 }
 
-export default quoteForm;
+export default QuoteForm;
