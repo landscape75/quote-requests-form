@@ -13,9 +13,14 @@ import {
   CalculatorIcon,
   CheckCircleIcon,
   CurrencyDollarIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { PlusCircleIcon, PaperClipIcon } from "@heroicons/react/outline";
+import {
+  PlusCircleIcon,
+  PaperClipIcon,
+  TrashIcon,
+} from "@heroicons/react/outline";
 
 ////////////////////////////////////////////////////////////
 
@@ -223,12 +228,8 @@ function QuoteForm() {
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">
               <div className="relative rounded-full">
-                <CalculatorIcon
-                  className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0  border-4 border-lc-green rounded-full"
-                  aria-hidden="true"
-                />
-                <span
-                  className="absolute inset-0 shadow-inner rounded-full"
+                <QuestionMarkCircleIcon
+                  className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
                   aria-hidden="true"
                 />
               </div>
@@ -247,18 +248,22 @@ function QuoteForm() {
             <div className="w-full border-t border-gray-400" />
           </div>
           <div className="inline-flex text-gray-500">
-          <InformationCircleIcon
-            className="h-5 w-5 text-lc-green ml-0 mr-1"
-            aria-hidden="true"
-          />
-          <span className="mt-0 text-sm text-gray-500">
-            Fields marked with * must be filled in.
-          </span>
+            <InformationCircleIcon
+              className="h-5 w-5 text-lc-green ml-0 mr-1"
+              aria-hidden="true"
+            />
+            <span className="mt-0 text-sm text-gray-500">
+              Fields marked with * must be filled in.
+            </span>
           </div>
           <div className="items-center pt-1 pb-1" aria-hidden="true">
             <div className="w-full border-t border-gray-200" />
           </div>
-          <form className="space-y-2 pt-0" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+          <form
+            className="space-y-2 pt-0"
+            onSubmit={handleSubmit(onSubmit)}
+            autoComplete="off"
+          >
             <div>
               <h3 className="text-xl leading-6 font-medium text-gray-900">
                 Contact Information
@@ -527,15 +532,15 @@ function QuoteForm() {
                       </th>
                       <th
                         scope="col"
-                        className="w-2/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-1"
+                        className="w-2/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
                         Unit
                       </th>
                       <th
                         scope="col"
-                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                        className="w-1/12 py-2 text-center text-sm font-medium text-gray-700 border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
-                        <button
+                        {/*                         <button
                           type="button"
                           className="bg-gray-0 text-lc-yellow relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
                           onClick={handleAddLineItem}
@@ -545,7 +550,15 @@ function QuoteForm() {
                             className="h-6 w-6 ml-0"
                             aria-hidden="true"
                           />
-                        </button>
+                        </button> */}
+
+        {/*                 <div className="">
+                         <TrashIcon
+                          className="h-6 w-6"
+                          aria-hidden="true"
+                        /> 
+                        </div> */}
+                        
                       </th>
                     </tr>
                   </thead>
@@ -573,6 +586,48 @@ function QuoteForm() {
                       </tbody>
                     )}
                   </Droppable>
+                  <tfoot>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                      >
+                        {lineItems.length}
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-7/12 px-0 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                      >
+                        Items
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                      ></th>
+                      <th
+                        scope="col"
+                        className="w-2/12 px-0 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                      >
+                        <button
+                          type="button"
+                          className="w-full bg-gray-0 text-center text-lc-green hover:text-lc-yellow relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+                          onClick={handleAddLineItem}
+                        >
+                          <PlusCircleIcon
+                            className="h-6 w-6 mr-1"
+                            aria-hidden="true"
+                          />
+                          <span>New Line</span>
+                        </button>
+                      </th>
+                      <th
+                        scope="col"
+                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                      >
+                        
+                      </th>
+                    </tr>
+                  </tfoot>
                 </table>
               </DragDropContext>
             </div>
