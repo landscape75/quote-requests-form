@@ -6,7 +6,7 @@ export default function LineItem(props) {
   const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: "none",
     display: isDragging ? "table" : "",
-    background: isDragging ? "HoneyDew" : "white",
+    background: isDragging ? "HoneyDew" : "transparent",
     ...draggableStyle,
   });
 

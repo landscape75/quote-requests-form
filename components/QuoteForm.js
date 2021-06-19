@@ -9,12 +9,12 @@ import LineItem from "./LineItem";
 import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
-  UserCircleIcon,
+  CalculatorIcon,
   CheckCircleIcon,
   CurrencyDollarIcon,
 } from "@heroicons/react/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { PlusCircleIcon, ShoppingCartIcon } from "@heroicons/react/outline";
+import { PlusCircleIcon, PaperClipIcon } from "@heroicons/react/outline";
 
 ////////////////////////////////////////////////////////////
 
@@ -95,7 +95,7 @@ function QuoteForm() {
   const handleAddFile = (fName, fUrl) => {
     let newFile = { fileName: fName, fileUrl: fUrl };
     setFiles([...files, newFile]);
-    console.log(files);
+    //console.log(files);
   };
 
   //////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ function QuoteForm() {
     setLineItems(
       lineItems.concat([{ description: "", quantity: "", unit: "" }])
     );
-    console.log(lineItems);
+    //console.log(lineItems);
   };
 
   //////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ function QuoteForm() {
     );
     let data = await response.json();
 
-    console.log(data);
+    //console.log(data);
     return data;
   }
 
@@ -221,9 +221,9 @@ function QuoteForm() {
         <div className="w-full space-y-4">
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">
-              <div className="relative">
-                <CurrencyDollarIcon
-                  className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
+              <div className="relative rounded-full">
+                <CalculatorIcon
+                  className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0  border-4 border-lc-green rounded-full"
                   aria-hidden="true"
                 />
                 <span
@@ -609,7 +609,7 @@ function QuoteForm() {
                 Attachments
               </h3>
               <p className="mt-1 pb-2 text-sm text-gray-500">
-                Optionally attach files including images, PDFs or Excel files.
+                Optionally attach files, including images, PDFs or Excel files.
               </p>
             </div>
             <div>
@@ -618,7 +618,13 @@ function QuoteForm() {
                   <div className="divide-y divide-gray-100">
                     {files.map((item, i) => (
                       <div key={i} id={i} className="text-sm text-gray-700 p-2">
-                        {i + 1} - {item.fileName}
+                        <div className="inline-flex">
+                          <PaperClipIcon
+                            className="h-5 w-5 text-lc-green ml-0 mr-1"
+                            aria-hidden="true"
+                          />
+                          {i + 1}  - {item.fileName}
+                        </div>
                       </div>
                     ))}
                   </div>
