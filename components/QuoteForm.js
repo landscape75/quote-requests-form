@@ -514,7 +514,7 @@ function QuoteForm() {
                     <tr>
                       <th
                         scope="col"
-                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                        className="w-1/12 px-4 py-4 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
                         #
                       </th>
@@ -590,7 +590,7 @@ function QuoteForm() {
                     <tr>
                       <th
                         scope="col"
-                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                        className="w-1/12 px-2 py-1 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
                         
                       </th>
@@ -610,7 +610,7 @@ function QuoteForm() {
                       >
                         <button
                           type="button"
-                          className="w-full bg-gray-0 text-center text-gray-700 hover:text-lc-yellow focus:text-lc-yellow  inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
+                          className="w-full bg-gray-0 text-center text-gray-700 hover:text-lc-yellow focus:outline-none focus:text-lc-yellow  inline-flex items-center px-2 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
                           onClick={handleAddLineItem}
                         >
                           <PlusCircleIcon
