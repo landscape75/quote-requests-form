@@ -592,13 +592,13 @@ function QuoteForm() {
                         scope="col"
                         className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
-                        {lineItems.length}
+                        
                       </th>
                       <th
                         scope="col"
                         className="w-7/12 px-0 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
-                        Items
+                        {lineItems.length} Items
                       </th>
                       <th
                         scope="col"
@@ -610,14 +610,14 @@ function QuoteForm() {
                       >
                         <button
                           type="button"
-                          className="w-full bg-gray-0 text-center text-lc-green hover:text-lc-yellow relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+                          className="w-full bg-gray-0 text-center text-gray-700 hover:text-lc-yellow focus:text-lc-yellow  inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
                           onClick={handleAddLineItem}
                         >
                           <PlusCircleIcon
-                            className="h-6 w-6 mr-1"
+                            className="h-6 w-6 text-center"
                             aria-hidden="true"
                           />
-                          <span>New Line</span>
+                          <span className="text-gray-700 w-full">New Line</span>
                         </button>
                       </th>
                       <th

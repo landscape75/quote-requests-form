@@ -28,6 +28,7 @@ export default function LineItem(props) {
             snapshot.isDragging,
             provided.draggableProps.style
           )}
+          tabIndex="-1"
           // className={`${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           <td className="text-center border border-t-0 border-b-0 border-l-0 border-r-0 p-2 text-sm text-gray-400">
@@ -78,7 +79,7 @@ export default function LineItem(props) {
             <button
               type="button"
               disabled={props.itemCount == 1}
-              className="text-gray-300 hover:text-red-600 disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-300 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
+              className="text-gray-300 hover:text-red-600 focus:text-red-600 disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-300 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
               onClick={props.handleRemoveLineItem(props.id)}
             >
               <span></span>
