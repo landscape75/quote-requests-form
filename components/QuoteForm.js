@@ -9,6 +9,7 @@ import LineItem from "./LineItem";
 import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
+  InformationCircleIcon,
   CalculatorIcon,
   CheckCircleIcon,
   CurrencyDollarIcon,
@@ -217,7 +218,7 @@ function QuoteForm() {
 
   return (
     <div className="">
-      <div className="relative mt-4 w-full z--10 rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6">
+      <div className="relative mt-4 w-full z--10 rounded-lg shadow-md border border-gray-300 bg-white opacity-100 p-3 sm:p-6">
         <div className="w-full space-y-4">
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">
@@ -245,13 +246,19 @@ function QuoteForm() {
           <div className="items-center pt-2 pb-0" aria-hidden="true">
             <div className="w-full border-t border-gray-400" />
           </div>
-          <p className="mt-1 text-sm text-gray-500">
+          <div className="inline-flex text-gray-500">
+          <InformationCircleIcon
+            className="h-5 w-5 text-lc-green ml-0 mr-1"
+            aria-hidden="true"
+          />
+          <span className="mt-0 text-sm text-gray-500">
             Fields marked with * must be filled in.
-          </p>
+          </span>
+          </div>
           <div className="items-center pt-1 pb-1" aria-hidden="true">
             <div className="w-full border-t border-gray-200" />
           </div>
-          <form className="space-y-2 pt-0" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-2 pt-0" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <div>
               <h3 className="text-xl leading-6 font-medium text-gray-900">
                 Contact Information
@@ -495,7 +502,7 @@ function QuoteForm() {
                 Click the + button to add a new row.
               </p>
             </div>
-            <div className="border border-gray-200 rounded-md">
+            <div className="border border-gray-300 rounded-md">
               <DragDropContext onDragEnd={handleOnDragEnd}>
                 <table id="line-items" className="w-full">
                   <thead>
@@ -623,7 +630,7 @@ function QuoteForm() {
                             className="h-5 w-5 text-lc-green ml-0 mr-1"
                             aria-hidden="true"
                           />
-                          {i + 1}  - {item.fileName}
+                          {i + 1} - {item.fileName}
                         </div>
                       </div>
                     ))}
