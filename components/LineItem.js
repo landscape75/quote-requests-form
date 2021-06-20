@@ -72,7 +72,7 @@ export default function LineItem(props) {
               placeholder="Unit"
               autoComplete="off"
               className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
-              value={props.item.unit}
+              value={props.item.uom}
               onChange={props.handleLineItemChange(props.id)}
             />
             <datalist id="units">
