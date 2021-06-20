@@ -46,6 +46,7 @@ export default function LineItem(props) {
               name="description"
               type="text"
               placeholder="Item Description"
+              autoComplete="off"
               className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
               value={props.item.description}
               onChange={props.handleLineItemChange(props.id)}
@@ -56,6 +57,7 @@ export default function LineItem(props) {
               name="quantity"
               type="text"
               placeholder="Quantity"
+              autoComplete="off"
               className="bg-white text-sm text-gray-700 placeholder-gray-500 placeholder-opacity-25 text-center focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
               value={props.item.quantity}
               onChange={props.handleLineItemChange(props.id)}
@@ -68,6 +70,7 @@ export default function LineItem(props) {
               list="units"
               type="text"
               placeholder="Unit"
+              autoComplete="off"
               className="bg-white text-gray-700 text-sm placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
               value={props.item.unit}
               onChange={props.handleLineItemChange(props.id)}
