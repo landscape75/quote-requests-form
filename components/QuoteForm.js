@@ -607,7 +607,7 @@ function QuoteForm() {
                       >
                         <button
                           type="button"
-                          className="pr-2 bg-gray-0 text-center text-lc-yellow hover:text-green-500 focus:outline-none focus:text-lc-yellow  inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-xs hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
+                          className="pr-2 bg-gray-0 text-center text-lc-green hover:text-lc-yellow focus:outline-none focus:text-lc-yellow  inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-xs hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
                           onClick={handleAddLineItem}
                         >
                           <PlusCircleIcon
@@ -621,12 +621,14 @@ function QuoteForm() {
                       <th
                         scope="col"
                         className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
-                      ></th>
+                      >
+                        {lineItems.length} Items
+                      </th>
                       <th
                         scope="col"
                         className="w-2/12 px-0 py-2 text-right text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
-                        {lineItems.length} Items
+                        
                       </th>
                       <th
                         scope="col"
@@ -721,7 +723,7 @@ function QuoteForm() {
 
             <input
               type="submit"
-              className="inline-flex justify-center md:w-1/4 w-full rounded-md border border-transparent cursor-pointer shadow-md px-4 py-2 bg-lc-yellow text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lc-yellow"
+              className="inline-flex justify-center md:w-1/4 w-full rounded-md border border-transparent cursor-pointer shadow-md px-4 py-2 bg-lc-green text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lc-yellow"
             />
           </form>
         </div>
