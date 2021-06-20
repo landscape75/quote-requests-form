@@ -17,10 +17,13 @@ import {
 } from "@heroicons/react/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
-  PlusCircleIcon,
+  //PlusCircleIcon,
   PaperClipIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
+import {
+  PlusCircleIcon,
+} from "@heroicons/react/solid";
 
 ////////////////////////////////////////////////////////////
 
@@ -614,14 +617,14 @@ function QuoteForm() {
                       >
                         <button
                           type="button"
-                          className="w-full bg-gray-0 text-center text-gray-700 hover:text-lc-yellow focus:outline-none focus:text-lc-yellow  inline-flex items-center px-2 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
+                          className="w-full bg-gray-0 text-center text-lc-yellow hover:text-green-500 focus:outline-none focus:text-lc-yellow  inline-flex items-center px-2 py-1 rounded-md border border-gray-200 text-xs hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
                           onClick={handleAddLineItem}
                         >
                           <PlusCircleIcon
-                            className="h-6 w-6 text-center"
+                            className="h-5 w-5 mr-1"
                             aria-hidden="true"
                           />
-                          <span className="text-gray-700 w-full">New Line</span>
+                          <span className="text-gray-700">New Line</span>
                         </button>
                       </th>
                       <th
