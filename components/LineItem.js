@@ -34,7 +34,7 @@ export default function LineItem(props) {
             <div className="inline-flex align-middle">
               <div className="text-left">
                 <DotsVerticalIcon
-                  className="h-5 w-5 ml-0 text-gray-200 mr-2"
+                  className="h-5 w-5 ml-0 text-lc-yellow hover:text-green-500 mr-2"
                   aria-hidden="true"
                 />
               </div>
@@ -89,7 +89,7 @@ export default function LineItem(props) {
             <button
               type="button"
               disabled={props.itemCount == 1}
-              className="text-gray-300 hover:text-red-600 focus:text-red-600 focus:outline-none disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-300 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
+              className="text-lc-yellow hover:text-green-500 focus:text-green-500 focus:outline-none disabled:opacity-20 relative inline-flex items-center px-1 py-1 rounded-md border border-gray-300 text-sm hover:bg-gray-50 focus:z-10 focus:ring-lc-yellow focus:border-lc-yellow "
               onClick={props.handleRemoveLineItem(props.id)}
             >
               <span></span>
