@@ -65,8 +65,8 @@ export default function LineItem(props) {
           </td>
           <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
             <input
-              name="unit"
-              id="unit"
+              name="uom"
+              id="uom"
               list="units"
               type="text"
               placeholder="Unit"
