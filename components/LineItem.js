@@ -1,6 +1,5 @@
-
 import { Draggable } from "react-beautiful-dnd";
-import { TrashIcon } from "@heroicons/react/outline";
+import { TrashIcon, DotsVerticalIcon } from "@heroicons/react/outline";
 
 export default function LineItem(props) {
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -10,7 +9,7 @@ export default function LineItem(props) {
     ...draggableStyle,
   });
 
-/*   const getListStyle = (isDraggingOver) => ({
+  /*   const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? "HoneyDew" : "lightgrey",
     padding: grid,
     width: 250,
@@ -31,8 +30,16 @@ export default function LineItem(props) {
           tabIndex="-1"
           // className={`${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
-          <td className="text-center border border-t-0 border-b-0 border-l-0 border-r-0 p-2 text-sm text-gray-400">
-            {props.id + 1}
+          <td className="text-left border border-t-0 border-b-0 border-l-0 border-r-0 py-2 px-0 text-sm text-gray-400">
+            <div className="inline-flex align-middle">
+              <div className="text-left">
+                <DotsVerticalIcon
+                  className="h-5 w-5 ml-0 text-gray-200 mr-2"
+                  aria-hidden="true"
+                />
+              </div>
+              <div>{props.id + 1}</div>
+            </div>
           </td>
           <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
             <input
@@ -83,10 +90,7 @@ export default function LineItem(props) {
               onClick={props.handleRemoveLineItem(props.id)}
             >
               <span></span>
-              <TrashIcon
-                className="h-6 w-6 ml-0"
-                aria-hidden="true"
-              />
+              <TrashIcon className="h-6 w-6 ml-0" aria-hidden="true" />
             </button>
           </td>
         </tr>
