@@ -614,13 +614,13 @@ function QuoteForm() {
                             className="h-5 w-5 mr-1"
                             aria-hidden="true"
                           />
-                          <span className="text-gray-700 truncate">New Line</span>
+                          <span className="text-gray-600 truncate">New Line</span>
                         </button>
                         
                       </th>
                       <th
                         scope="col"
-                        className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                        className="w-1/12 px-0 py-2 text-left text-sm font-normal text-gray-400 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
                         {lineItems.length} Items
                       </th>
