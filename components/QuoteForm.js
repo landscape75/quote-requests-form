@@ -85,7 +85,7 @@ function QuoteForm() {
           read: false,
         })
         .then(async () => {
-          //await sendMail(d);
+          await sendMail(d, lineItems), files;
           setSubmitted(true);
           setFailed(false);
           toast.success("Quote request submitted.", {
@@ -147,19 +147,22 @@ function QuoteForm() {
 
   /////////////////////////////////////////////////////////////
 
-  async function sendMail(d) {
+  async function sendMail(formData, lineitems, files) {
     console.log("emailing");
     let response = await fetch(
-      `https://cash-account-form.vercel.app/api/email`,
+      `https://quote-requests-form.vercel.app/api/email`,
       {
         method: "POST",
         body: JSON.stringify({
-          name: d.name,
+          name: formData.name,
+          formData: formData,
+          lineItems: lineItems,
+          files: files,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           Accept: "application/json",
-          "Access-Control-Allow-Origin": "https://cash-account-form.vercel.app",
+          "Access-Control-Allow-Origin": "https://quote-requests-form.vercel.app",
         },
       }
     );
