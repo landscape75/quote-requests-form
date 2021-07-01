@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 
 export default function Footer() {
   const [curYear, setYear] = useState("");
-  const [version] = useState("2021.06.21.b");
+  const [version] = useState("2021.07.02.a");
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());
   }, []);
 
   return (
-    <footer className="bg-white dark:bg-mag-grey mx-auto p-0">
+    <footer className="bg-gray-50 dark:bg-mag-grey mx-auto p-0">
       <div className="relative pt-10 pb-0">
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="w-full border-t border-gray-300 dark:border-gray-400"></div>

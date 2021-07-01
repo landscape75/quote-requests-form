@@ -189,7 +189,7 @@ function QuoteForm() {
 
   if (submitted) {
     return (
-      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-xl border border-white bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
           <CheckCircleIcon
             className="h-10 sm:h-16 w-10 sm:w-16 text-lc-green ml-0"
@@ -210,7 +210,7 @@ function QuoteForm() {
 
   if (failed) {
     return (
-      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-md border border-gray-300 bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
+      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-xl border border-white bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
         <div className="mx-auto mb-4">
           <ExclamationCircleIcon
             className="h-10 sm:h-16 w-10 sm:w-16 text-red-600 ml-0"
@@ -230,7 +230,7 @@ function QuoteForm() {
 
   return (
     <div className="">
-      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-md border border-gray-300 bg-white opacity-100 p-3 sm:p-6">
+      <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-xl border border-white bg-white opacity-100 p-3 sm:p-6">
         <div className="w-full space-y-4">
           <div className="flex items-center space-x-5">
             <div className="flex-shrink-0">

@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 function Layout({ user, setUser, children }) {
   return (
 
-    <div className="bg-white dark:bg-mag-grey mx-auto">
+    <div className="bg-gray-50 dark:bg-mag-grey mx-auto">
       <Head>
         <title>Cash Account Form</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
