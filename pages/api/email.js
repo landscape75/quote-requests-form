@@ -8,12 +8,17 @@ sendgrid.setApiKey(
 const email = async (req, res) => {
   try {
     await sendgrid.send({
-      to: ["dermot@landscapecentre.com"],
-      bcc: "tomredf@gmail.com",
-      from: "sales@landscapecentre.com",
-      subject: "New Quote Request",
-      text: "New quote request submitted by : " + req.body.name,
-      html: '<strong>New quote request submitted by :</strong>' + req.body.name,
+      to: [req.body.email],
+      //bcc: ['dermot@landscapecentre.com'],
+      from: 'sales@landscapecentre.com',
+      replyTo: 'sales@landscapecentre.com',
+      subject: 'Landscape Centre Quote Request',
+      text: 'Hi ' + req.body.name + ',/n/nThank you for submitting your Landscape Centre Inc. Quote Request. ' + 
+      'If you have any questions, please call 604-540-0333. We will get back to you within 48 hours. We will email you if we require more information.',
+      html: 'Hi ' + req.body.name + ',<br><br>Thank you for submitting your Landscape Centre Inc. Quote Request. ' + 
+      'If you have any questions, please call 604-540-0333. We will get back to you within 48 hours. We will email you if we require more information.<br><br>' + 
+      'We have included a copy of the information you submitted below.<br><br>' +
+      req.body.data,
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({ error: error.message });

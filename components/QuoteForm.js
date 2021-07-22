@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import toast from "react-hot-toast";
 import { firestore, serverTimestamp } from "../lib/firebase";
@@ -21,14 +21,13 @@ import {
   PaperClipIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import {
-  PlusCircleIcon,
-} from "@heroicons/react/solid";
+import { PlusCircleIcon } from "@heroicons/react/solid";
 
 ////////////////////////////////////////////////////////////
 
 function QuoteForm() {
   const { user, username } = useContext(UserContext);
+  const [curYear, setYear] = useState("");
   const {
     register,
     handleSubmit,
@@ -42,7 +41,12 @@ function QuoteForm() {
     { description: "", quantity: "", uom: "" },
   ]);
 
-  //const bgUrl = "data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23d8cdea' fill-opacity='0.13'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"
+  /////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString());
+  }, []);
+
   /////////////////////////////////////////////////////////////
 
   let cn = "";
@@ -85,7 +89,8 @@ function QuoteForm() {
           read: false,
         })
         .then(async () => {
-          await sendMail(d, lineItems), files;
+          await sendMail(d);
+          await sendMail2(d);
           setSubmitted(true);
           setFailed(false);
           toast.success("Quote request submitted.", {
@@ -115,7 +120,6 @@ function QuoteForm() {
       if (elementIndex !== i) return item;
       return { ...item, [event.target.name]: event.target.value };
     });
-    //console.log(lineItems2)
     setLineItems(lineItems2);
   };
 
@@ -147,30 +151,213 @@ function QuoteForm() {
 
   /////////////////////////////////////////////////////////////
 
-  async function sendMail(formData, lineitems, files) {
+  async function sendMail(formData) {
     console.log("emailing");
-    let response = await fetch(
-      `https://quote-requests-form.vercel.app/api/email`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          name: formData.name,
-          formData: formData,
-          lineItems: lineItems,
-          files: files,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "https://quote-requests-form.vercel.app",
-        },
-      }
-    );
+    let tb = await createTable(formData);
+    let response = await fetch(`/api/email`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        formData: formData,
+        data: tb,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "https://quote-requests-form.vercel.app",
+      },
+    });
     let data = await response.json();
 
     //console.log(data);
     return data;
   }
+
+  /////////////////////////////////////////////////////////////
+
+  async function sendMail2(formData) {
+    console.log("emailing 2");
+    let tb = await createTable(formData);
+    let response = await fetch(`/api/email2`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        formData: formData,
+        data: tb,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "https://quote-requests-form.vercel.app",
+      },
+    });
+    let data = await response.json();
+
+    //console.log(data);
+    return data;
+  }
+
+  /////////////////////////////////////////////////////////////
+
+  const formatDate = (t) => {
+    var d = new Date(t);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  };
+
+  ////////////////////////////////////////////////////////
+
+  const createTable = async (d) => {
+    let atts = "";
+    for (let i = 0; i < files.length; i++) {
+      atts +=
+        '<tr><td colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;"> - ' +
+        "<a href=" +
+        files[i].fileUrl +
+        ">" +
+        files[i].fileName +
+        "</a>";
+      ("</td></tr>;");
+    }
+
+    let items =
+      /*       "<tr>" +
+      '<th colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: center;">' +
+      "#" +
+      "</th>" + */
+      '<th colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      "Description" +
+      "</th>" +
+      '<th colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: center;">' +
+      "Qty" +
+      "</th>" +
+      '<th colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      "Unit" +
+      "</th>" +
+      "</tr>";
+
+    for (let i = 0; i < lineItems.length; i++) {
+      items +=
+        /*         "<tr>" +
+        '<td colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: center;">' +
+        (i + 1) +
+        "</td>" + */
+        "<tr>" +
+        '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+        lineItems[i].description +
+        "</td>" +
+        '<td colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: center;">' +
+        lineItems[i].quantity +
+        "</td>" +
+        '<td colspan="1" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+        lineItems[i].uom +
+        "</td>" +
+        "</tr>";
+    }
+
+    let delivery =
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Delivery Required:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      "No" +
+      "</td></tr>";
+
+    if (d.deliveryRequired) {
+      delivery =
+        "<tr>" +
+        '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Delivery Required:</b></td>' +
+        '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+        "Yes" +
+        "</td>" +
+        "<tr>" +
+        '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Address:</b></td>' +
+        '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+        d.streetAddress +
+        "</td>" +
+        "</tr>" +
+        "<tr>" +
+        '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;""><b>City:</b></td>' +
+        '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+        d.city +
+        "</td>" +
+        "</tr>";
+    }
+
+    let tb =
+      '<table style="width: 100%; box-sizing: inherit; border-collapse: collapse; border-spacing: 0px; background-color: transparent; color: rgb(54, 54, 54); font-family: arial, sans-serif; width: 450px; margin-bottom: 1.5rem;">' +
+      '<tbody style="background-color: transparent;">' +
+      "<tr>" +
+      '<td colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Contact Information</b></td>' +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Date Submitted:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      formatDate(new Date()) +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Name:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      d.name +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Company Name:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      d.companyName +
+      "</td>" +
+      "</tr>" +
+      delivery +
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Phone:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      d.phone +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="2" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Email:</b></td>' +
+      '<td colspan="4" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      d.email +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="6" style="border: 1px solid #ccc;"></td>' +
+      "</tr>" +
+      "<tr>" +
+      '<th colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Quote Details</b></th>' +
+      "</tr>" +
+      items +
+      "<tr>" +
+      '<td colspan="6" style="border: 1px solid #ccc;"></td>' +
+      "</tr>" +
+      "<tr>" +
+      '<th colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;"><b>Notes:</b></th>' +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;">' +
+      d.notes +
+      "</td>" +
+      "</tr>" +
+      "<tr>" +
+      '<td colspan="6" style="border: 1px solid #ccc;"></td>' +
+      "</tr>" +
+      "<tr>" +
+      '<th colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: left;;"><b>Attachments:</b></th>' +
+      "</tr>" +
+      atts +
+      "<tr>" +
+      '<td colspan="6" style="border: 1px solid #ccc;"></td>' +
+      "</tr>" +
+      '<td colspan="6" style="padding: 5px; border: 1px solid #ccc; text-align: center;"><small>&copy; ' +
+      curYear +
+      " Landscape Centre Inc. </small></td>" +
+      "</tbody>" +
+      "</table>";
+    return tb;
+  };
+
+  /////////////////////////////////////////////////////////////
 
   /////////////////////////////////////////////////////////////
 
@@ -518,7 +705,7 @@ function QuoteForm() {
               <DragDropContext onDragEnd={handleOnDragEnd}>
                 <table id="line-items" className="w-full">
                   <thead>
-                  {/* style={{backgroundColor: "#ffy6",
+                    {/* style={{backgroundColor: "#ffy6",
                     backgroundImage: "url(" + {bgUrl} + ")"}}
                   >  */}
                     <tr>
@@ -562,13 +749,12 @@ function QuoteForm() {
                           />
                         </button> */}
 
-        {/*                 <div className="">
+                        {/*                 <div className="">
                          <TrashIcon
                           className="h-6 w-6"
                           aria-hidden="true"
                         /> 
                         </div> */}
-                        
                       </th>
                     </tr>
                   </thead>
@@ -601,9 +787,7 @@ function QuoteForm() {
                       <th
                         scope="col"
                         className="w-1/12 px-2 py-1 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
-                      >
-                        
-                      </th>
+                      ></th>
                       <th
                         scope="col"
                         className="w-7/12 px-0 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
@@ -617,9 +801,10 @@ function QuoteForm() {
                             className="h-5 w-5 mr-1"
                             aria-hidden="true"
                           />
-                          <span className="text-gray-600 truncate">New Line</span>
+                          <span className="text-gray-600 truncate">
+                            New Line
+                          </span>
                         </button>
-                        
                       </th>
                       <th
                         scope="col"
@@ -630,15 +815,11 @@ function QuoteForm() {
                       <th
                         scope="col"
                         className="w-2/12 px-0 py-2 text-right text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
-                      >
-                        
-                      </th>
+                      ></th>
                       <th
                         scope="col"
                         className="w-1/12 px-2 py-2 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
-                      >
-                        
-                      </th>
+                      ></th>
                     </tr>
                   </tfoot>
                 </table>
