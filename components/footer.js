@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function Footer() {
   const [curYear, setYear] = useState("");
-  const [version] = useState("2021.07.22.a");
+  const [version] = useState("2021.07.26.a");
 
   useEffect(() => {
     setYear(new Date().getFullYear().toString());

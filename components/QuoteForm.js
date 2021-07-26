@@ -74,6 +74,7 @@ function QuoteForm() {
   //console.log(cn)
   async function saveData(d) {
     const id = uuid();
+    const webId = 'WQ-' + (Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5)).toUpperCase() + '-' + curYear.toString()
     //const date = new Date();
     try {
       await firestore
@@ -87,6 +88,7 @@ function QuoteForm() {
           formData: d,
           lineItems: lineItems,
           read: false,
+          webId: webId,
         })
         .then(async () => {
           await sendMail(d);
