@@ -702,7 +702,7 @@ function QuoteForm() {
                 description if applicable. Only include one product per row.
                 Click the + button to add a new row.
               </p>
-              <p className="mt-1 pb-2 text-sm text-lc-yellow font-bold">
+              <p className="mt-1 pb-2 text-xs text-lc-yellow-700 font-bold">
               ⚠️  Please do not list products in the notes section.
               </p>
             </div>
@@ -839,7 +839,7 @@ function QuoteForm() {
                 
                 Notes
               </label>
-              <span className="mt-1 pb-2 text-sm text-lc-yellow font-bold">
+              <span className="mt-1 pb-2 text-xs text-lc-yellow-700 font-bold">
                 ⚠️ Please do not list products in the notes section.
               </span>
               <div className="mt-1 mb-2">
