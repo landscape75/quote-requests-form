@@ -702,9 +702,9 @@ function QuoteForm() {
                 description if applicable. Only include one product per row.
                 Click the + button to add a new row.
               </p>
-              <p className="mt-1 pb-2 text-xs text-red-600 font-medium">
+{/*               <p className="mt-1 pb-2 text-xs text-red-600 font-medium">
               ⚠️  Please do not list products in the notes section.
-              </p>
+              </p> */}
             </div>
             <div className="border border-gray-300 rounded-md">
               <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -840,7 +840,7 @@ function QuoteForm() {
                 Notes
               </label>
               <span className="mt-1 pb-2 text-xs text-red-600 font-medium">
-                ⚠️ Please do not list products in the notes section.
+                ⚠️ Please do not list products in the notes section. Please use the Quote details section above.
               </span>
               <div className="mt-1 mb-2">
                 <textarea
