@@ -16,7 +16,7 @@ const email = async (req, res) => {
       text: "" + req.body.name + " has submitted a Quote Request. ",
       html:
         req.body.name +
-        " has subbmitted a Quote Request. <br><br>" +
+        " has submitted a Quote Request. <br><br>" +
         'Please see information submitted below. All quote requests should be managed in the <a href="https://quote-requests-admin.vercel.app">Quote Admin App.</a><br><br>' +
         req.body.data,
     });
