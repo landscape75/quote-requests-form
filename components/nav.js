@@ -59,7 +59,7 @@ export default function Nav() {
   return (
     <Headroom>
       <div
-        className="sticky top-0 z-50 h-15 shadow-xl bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
+        className="sticky top-0 z-50 h-0 shadow-xl bg-white opacity-100 border border-b-1 border-t-0 border-l-0 border-r-0 border-gray-300 p-1 bg-cover flex justify-center"
         // style={{ backgroundImage: 'url("/cash-account-header-1.png")' }}
       >
         <div className="pt-1">
