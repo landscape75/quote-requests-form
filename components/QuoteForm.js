@@ -836,11 +836,12 @@ function QuoteForm() {
                 htmlFor="notes"
                 className="block text-sm font-medium text-gray-700"
               >
-                <p className="mt-1 pb-2 text-sm text-gray-700 font-bold">
-                Please do not list products in the notes section.
-              </p>
+                
                 Notes
               </label>
+              <span className="mt-1 pb-2 text-sm text-gray-700 font-bold">
+                Please do not list products in the notes section.
+              </span>
               <div className="mt-1 mb-2">
                 <textarea
                   id="notes"
