@@ -700,14 +700,15 @@ function QuoteForm() {
                 Please list the materials and quantities you want us to quote.
                 Please make sure to include the colour and size in the
                 description if applicable. Only include one product per row.
-                Click the + button to add a new row.
+                Click the <b>+ New Line</b> button to add a new row. You can 
+                rearrange items by clicking and dragging the three dots on the left.
               </p>
 {/*               <p className="mt-1 pb-2 text-xs text-red-600 font-medium">
               ⚠️  Please do not list products in the notes section.
               </p> */}
             </div>
             <div className="border border-gray-300 rounded-md">
-              <DragDropContext onDragEnd={handleOnDragEnd}>
+              <DragDropContext onDragEnd={handleOnDragEnd} enableDefaultSensors>
                 <table id="line-items" className="w-full">
                   <thead>
                     {/* style={{backgroundColor: "#ffy6",
@@ -716,13 +717,12 @@ function QuoteForm() {
                     <tr>
                       <th
                         scope="col"
-                        className="w-1/12 px-4 py-4 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
+                        className="w-5 px-4 py-4 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
-                        #
                       </th>
                       <th
                         scope="col"
-                        className="w-7/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-1 border-r-1"
+                        className="w-8/12 px-2 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-0 border-b-1 border-l-1 border-r-1"
                       >
                         Description
                       </th>
@@ -764,7 +764,7 @@ function QuoteForm() {
                     </tr>
                   </thead>
 
-                  <Droppable droppableId="line-items2">
+                  <Droppable droppableId="line-items2" direction="vertical">
                     {(provided, snapshot) => (
                       <tbody
                         className="divide-y divide-gray-100"
@@ -791,11 +791,11 @@ function QuoteForm() {
                     <tr>
                       <th
                         scope="col"
-                        className="w-1/12 px-2 py-1 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                        className="w-5 px-2 py-1 text-center text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       ></th>
                       <th
                         scope="col"
-                        className="w-7/12 px-0 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
+                        className="w-8/12 px-0 py-2 text-left text-sm font-medium text-gray-700 tracking-wider border border-t-1 border-b-0 border-l-0 border-r-0"
                       >
                         <button
                           type="button"

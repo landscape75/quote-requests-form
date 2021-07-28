@@ -34,11 +34,11 @@ export default function LineItem(props) {
             <div className="inline-flex align-middle">
               <div className="text-left">
                 <DotsVerticalIcon
-                  className="h-5 w-5 ml-0 text-lc-green hover:text-lc-yellow mr-2"
+                  className="h-5 w-5 ml-0 text-lc-green hover:text-lc-yellow mr-0"
                   aria-hidden="true"
                 />
               </div>
-              <div>{props.id + 1}</div>
+              {/* <div>{props.id + 1}</div> */}
             </div>
           </td>
           <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
