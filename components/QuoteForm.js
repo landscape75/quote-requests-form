@@ -10,9 +10,9 @@ import { useForm } from "react-hook-form";
 import {
   ExclamationCircleIcon,
   InformationCircleIcon,
-  CalculatorIcon,
+  //CalculatorIcon,
   CheckCircleIcon,
-  CurrencyDollarIcon,
+  //CurrencyDollarIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/solid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -361,21 +361,6 @@ function QuoteForm() {
 
   /////////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////////
-
-  /*   function reset() {
-    setUploadUrl("");
-    setUploadUrl2("");
-    setUploadUrl3("");
-    setSubmitted(false);
-    setImgW1(250);
-    setImgH1(150);
-    setImgW2(250);
-    setImgH2(150);
-  } */
-
-  /////////////////////////////////////////////////////////////
-
   if (submitted) {
     return (
       <div className="relative mt-4 w-full z--10 font-sans rounded-lg shadow-xl border border-white bg-white opcity-50 p-3 sm:p-6 flex flex-col justify-items-center">
@@ -483,7 +468,6 @@ function QuoteForm() {
                   type="text"
                   className="bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
                   placeholder="Name"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
                   {...register("name", { required: true })}
                 ></input>
                 {errors.name && (
@@ -537,9 +521,6 @@ function QuoteForm() {
                   >
                     Delivery Required
                   </label>
-                  {/* <p className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p> */}
                 </div>
               </div>
             </div>
@@ -590,10 +571,8 @@ function QuoteForm() {
                         id="city"
                         name="city"
                         type="text"
-                        //value={truckNumber}
                         placeholder="City"
                         className="bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
-                        //onChange={(e) => setTruckNumber(e.target.value)}
                         {...register("city", { required: true })}
                       ></input>
                       {errors.city && (
@@ -625,10 +604,8 @@ function QuoteForm() {
                     id="phone"
                     name="phone"
                     type="text"
-                    //value={truckNumber}
                     placeholder="Phone"
                     className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
-                    //onChange={(e) => setTruckNumber(e.target.value)}
                     {...register("phone", {
                       required: true,
                       pattern: {
@@ -662,10 +639,8 @@ function QuoteForm() {
                     id="email"
                     name="email"
                     type="text"
-                    //value={truckNumber}
                     placeholder="Email Address"
                     className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
-                    //onChange={(e) => setTruckNumber(e.target.value)}
                     {...register("email", {
                       required: true,
                       pattern: {
@@ -703,17 +678,11 @@ function QuoteForm() {
                 Click the <b>+ New Line</b> button to add a new row. You can 
                 rearrange items by clicking and dragging the three dots on the left.
               </p>
-{/*               <p className="mt-1 pb-2 text-xs text-red-600 font-medium">
-              ⚠️  Please do not list products in the notes section.
-              </p> */}
             </div>
             <div className="border border-gray-300 rounded-md">
               <DragDropContext onDragEnd={handleOnDragEnd} enableDefaultSensors>
                 <table id="line-items" className="w-full">
                   <thead>
-                    {/* style={{backgroundColor: "#ffy6",
-                    backgroundImage: "url(" + {bgUrl} + ")"}}
-                  >  */}
                     <tr>
                       <th
                         scope="col"
@@ -742,24 +711,6 @@ function QuoteForm() {
                         scope="col"
                         className="w-1/12 py-2 text-center text-sm font-medium text-gray-700 border border-t-0 border-b-1 border-l-0 border-r-0"
                       >
-                        {/*                         <button
-                          type="button"
-                          className="bg-gray-0 text-lc-yellow relative inline-flex items-center px-1 py-1 rounded-md border border-gray-200 text-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-0 focus:ring-white"
-                          onClick={handleAddLineItem}
-                        >
-                          <span></span>
-                          <PlusCircleIcon
-                            className="h-6 w-6 ml-0"
-                            aria-hidden="true"
-                          />
-                        </button> */}
-
-                        {/*                 <div className="">
-                         <TrashIcon
-                          className="h-6 w-6"
-                          aria-hidden="true"
-                        /> 
-                        </div> */}
                       </th>
                     </tr>
                   </thead>
@@ -847,10 +798,8 @@ function QuoteForm() {
                   id="notes"
                   name="notes"
                   rows="3"
-                  //value={truckNumber}
                   placeholder="Notes"
                   className="block bg-white text-gray-700 placeholder-gray-500 placeholder-opacity-25 focus:ring-lc-yellow focus:border-lc-yellow w-full border-gray-300 rounded-md"
-                  //onChange={(e) => setTruckNumber(e.target.value)}
                   {...register("notes", { required: false })}
                 ></textarea>
                 {errors.notes && (

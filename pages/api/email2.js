@@ -8,8 +8,6 @@ sendgrid.setApiKey(
 const email = async (req, res) => {
   try {
     await sendgrid.send({
-      to: ["quotes@landscapecentre.com"],
-      //bcc: ['dermot@landscapecentre.com'],
       from: "quotes@landscapecentre.com",
       replyTo: req.body.email,
       subject: "New Quote Request From " + req.body.name,
@@ -17,7 +15,7 @@ const email = async (req, res) => {
       html:
         req.body.name +
         " has submitted a Quote Request. <br><br>" +
-        'Please see information submitted below. All quote requests should be managed in the <a href="https://quote-requests-admin.vercel.app">Quote Admin App.</a><br><br>' +
+        //'Please see information submitted below. All quote requests should be managed in the <a href="https://quote-requests-admin.vercel.app">Quote Admin App.</a><br><br>' +
         req.body.data,
     });
   } catch (error) {

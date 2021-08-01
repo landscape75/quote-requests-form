@@ -9,7 +9,6 @@ const email = async (req, res) => {
   try {
     await sendgrid.send({
       to: [req.body.email],
-      //bcc: ['dermot@landscapecentre.com'],
       from: 'quotes@landscapecentre.com',
       replyTo: 'quotes@landscapecentre.com',
       subject: 'Landscape Centre Quote Request',

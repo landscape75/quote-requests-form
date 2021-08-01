@@ -9,12 +9,6 @@ export default function LineItem(props) {
     ...draggableStyle,
   });
 
-  /*   const getListStyle = (isDraggingOver) => ({
-    background: isDraggingOver ? "HoneyDew" : "lightgrey",
-    padding: grid,
-    width: 250,
-  }); */
-
   return (
     <Draggable draggableId={props.id + "id"} index={props.index}>
       {(provided, snapshot) => (
@@ -28,7 +22,6 @@ export default function LineItem(props) {
             provided.draggableProps.style
           )}
           tabIndex="-1"
-          // className={`${snapshot.isDragging ? 'bg-gray-100' : 'bg-white'}`}
         >
           <td className="text-left border border-t-0 border-b-0 border-l-0 border-r-0 py-2 px-0 text-sm text-gray-400">
             <div className="inline-flex align-middle">
@@ -38,7 +31,6 @@ export default function LineItem(props) {
                   aria-hidden="true"
                 />
               </div>
-              {/* <div>{props.id + 1}</div> */}
             </div>
           </td>
           <td className="py-2 border border-gray-100 border-t-0 border-b-0 border-l-0 border-r-0">
