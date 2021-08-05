@@ -8,7 +8,8 @@ sendgrid.setApiKey(
 const email = async (req, res) => {
   try {
     await sendgrid.send({
-      from: "quotes@landscapecentre.com",
+      from: ["quotes@landscapecentre.com"],
+      to: "quotes@landscapecentre.com",
       replyTo: req.body.email,
       subject: "New Quote Request From " + req.body.name,
       text: "" + req.body.name + " has submitted a Quote Request. ",
