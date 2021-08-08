@@ -421,7 +421,7 @@ function QuoteForm() {
               </h1>
               <p className="sm:text-sm text-xs font-medium text-gray-500">
                 If you have any questions, please email
-                sales@landscapecentre.com or call 604-540-0333
+                quotes@landscapecentre.com or call 604-540-0333
               </p>
             </div>
           </div>
