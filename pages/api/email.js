@@ -1,9 +1,9 @@
 import sendgrid from "@sendgrid/mail";
 //
-//sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-sendgrid.setApiKey(
-    "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"
-);
+sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+/*sendgrid.setApiKey(
+    "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"
+);*/
 
 const email = async (req, res) => {
   try {
